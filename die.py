@@ -1,10 +1,7 @@
 import random
 from dataclasses import dataclass
 
-
-@dataclass
-class RollResult:
-    die: Die
+from roll_result import RollResult
 
 
 @dataclass
@@ -12,13 +9,14 @@ class Die:
     sides: int
     minimum_roll: int = 1
 
-    def roll(self):
-        return random.randint(1, self.sides)
+    def roll(self) -> RollResult:
+        roll_result = RollResult(self, random.randint(self.min, self.sides))
+        return roll_result
 
     @property
-    def min(self):
+    def min(self) -> int:
         return self.minimum_roll
 
     @property
-    def max(self):
+    def max(self) -> int:
         return self.sides
