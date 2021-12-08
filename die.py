@@ -2,8 +2,6 @@ import random
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-from roll_result import RollResult
-
 
 @dataclass
 class Rollable(ABC):
@@ -25,9 +23,9 @@ class Die(Rollable):
     sides: int
     minimum_roll: int = 1
 
-    def roll(self) -> RollResult:
-        roll_result = RollResult(self, random.randint(self.min, self.sides))
-        return roll_result
+    def roll(self) -> list[int]:
+        die_roll_result = [random.randint(self.min, self.sides)]
+        return die_roll_result
 
     @property
     def min(self) -> int:
