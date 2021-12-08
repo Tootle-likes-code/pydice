@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
-from die import Die
+from die import Die, Dice
 
 
 @dataclass
@@ -28,3 +28,21 @@ class DieRollResult(RollResult):
 
     def result(self) -> int:
         return self.roll
+
+
+@dataclass
+class DiceRollResult(RollResult):
+    dice: Dice
+    rolls: list[DieRollResult] = field(init=False)
+
+    @property
+    def die_rolls(self) -> list[int]:
+        die_roll_results = [result.roll for result in self.rolls]
+        return die_roll_results
+
+    def result(self) -> int:
+        pass
+
+    def add_roll(self, result: DieRollResult):
+        self.rolls.append(result)
+
