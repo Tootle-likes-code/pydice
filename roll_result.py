@@ -46,3 +46,13 @@ class DiceRollResult(RollResult):
     def add_roll(self, result: DieRollResult):
         self.rolls.append(result)
 
+
+@dataclass
+class DecoratorRollResult(ABC, RollResult):
+    decorated: RollResult
+
+    @abstractmethod
+    @property
+    def result(self) -> int:
+        pass
+
