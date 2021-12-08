@@ -34,3 +34,21 @@ class Die(Rollable):
     @property
     def max(self) -> int:
         return self.sides
+
+
+@dataclass
+class Dice(Rollable):
+    die: Die
+    number_of_dice: int
+
+    def roll(self) -> list[int]:
+        return [self.die.roll() for _ in range(self.number_of_dice)]
+
+    @property
+    def min(self):
+        return self.die.min * self.number_of_dice
+
+    @property
+    def max(self):
+        return self.die.max * self.number_of_dice
+
