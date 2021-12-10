@@ -41,6 +41,12 @@ class Die(Rollable):
         return self._maximum_roll
 
 
+@dataclass(init=False)
+class FateDie(Die):
+    def __init__(self):
+        super().__init__(3, -1)
+
+
 @dataclass
 class Dice(Rollable):
     die: Die
@@ -56,4 +62,3 @@ class Dice(Rollable):
     @property
     def max(self):
         return self.die.max * self.number_of_dice
-
