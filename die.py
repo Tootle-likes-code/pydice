@@ -29,7 +29,7 @@ class Die(Rollable):
         self._maximum_roll = self.sides + (self.min - offset)
 
     def roll(self) -> list[int]:
-        die_roll_result = [random.randint(self.min, self.sides)]
+        die_roll_result = [random.randint(self.min, self._maximum_roll)]
         return die_roll_result
 
     @property
