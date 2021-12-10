@@ -1,6 +1,7 @@
 import random
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import ClassVar
 
 
 @dataclass
@@ -23,6 +24,10 @@ class Die(Rollable):
     sides: int
     minimum_roll: int = 1
 
+    def __post_init__(self):
+        offset = 1
+        self._maximum_roll = self.sides + (self.min - offset)
+
     def roll(self) -> list[int]:
         die_roll_result = [random.randint(self.min, self.sides)]
         return die_roll_result
@@ -33,7 +38,7 @@ class Die(Rollable):
 
     @property
     def max(self) -> int:
-        return self.sides
+        return self._maximum_roll
 
 
 @dataclass
