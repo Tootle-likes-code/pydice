@@ -1,12 +1,38 @@
 import unittest
+from unittest.mock import patch, call
 
 from die import Die
 
 
 class DieTests(unittest.TestCase):
     def setUp(self) -> None:
-        pass
+        self.test_die = Die(6)
 
+
+@patch("die.random.randint", return_value=3)
+class RollTests(DieTests):
+    def test_min_and_max_are_being_used_for_random(self, mock_random):
+        # Arrange
+        expected_calls = [call(1, 6)]
+
+        # Act
+        self.test_die.roll()
+
+        # Assert
+        mock_random.assert_called_once()
+        mock_random.assert_has_calls(expected_calls)
+
+    def test_min_and_max_are_being_used_for_random(self, mock_random):
+        # Arrange
+        expected_calls = [call(-2, 3)]
+        test_die = Die(6, -2)
+
+        # Act
+        test_die.roll()
+
+        # Assert
+        mock_random.assert_called_once()
+        mock_random.assert_has_calls(expected_calls)
 
 class MinTests(DieTests):
     def test_min_returns_min_value(self):
@@ -36,7 +62,7 @@ class MaxTests(DieTests):
     def test_max_returns_expected_value(self):
         # Arrange
         expected_result = 6
-        test_die = Die(6)
+        test_die = self.test_die
         
         # Act
         result = test_die.max
