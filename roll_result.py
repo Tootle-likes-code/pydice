@@ -51,7 +51,6 @@ class DiceRollResult(RollResult):
 class RollResultDecorator(ABC, RollResult):
     decorated: RollResult
 
-    @property
     def result(self) -> int:
         return self.decorated.result()
 
