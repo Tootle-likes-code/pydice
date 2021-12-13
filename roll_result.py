@@ -48,11 +48,10 @@ class DiceRollResult(RollResult):
 
 
 @dataclass
-class DecoratorRollResult(ABC, RollResult):
+class RollResultDecorator(ABC, RollResult):
     decorated: RollResult
 
-    @abstractmethod
     @property
     def result(self) -> int:
-        pass
+        return self.decorated.result()
 
