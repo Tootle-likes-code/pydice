@@ -62,3 +62,13 @@ class AddToRollResultDecorator(RollResultDecorator):
     def result(self) -> int:
         current_result = self.roll_result.result()
         return current_result + self.modifier
+
+
+@dataclass
+class SubtractFromRollResultDecorator(RollResultDecorator):
+    roll_result: RollResult
+    modifier: int
+
+    def result(self) -> int:
+        current_result = self.roll_result.result()
+        return current_result - self.modifier
