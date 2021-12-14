@@ -6,7 +6,6 @@ from die import Die, Dice
 
 @dataclass
 class RollResult(ABC):
-    @abstractmethod
     @property
     def die_rolls(self) -> list[int]:
         pass
@@ -48,9 +47,18 @@ class DiceRollResult(RollResult):
 
 
 @dataclass
-class RollResultDecorator(ABC, RollResult):
-    decorated: RollResult
+class RollResultDecorator(RollResult):
+    roll_result: RollResult
 
     def result(self) -> int:
         return self.decorated.result()
 
+
+@dataclass
+class AddToRollResultDecorator(RollResultDecorator):
+    roll_result: RollResult
+    modifier: int
+
+    def result(self) -> int:
+        current_result = self.roll_result.result()
+        return current_result + self.modifier
