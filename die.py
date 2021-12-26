@@ -53,7 +53,7 @@ class Dice(Rollable):
     number_of_dice: int
 
     def roll(self) -> list[int]:
-        return [self.die.roll() for _ in range(self.number_of_dice)]
+        return [self.die.roll()[0] for _ in range(self.number_of_dice)]
 
     @property
     def min(self):
