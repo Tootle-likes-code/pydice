@@ -62,6 +62,9 @@ class Die(Rollable):
     def max(self) -> int:
         return self._maximum_roll
 
+    def __str__(self) -> str:
+        return f"d{self.sides}"
+
 
 @dataclass(init=False)
 class FateDie(Die):

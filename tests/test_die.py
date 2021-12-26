@@ -34,6 +34,7 @@ class RollTests(DieTests):
         mock_random.assert_called_once()
         mock_random.assert_has_calls(expected_calls)
 
+
 class MinTests(DieTests):
     def test_min_returns_min_value(self):
         # Arrange
@@ -56,17 +57,17 @@ class MinTests(DieTests):
 
         # Assert
         self.assertEqual(expected_result, result)
-        
+
 
 class MaxTests(DieTests):
     def test_max_returns_expected_value(self):
         # Arrange
         expected_result = 6
         test_die = self.test_die
-        
+
         # Act
         result = test_die.max
-        
+
         # Assert
         self.assertEqual(expected_result, result)
 
@@ -88,6 +89,18 @@ class MaxTests(DieTests):
 
         # Act
         result = test_die.max
+
+        # Assert
+        self.assertEqual(expected_result, result)
+
+
+class StrTests(DieTests):
+    def test_result_is_expected_string(self):
+        # Arrange
+        expected_result = "d6"
+
+        # Act
+        result = str(self.test_die)
 
         # Assert
         self.assertEqual(expected_result, result)
