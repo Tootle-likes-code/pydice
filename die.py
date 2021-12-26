@@ -97,6 +97,9 @@ class Dice(Rollable):
     def max(self):
         return self.die.max * self.number_of_dice
 
+    def __str__(self):
+        return f"{self.number_of_dice}{str(self.die)}"
+
 
 if __name__ == "__main__":
     print("Welcome to Tootle's Dice app.")

@@ -25,5 +25,20 @@ class RollTests(DiceTests):
         self.assertEqual(expected_result, result)
 
 
+class StrTests(DiceTests):
+    def test_result_is_expected_string(self):
+        # Arrange
+        mock_die = MagicMock()
+        test_dice = Dice(mock_die, 3)
+
+        expected_result = f"3{str(mock_die)}"
+
+        # Act
+        result = str(test_dice)
+
+        # Assert
+        self.assertEqual(expected_result, result)
+
+
 if __name__ == '__main__':
     unittest.main()
