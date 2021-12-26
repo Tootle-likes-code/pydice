@@ -11,7 +11,7 @@ class MultiplyRollResultDecoratorTests(unittest.TestCase):
 
 
 class ResultTests(MultiplyRollResultDecoratorTests):
-    def test_results_has_modifier_added_to_it(self):
+    def test_result_is_multiplied_correctly(self):
         # Arrange
         expected_result = 10
         test_roll_result = MultiplyRollResultDecorator(self.test_die, 2)
