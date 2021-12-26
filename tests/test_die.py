@@ -97,7 +97,7 @@ class MaxTests(DieTests):
 class StrTests(DieTests):
     def test_result_is_expected_string(self):
         # Arrange
-        expected_result = "d6"
+        expected_result = "D6"
 
         # Act
         result = str(self.test_die)
