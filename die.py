@@ -64,20 +64,20 @@ class Dice(Rollable):
         return self.die.max * self.number_of_dice
 
 
-if __name__ == "__main" :
+if __name__ == "__main__":
     print("Welcome to Tootle's Dice app.")
 
     number: int
     sides: int
     try:
-        number = str(input("How many die you want to roll?"))
-        sides = input("How many sides?")
+        number = int(input("How many die you want to roll?\n"))
+        sides = input("How many sides?\n")
 
         die: Die
         if sides.lower() == "f":
             die = FateDie()
         else:
-            die = Die(str(sides))
+            die = Die(int(sides))
 
         if number == 1:
             print(die.roll())
