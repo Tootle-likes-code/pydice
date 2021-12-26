@@ -11,7 +11,7 @@ class DivideByRollResultDecoratorTests(unittest.TestCase):
 
 
 class ResultsTests(DivideByRollResultDecoratorTests):
-    def test_result_is_multiplied_correctly(self):
+    def test_result_is_divided_correctly(self):
         # Arrange
         expected_result = 2
         test_roll_result = DivideByRollResultDecorator(self.test_die, 2)
