@@ -6,11 +6,11 @@ from roll_result import SubtractFromRollResultDecorator
 
 class SubtractFromRollResultDecoratorTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.test_die = Mock()
-        self.test_die.result = Mock(return_value=3)
-        self.test_die.die_rolls = PropertyMock(return_value=[4, 5])
+        self.test_die_result = Mock()
+        self.test_die_result.result = Mock(return_value=3)
+        self.test_die_result.die_rolls = PropertyMock(return_value=[4, 5])
 
-        self.test_roll_result = SubtractFromRollResultDecorator(self.test_die, 2)
+        self.test_roll_result = SubtractFromRollResultDecorator(self.test_die_result, 2)
 
 
 class DieRollsTests(SubtractFromRollResultDecoratorTests):
@@ -35,6 +35,13 @@ class ResultTests(SubtractFromRollResultDecoratorTests):
 
         # Assert
         self.assertEqual(expected_result, result)
+
+    def test_results_calls_decorated_results(self):
+        # Act
+        self.test_roll_result.result()
+
+        # Assert
+        self.test_die_result.result.assert_called_once()
 
 
 if __name__ == '__main__':
