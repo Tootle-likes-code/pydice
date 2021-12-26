@@ -1,7 +1,6 @@
 import random
-from abc import ABC, abstractmethod, abstractproperty
-from dataclasses import dataclass, field
-from typing import ClassVar
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
 
 
 @dataclass
