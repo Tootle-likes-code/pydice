@@ -74,11 +74,11 @@ class RollResultDecorator(RollResult, ABC):
     """
     A dummy class intended to be the base for decorator pattern.
     """
-    decorated: RollResult
+    roll_result: RollResult
 
     @property
     def die_rolls(self) -> list[int]:
-        return self.decorated.die_rolls
+        return self.roll_result.die_rolls
 
 
 @dataclass
