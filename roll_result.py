@@ -74,6 +74,7 @@ class SubtractFromRollResultDecorator(RollResultDecorator):
         return current_result - self.modifier
 
 
+@dataclass
 class MultiplyRollResultDecorator(RollResultDecorator):
     roll_result: RollResult
     multiplier: int
@@ -83,6 +84,7 @@ class MultiplyRollResultDecorator(RollResultDecorator):
         return round(current_result * self.multiplier)
 
 
+@dataclass
 class DivideByRollResultDecorator(RollResultDecorator):
     roll_result: RollResult
     divide_by: int
