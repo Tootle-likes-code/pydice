@@ -15,7 +15,7 @@ class RollTests(DiceTests):
         expected_result = [4, 3]
 
         mock_die = MagicMock()
-        mock_die.roll.side_effect = [4, 3]
+        mock_die.roll.side_effect = [[4], [3]]
         dice = Dice(mock_die, 2)
 
         # Act
