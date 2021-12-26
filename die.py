@@ -62,3 +62,27 @@ class Dice(Rollable):
     @property
     def max(self):
         return self.die.max * self.number_of_dice
+
+
+if __name__ == "__main" :
+    print("Welcome to Tootle's Dice app.")
+
+    number: int
+    sides: int
+    try:
+        number = str(input("How many die you want to roll?"))
+        sides = input("How many sides?")
+
+        die: Die
+        if sides.lower() == "f":
+            die = FateDie()
+        else:
+            die = Die(str(sides))
+
+        if number == 1:
+            print(die.roll())
+        else:
+            dice = Dice(die, number)
+            print(dice.roll())
+    except ValueError:
+        print("Wasn't given a number or f.  Sorry, can't do anything with that.")
