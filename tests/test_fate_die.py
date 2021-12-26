@@ -29,7 +29,7 @@ class MaxTest(FateDieTests):
 class StrTests(FateDieTests):
     def test_result_is_expected_string(self):
         # Arrange
-        expected_result = "df"
+        expected_result = "Df"
 
         # Act
         result = str(self.test_die)
