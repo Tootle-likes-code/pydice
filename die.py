@@ -1,3 +1,8 @@
+"""
+This module handles the representation of individual die and handfuls of dice.
+"""
+
+
 import random
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
@@ -5,21 +10,39 @@ from dataclasses import dataclass
 
 @dataclass
 class Rollable(ABC):
+    """
+    An abstract representation of a die or dice.
+    """
     @abstractmethod
     def roll(self) -> list[int]:
-        pass
+        """
+        Randomly determines what the rolled value is on the Rollable.
+        :return: A randomly generated number that is possible to roll on the Rollable.
+        """
 
+    @property
     @abstractmethod
     def min(self) -> int:
-        pass
+        """
+        The minimum value of the Rollable.
+        :return:
+        """
 
+    @property
     @abstractmethod
     def max(self) -> int:
-        pass
+        """
+        The maximum value of the Rollable.
+        :return:
+        """
 
 
 @dataclass
 class Die(Rollable):
+    """
+    The representation of a Polyhedral Die.  I.e. a die that starts with a number and then
+    linearly increments for the number of sides.
+    """
     sides: int
     minimum_roll: int = 1
 
@@ -42,12 +65,18 @@ class Die(Rollable):
 
 @dataclass(init=False)
 class FateDie(Die):
+    """
+    A representation of a die use in FATE and it's variations.
+    """
     def __init__(self):
         super().__init__(3, -1)
 
 
 @dataclass
 class Dice(Rollable):
+    """
+    A representation of multiple Die objects being used at once.
+    """
     die: Die
     number_of_dice: int
 
@@ -66,8 +95,6 @@ class Dice(Rollable):
 if __name__ == "__main__":
     print("Welcome to Tootle's Dice app.")
 
-    number: int
-    sides: int
     try:
         number = int(input("How many die you want to roll?\n"))
         sides = input("How many sides?\n")
