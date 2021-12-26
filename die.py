@@ -74,6 +74,9 @@ class FateDie(Die):
     def __init__(self):
         super().__init__(3, -1)
 
+    def __str__(self):
+        return f"Df"
+
 
 @dataclass
 class Dice(Rollable):
