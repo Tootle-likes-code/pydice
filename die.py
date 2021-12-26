@@ -1,5 +1,5 @@
 import random
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, abstractproperty
 from dataclasses import dataclass, field
 from typing import ClassVar
 
@@ -10,11 +10,11 @@ class Rollable(ABC):
     def roll(self) -> list[int]:
         pass
 
-    @property
+    @abstractmethod
     def min(self) -> int:
         pass
 
-    @property
+    @abstractmethod
     def max(self) -> int:
         pass
 
