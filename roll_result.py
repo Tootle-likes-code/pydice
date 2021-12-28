@@ -55,7 +55,7 @@ class DiceRollResult(RollResult):
 
     @property
     def die_rolls(self) -> list[int]:
-        die_roll_results = [result.roll for result in self.rolls]
+        die_roll_results = [roll for roll in self.rolls]
         return die_roll_results
 
     def result(self) -> int:
