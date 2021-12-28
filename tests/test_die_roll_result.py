@@ -12,7 +12,7 @@ class DieRollResultTests(unittest.TestCase):
         self.test_die_roll_result = DieRollResult(self.test_die, 3)
 
 
-class RollResultTests(DieRollResultTests):
+class DieRollsTests(DieRollResultTests):
     def test_returns_die_roll(self):
         # Arrange
         expected_result = [3]
