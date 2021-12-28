@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, Mock
 
 from die import Dice
 from roll_result import DiceRollResult
@@ -17,13 +17,13 @@ class DieRollTests(DiceRollResultTests):
         # Arrange
         expected_result = []
         test_dice_roll_results = DiceRollResult(self.mock_dice)
-        
+
         # Act
         result = test_dice_roll_results.die_rolls
-        
+
         # Assert
         self.assertEqual(expected_result, result)
-    
+
     def test_returns_dice_results(self):
         # Arrange
         expected_results = [4, 5]
@@ -53,6 +53,34 @@ class ResultsTest(DiceRollResultTests):
 
         # Act
         result = test_dice_roll_results.result()
+
+        # Assert
+        self.assertEqual(expected_result, result)
+
+
+class AddDieRollTests(DiceRollResultTests):
+    def test_adding_roll_adds_to_result(self):
+        # Arrange
+        expected_result = [4, 5, 9]
+        mock_roll_result = MagicMock()
+        mock_roll_result.result = Mock(return_value=9)
+
+        # Act
+        self.test_dice_roll_results.add_die_roll(mock_roll_result)
+        result = self.test_dice_roll_results.rolls
+
+        # Assert
+        self.assertEqual(expected_result, result)
+
+
+class AddRollTests(DiceRollResultTests):
+    def test_adding_roll_adds_to_result(self):
+        # Arrange
+        expected_result = [4, 5, -5]
+
+        # Act
+        self.test_dice_roll_results.add_roll(-5)
+        result = self.test_dice_roll_results.rolls
 
         # Assert
         self.assertEqual(expected_result, result)
