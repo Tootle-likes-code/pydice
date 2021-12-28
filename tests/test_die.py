@@ -95,12 +95,23 @@ class MaxTests(DieTests):
 
 
 class StrTests(DieTests):
-    def test_result_is_expected_string(self):
+    def test_default_die_result_is_expected_string(self):
         # Arrange
         expected_result = "D6"
 
         # Act
         result = str(self.test_die)
+
+        # Assert
+        self.assertEqual(expected_result, result)
+
+    def test_die_with_new_min_is_expected_string(self):
+        # Arrange
+        expected_result = "D6[-1-4]"
+        test_die = Die(6, -1)
+
+        # Act
+        result = str(test_die)
 
         # Assert
         self.assertEqual(expected_result, result)
