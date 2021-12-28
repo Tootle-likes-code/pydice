@@ -3,6 +3,7 @@ A module for collecting and handling the results of Rollable objects.
 """
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
+from typing import List
 
 from die import Die, Dice
 
@@ -51,11 +52,11 @@ class DiceRollResult(RollResult):
     The roll result for a Dice object.
     """
     dice: Dice
-    rolls: list[DieRollResult] = field(default_factory=list)
+    rolls: list[int] = field(default_factory=list)
 
     @property
     def die_rolls(self) -> list[int]:
-        die_roll_results = [roll for roll in self.rolls]
+        die_roll_results: list[int] = [roll for roll in self.rolls]
         return die_roll_results
 
     def result(self) -> int:
