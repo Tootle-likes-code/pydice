@@ -59,7 +59,7 @@ class DiceRollResult(RollResult):
         return die_roll_results
 
     def result(self) -> int:
-        pass
+        return sum([roll for roll in self.rolls])
 
     def add_roll(self, result: DieRollResult):
         """
