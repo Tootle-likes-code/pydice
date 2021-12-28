@@ -51,7 +51,7 @@ class DiceRollResult(RollResult):
     The roll result for a Dice object.
     """
     dice: Dice
-    rolls: list[DieRollResult] = field(init=False)
+    rolls: list[DieRollResult] = field(default_factory=list)
 
     @property
     def die_rolls(self) -> list[int]:
