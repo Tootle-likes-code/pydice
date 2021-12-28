@@ -63,7 +63,11 @@ class Die(Rollable):
         return self._maximum_roll
 
     def __str__(self) -> str:
-        return f"D{self.sides}"
+        base_string = f"D{self.sides}"
+        if self.minimum_roll == 1:
+            return base_string
+        else:
+            return base_string + f"[{self.minimum_roll}-{self._maximum_roll}]"
 
 
 @dataclass(init=False)
