@@ -61,12 +61,20 @@ class DiceRollResult(RollResult):
     def result(self) -> int:
         return sum([roll for roll in self.rolls])
 
-    def add_roll(self, result: DieRollResult):
+    def add_die_roll(self, result: RollResult):
         """
         Adds a new DieRollResult to this object for use in calculations.
         :param result: The new DieRollResult to add.
         """
-        self.rolls.append(result)
+        self.add_roll(result.result())
+
+    def add_roll(self, roll: int):
+        """
+        Adds a new roll to this object for use in calculations.
+        :param roll:
+        :return:
+        """
+        self.rolls.append(roll)
 
 
 @dataclass
