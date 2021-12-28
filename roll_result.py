@@ -3,7 +3,6 @@ A module for collecting and handling the results of Rollable objects.
 """
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import List
 
 from die import Die, Dice
 
