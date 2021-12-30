@@ -1,6 +1,6 @@
 import unittest
 
-from die import FateDie
+from pydice.die import FateDie
 
 
 class FateDieTests(unittest.TestCase):

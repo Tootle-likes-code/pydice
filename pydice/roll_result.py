@@ -4,7 +4,7 @@ A module for collecting and handling the results of Rollable objects.
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 
-from die import Die, Dice
+from pydice.die import Die, Dice
 
 
 @dataclass

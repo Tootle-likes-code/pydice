@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, call
 
-from die import Die
+from pydice.die import Die
 
 
 class DieTests(unittest.TestCase):
@@ -9,7 +9,7 @@ class DieTests(unittest.TestCase):
         self.test_die = Die(6)
 
 
-@patch("die.random.randint", return_value=3)
+@patch("pydice.die.random.randint", return_value=3)
 class RollTests(DieTests):
     def test_min_and_max_are_being_used_for_random(self, mock_random):
         # Arrange

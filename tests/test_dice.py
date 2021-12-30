@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import MagicMock
 
-from die import Dice
+from pydice.die import Dice
 
 
 class DiceTests(unittest.TestCase):

@@ -1,8 +1,8 @@
 import unittest
-from unittest.mock import MagicMock, Mock
+from unittest.mock import MagicMock
 
-from die import Die
-from roll_result import DieRollResult
+from pydice.die import Die
+from pydice.roll_result import DieRollResult
 
 
 class DieRollResultTests(unittest.TestCase):
