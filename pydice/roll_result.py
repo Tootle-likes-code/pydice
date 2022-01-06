@@ -78,6 +78,10 @@ class DiceRollResult(RollResult):
         return sum(self.rolls)
 
     def add_die_roll(self, new_value: int):
+        if not self.dice.min <= new_value <= self.dice.max:
+            raise ValueError('Roll must be less than min and greater than max. '
+                             f'Dice Min: {self.dice.min}, Dice Max: {self.dice.max}, '
+                             f'value to add: {new_value}')
         self.rolls.append(new_value)
 
 
