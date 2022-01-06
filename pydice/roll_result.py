@@ -1,5 +1,7 @@
 """
 A module for collecting and handling the results of Rollable objects.
+
+Mutations can be added by sub-classing RollResultDecorator.
 """
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
