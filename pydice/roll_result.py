@@ -14,6 +14,7 @@ class RollResult(ABC):
     """
     Abstracted class for containing the results of a roll.
     """
+
     @property
     @abstractmethod
     def die_rolls(self) -> list[int]:
@@ -29,6 +30,10 @@ class RollResult(ABC):
         :return:
         """
 
+    @abstractmethod
+    def add_die_roll(self, new_value: int) -> None:
+        """ Adds a new result to the roll result."""
+
 
 @dataclass
 class DieRollResult(RollResult):
@@ -38,13 +43,23 @@ class DieRollResult(RollResult):
     die: Die
     roll: int
 
+    def __post_init__(self):
+        self._rolls = [self.roll]
+
     @property
     def die_rolls(self) -> list[int]:
-        die_roll_as_list = [self.roll]
+        die_roll_as_list = self._rolls
         return die_roll_as_list
 
     def result(self) -> int:
         return self.roll
+
+    def add_die_roll(self, new_value: int) -> None:
+        if not self.die.min <= new_value <= self.die.max:
+            raise ValueError(f"Roll must be less than min and greater than max. "
+                             f"Die Min: {self.die.min}, Die Max: {self.die.max}, "
+                             f"value to add: {new_value}")
+        self._rolls.append(new_value)
 
 
 @dataclass
@@ -57,26 +72,13 @@ class DiceRollResult(RollResult):
 
     @property
     def die_rolls(self) -> list[int]:
-        die_roll_results: list[int] = [roll for roll in self.rolls]
-        return die_roll_results
+        return self.rolls
 
     def result(self) -> int:
-        return sum([roll for roll in self.rolls])
+        return sum(self.rolls)
 
-    def add_die_roll(self, result: RollResult):
-        """
-        Adds a new DieRollResult to this object for use in calculations.
-        :param result: The new DieRollResult to add.
-        """
-        self.add_roll(result.result())
-
-    def add_roll(self, roll: int):
-        """
-        Adds a new roll to this object for use in calculations.
-        :param roll:
-        :return:
-        """
-        self.rolls.append(roll)
+    def add_die_roll(self, new_value: int):
+        self.rolls.append(new_value)
 
 
 @dataclass
@@ -89,6 +91,9 @@ class RollResultDecorator(RollResult, ABC):
     @property
     def die_rolls(self) -> list[int]:
         return self.roll_result.die_rolls
+
+    def add_die_roll(self, new_value: int) -> None:
+        self.roll_result.add_die_roll(new_value)
 
 
 @dataclass
