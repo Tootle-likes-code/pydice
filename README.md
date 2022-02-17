@@ -25,6 +25,11 @@ The other base `Rollable`. This represents a group of multiple related `Die` obj
 
 The `roll()` result of `Dice` represents a single `Die` result.
 
+## Dice Pool
+
+Is a collection of `Rollables` that handles all of them together in one place as a single `Rollable`.  The advantage is
+that this allows multiple `Dice` objects to be used as a single rollable.
+
 # Roll Results
 
 A `RollResult` is a helper class to better handle the results of a `Rollable.roll()`. It has the `die_rolls` property
