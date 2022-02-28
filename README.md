@@ -65,3 +65,5 @@ die.  This will explode near infinitely.
 
 ### CountValueDecorator
 Counts the number of dice that roll a number.
+
+**NOTE:** This decorator uses the raw roll values, and ignores other prior `result()` calls.
