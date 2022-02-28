@@ -62,3 +62,8 @@ A decorator for exploding dice.
 
 Goes through the `RollResults.die_rolls` and any result that is the same as the `target_number`, it will roll another 
 die.  This will explode near infinitely.
+
+### CountValueDecorator
+Counts the number of dice that roll a number.
+
+**NOTE:** This decorator uses the raw roll values, and ignores other prior `result()` calls.

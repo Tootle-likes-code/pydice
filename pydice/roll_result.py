@@ -198,3 +198,12 @@ class ExplodeDiceForTargetDecorator(RollResultDecorator):
         self._rolled_results.append(new_value)
         if new_value == self.target_number:
             self._explode()
+
+
+@dataclass
+class CountValuesDecorator(RollResultDecorator):
+    roll_result: RollResult
+    target_number: int
+
+    def result(self) -> int:
+        return sum(1 for roll in self.roll_result.die_rolls if roll == self.target_number)
