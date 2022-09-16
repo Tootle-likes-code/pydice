@@ -202,8 +202,15 @@ class ExplodeDiceForTargetDecorator(RollResultDecorator):
 
 @dataclass
 class CountValuesDecorator(RollResultDecorator):
+    """
+    A decorator that counts all faces of n.
+    """
     roll_result: RollResult
     target_number: int
 
     def result(self) -> int:
+        """
+        Counts the roll results that match the target number.
+        :return: The number of rolls that equal the target number.
+        """
         return sum(1 for roll in self.roll_result.die_rolls if roll == self.target_number)
