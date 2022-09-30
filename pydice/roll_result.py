@@ -46,9 +46,12 @@ class DieRollResult(RollResult):
     The roll result for a single Die object.
     """
     die: Die
-    roll: int
+    roll: int | None = None
 
     def __post_init__(self):
+        if self.roll is None:
+            rolls = self.die.roll()
+            self.roll = rolls
         self._rolls = [self.roll]
 
     @property
@@ -77,21 +80,25 @@ class DiceRollResult(RollResult):
     The roll result for a Dice object.
     """
     dice: Dice
-    rolls: list[int] = field(default_factory=list)
+    _rolls: list[int] = field(default_factory=list)
+
+    def __post_init__(self):
+        if self._rolls is None or self._rolls == []:
+            self._rolls = self.dice.roll()
 
     @property
     def die_rolls(self) -> list[int]:
-        return self.rolls
+        return self._rolls
 
     def result(self) -> int:
-        return sum(self.rolls)
+        return sum(self._rolls)
 
     def add_die_roll(self, new_value: int):
         if not self.dice.min <= new_value <= self.dice.max:
             raise ValueError('Roll must be less than min and greater than max. '
                              f'Dice Min: {self.dice.min}, Dice Max: {self.dice.max}, '
                              f'value to add: {new_value}')
-        self.rolls.append(new_value)
+        self._rolls.append(new_value)
 
     @property
     def rolled_die(self) -> Die:
