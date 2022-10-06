@@ -83,7 +83,7 @@ class DiceRollResult(RollResult):
     _rolls: list[int] = field(default_factory=list)
 
     def __post_init__(self):
-        if self._rolls is None or self._rolls == []:
+        if not self._rolls:
             self._rolls = self.dice.roll()
 
     @property
@@ -210,7 +210,7 @@ class ExplodeDiceForTargetDecorator(RollResultDecorator):
 @dataclass
 class CountValuesEqualToDecorator(RollResultDecorator):
     """
-    A decorator that counts all faces of n.
+    A decorator that counts all roll results of n.
     """
     roll_result: RollResult
     target_number: int
@@ -221,3 +221,15 @@ class CountValuesEqualToDecorator(RollResultDecorator):
         :return: The number of rolls that equal the target number.
         """
         return sum(1 for roll in self.roll_result.die_rolls if roll == self.target_number)
+
+
+@dataclass
+class CountValuesGreaterThanEqualToDecorator(RollResultDecorator):
+    """
+    A decorator that counts all roll results that are greater than or equal to n.
+    """
+    roll_result: RollResult
+    target_number: int
+
+    def result(self) -> int:
+        return sum(1 for roll in self.roll_result.die_rolls if roll >= self.target_number)
