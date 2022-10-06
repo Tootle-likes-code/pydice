@@ -9,7 +9,7 @@ from pydice.roll_result import RollResult
 def _build_fate_roll_result(result: Match) -> RollResult:
     fate_dice_builder = FateDiceResultBuilder.create_fate_dice_result_builder()
 
-    if result.group("add_modifier"):
+    if result.group("add_modifier") is not None:
         fate_dice_builder.with_add_modifier(result.group("add_modifier"))
 
     return fate_dice_builder.build()
