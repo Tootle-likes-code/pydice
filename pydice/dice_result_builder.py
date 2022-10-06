@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 
 from pydice.die import Dice, FateDie
-from pydice.roll_result import RollResult, DiceRollResult, AddToRollResultDecorator
+from pydice.roll_result import RollResult, DiceRollResult, AddToRollResultDecorator, SubtractFromRollResultDecorator, \
+    CountValuesEqualToDecorator, CountValuesGreaterThanEqualToDecorator
 
 
 class DiceResultBuilder:
@@ -15,6 +16,18 @@ class DiceResultBuilder:
 
     def with_add_modifier(self, modifier):
         self._dice_result = AddToRollResultDecorator(self._dice_result, int(modifier))
+        return self
+
+    def with_subtract_modifier(self, modifier):
+        self._dice_result = SubtractFromRollResultDecorator(self._dice_result, int(modifier))
+        return self
+
+    def with_count_values_equal_to(self, target_number):
+        self._dice_result = CountValuesEqualToDecorator(self._dice_result, target_number)
+        return self
+
+    def with_count_values_greater_than_equal_to(self, target_number):
+        self._dice_result = CountValuesGreaterThanEqualToDecorator(self._dice_result, target_number)
         return self
 
     def build(self) -> RollResult:

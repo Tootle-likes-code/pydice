@@ -23,12 +23,36 @@ def _interpret_fate_dice(dice_string) -> RollResult | None:
         return _build_fate_roll_result(result)
 
 
-def _get_dice(result: Match) -> Dice:
+def _get_number_of_dice(result: Match) -> int:
     number_of_dice = result.group("number_of_dice")
     if not number_of_dice:
-        number_of_dice = 1
+        return 1
     else:
-        number_of_dice = int(number_of_dice)
+        return int(number_of_dice)
+
+
+def _build_storyteller_roll_result(result: Match) -> RollResult:
+    number_of_dice = _get_number_of_dice(result)
+    storyteller_dice = Dice(Die(10), number_of_dice)
+
+    dice_builder = DiceResultBuilder.create_dice_result_builder(storyteller_dice).with_count_values_equal_to(10).with_count_values_greater_than_equal_to(7)
+
+    if result.group("add_modifier"):
+        dice_builder.with_add_modifier(result.group("add_modifier"))
+
+    return dice_builder.build()
+
+
+def _interpret_storyteller_dice(dice_string: str) -> RollResult | None:
+    regex = r"(?P<number_of_dice>\d+)[sS][tT](?:\+(?P<add_modifier>\d*))?"
+    result = re.match(regex, dice_string)
+
+    if result:
+        return _build_storyteller_roll_result(result)
+
+
+def _get_dice(result: Match) -> Dice:
+    number_of_dice = _get_number_of_dice(result)
 
     size_of_dice = int(result.group("size_of_dice"))
     dice = Dice(number_of_dice=number_of_dice, die=Die(size_of_dice))
@@ -55,7 +79,10 @@ def _interpret_general_dice(dice_string) -> RollResult | None:
 
 
 def interpret(dice_string) -> RollResult | None:
-    if "df" in dice_string:
+    if "df" in dice_string.lower():
         return _interpret_fate_dice(dice_string)
+
+    if "st" in dice_string.lower():
+        return _interpret_storyteller_dice(dice_string)
 
     return _interpret_general_dice(dice_string)
