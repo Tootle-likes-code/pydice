@@ -208,7 +208,7 @@ class ExplodeDiceForTargetDecorator(RollResultDecorator):
 
 
 @dataclass
-class CountValuesDecorator(RollResultDecorator):
+class CountValuesEqualToDecorator(RollResultDecorator):
     """
     A decorator that counts all faces of n.
     """
