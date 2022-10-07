@@ -13,7 +13,8 @@ class Operator(ABC):
         "-",
         "*",
         "x",
-        "/"
+        "/",
+        "="
     ]
 
     @abstractmethod
@@ -45,6 +46,12 @@ class DivideOperator(Operator):
         return dice_result_builder.with_divide_modifier(self.value)
 
 
+@dataclass
+class EqualToOperator(Operator):
+    def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
+        return dice_result_builder.with_count_values_equal_to(self.value)
+
+
 class OperatorFactory:
     @staticmethod
     def get_operator(operator: str, value: int) -> Operator | None:
@@ -59,3 +66,5 @@ class OperatorFactory:
             return MultiplyOperator(value)
         if operator == "/":
             return DivideOperator(value)
+        if operator == "=":
+            return EqualToOperator(value)

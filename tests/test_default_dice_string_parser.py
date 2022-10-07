@@ -4,9 +4,9 @@ from unittest.mock import patch
 
 from pydice.dice_string_parser import DefaultDiceStringParser
 from pydice.die import Dice, Die
-from pydice.operators import AddOperator, SubtractOperator, MultiplyOperator, DivideOperator
+from pydice.operators import AddOperator, SubtractOperator, MultiplyOperator, DivideOperator, EqualToOperator
 from pydice.roll_result import DiceRollResult, AddToRollResultDecorator, SubtractFromRollResultDecorator, \
-    MultiplyRollResultDecorator, DivideByRollResultDecorator
+    MultiplyRollResultDecorator, DivideByRollResultDecorator, CountValuesEqualToDecorator
 
 dice_results = [9, 10, 6, 7, 6, 1, 2, 4, 8, 3]
 
@@ -99,6 +99,17 @@ class ParseTests(DefaultDiceStringParserTests):
         # Arrange
         expected_result = DivideByRollResultDecorator(DiceRollResult(self.d20, self._default_roll_result), 5)
         test_parser = DefaultDiceStringParser(self.d20, [DivideOperator(5)])
+
+        # Act
+        result = test_parser.parse()
+
+        # Assert
+        self.assertEqual(expected_result, result)
+        
+    def test_parse_equals_adds_decorator(self, _):
+        # Arrange
+        expected_result = CountValuesEqualToDecorator(DiceRollResult(self.d20, self._default_roll_result), 5)
+        test_parser = DefaultDiceStringParser(self.d20, [EqualToOperator(5)])
 
         # Act
         result = test_parser.parse()

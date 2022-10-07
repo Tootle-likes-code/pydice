@@ -1,6 +1,7 @@
 import unittest
 
-from pydice.operators import OperatorFactory, AddOperator, SubtractOperator, MultiplyOperator, DivideOperator
+from pydice.operators import OperatorFactory, AddOperator, SubtractOperator, MultiplyOperator, DivideOperator, \
+    EqualToOperator
 
 
 class OperatorFactoryTests(unittest.TestCase):
@@ -106,6 +107,23 @@ class GetOperatorTests(OperatorFactoryTests):
 
         # Act
         result = OperatorFactory.get_operator("/", 5)
+
+        # Assert
+        self.assertEqual(expected_result, result.value)
+
+    def test_get_operator_is_equal_to_returns_EqualToOperator(self):
+        # Act
+        result = OperatorFactory.get_operator("=", 5)
+
+        # Assert
+        self.assertIsInstance(result, EqualToOperator)
+
+    def test_get_operator_is_equal_to_provides_correct_value(self):
+        # Arrange
+        expected_result = 5
+
+        # Act
+        result = OperatorFactory.get_operator("=", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)
