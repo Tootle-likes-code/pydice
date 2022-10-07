@@ -15,7 +15,8 @@ class Operator(ABC):
         "x",
         "/",
         "=",
-        ">="
+        ">=",
+        "e"
     ]
 
     @abstractmethod
@@ -48,6 +49,12 @@ class DivideOperator(Operator):
 
 
 @dataclass
+class ExplodingOperator(Operator):
+    def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
+        return dice_result_builder.with_exploding_modifier(self.value)
+
+
+@dataclass
 class EqualToOperator(Operator):
     def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
         return dice_result_builder.with_count_values_equal_to(self.value)
@@ -76,3 +83,5 @@ class OperatorFactory:
             return EqualToOperator(value)
         if operator == ">=":
             return GreaterThanEqualToOperator(value)
+        if operator == "e":
+            return ExplodingOperator(value)

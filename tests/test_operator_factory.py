@@ -1,7 +1,7 @@
 import unittest
 
 from pydice.operators import OperatorFactory, AddOperator, SubtractOperator, MultiplyOperator, DivideOperator, \
-    EqualToOperator, GreaterThanEqualToOperator
+    EqualToOperator, GreaterThanEqualToOperator, ExplodingOperator
 
 
 class OperatorFactoryTests(unittest.TestCase):
@@ -94,7 +94,7 @@ class GetOperatorTests(OperatorFactoryTests):
         # Assert
         self.assertEqual(expected_result, result.value)
 
-    def test_get_operator_is_divide_returns_MultiplyOperator(self):
+    def test_get_operator_is_divide_returns_DivideOperator(self):
         # Act
         result = OperatorFactory.get_operator("/", 5)
 
@@ -107,6 +107,23 @@ class GetOperatorTests(OperatorFactoryTests):
 
         # Act
         result = OperatorFactory.get_operator("/", 5)
+
+        # Assert
+        self.assertEqual(expected_result, result.value)
+
+    def test_get_operator_is_exploding_returns_ExplodingOperator(self):
+        # Act
+        result = OperatorFactory.get_operator("e", 5)
+
+        # Assert
+        self.assertIsInstance(result, ExplodingOperator)
+
+    def test_get_operator_is_exploding_provides_correct_value(self):
+        # Arrange
+        expected_result = 5
+
+        # Act
+        result = OperatorFactory.get_operator("e", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)

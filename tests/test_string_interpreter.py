@@ -5,7 +5,7 @@ from unittest.mock import patch
 from pydice.die import Dice, Die, FateDie
 from pydice.roll_result import AddToRollResultDecorator, DiceRollResult, \
     SubtractFromRollResultDecorator, MultiplyRollResultDecorator, DivideByRollResultDecorator, \
-    CountValuesEqualToDecorator, CountValuesGreaterThanEqualToDecorator
+    CountValuesEqualToDecorator, CountValuesGreaterThanEqualToDecorator, ExplodeDiceForTargetDecorator
 from pydice.dice_string_interpreter import interpret
 
 dice_results = [9, 10, 6, 7, 6, 1, 2, 4, 8, 3]
@@ -138,10 +138,23 @@ class InterpretTests(StringInterpreterTests):
 
     def test_interpret_greater_than_equal_to_adds_decorator(self, _):
         # Arrange
-        expected_result = CountValuesGreaterThanEqualToDecorator(DiceRollResult(self.d20, self._default_roll_result), 15)
+        expected_result = CountValuesGreaterThanEqualToDecorator(DiceRollResult(self.d20, self._default_roll_result),
+                                                                 15)
 
         # Act
         result = interpret("1d20>=15")
+
+        # Assert
+        self.assertEqual(expected_result, result)
+
+    def test_interpret_explodes_adds_decorator(self, mock_die_rolls):
+        # Arrange
+        expected_result = ExplodeDiceForTargetDecorator(DiceRollResult(Dice(Die(10), 14),
+                                                                       default_story_teller_dice_results[:-1]), 10)
+        mock_die_rolls.side_effect = default_story_teller_dice_results
+
+        # Act
+        result = interpret("14d10e10")
 
         # Assert
         self.assertEqual(expected_result, result)
