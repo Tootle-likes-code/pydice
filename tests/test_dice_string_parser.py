@@ -2,8 +2,8 @@ import unittest
 from unittest import skip
 
 from pydice import dice_string_parser as dice_parser
-from pydice.dice_string_parser import DefaultDiceStringParser, FateDiceStringParser, StorytellerDiceStringParser
-from pydice.die import Dice, Die
+from pydice.dice_string_parser import DefaultDiceStringParser
+from pydice.die import Dice, Die, FateDie
 from pydice.operators import AddOperator, SubtractOperator, GreaterThanEqualToOperator, EqualToOperator
 
 
@@ -86,13 +86,19 @@ class CreateTests(DiceStringParserTests):
         # Assert
         self.assertEqual(expected_result, result._operators)
 
-    @skip("Not Implemented")
     def test_create_fate_dice_returns_correct_parser(self):
         # Act
         result = dice_parser.create("dF")
 
         # Assert
-        self.assertTrue(isinstance(result, FateDiceStringParser))
+        self.assertTrue(isinstance(result, DefaultDiceStringParser))
+
+    def test_create_fate_dice_returns_fate_dice(self):
+        # Act
+        result = dice_parser.create("dF")
+
+        # Assert
+        self.assertIs(FateDie, type(result.dice.die))
 
     def test_create_st_returns_correct_parser(self):
         # Act

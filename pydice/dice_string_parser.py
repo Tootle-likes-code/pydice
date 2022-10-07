@@ -1,13 +1,15 @@
 import re
 from abc import ABC, abstractmethod
-from re import Match
+from re import Match, Pattern
 
 from pydice.dice_result_builder import DiceResultBuilder
-from pydice.die import Dice, Die
+from pydice.die import Dice, Die, FateDie
 from pydice.operators import Operator, OperatorFactory
 from pydice.roll_result import RollResult
 
-_base_dice_regex = re.compile(r"(?:\d*d\d.)|(?:\d+st)", re.IGNORECASE)
+_fate_regex = re.compile(r"df", re.IGNORECASE)
+_storyteller_regex = re.compile(r"(?P<number_of_dice>\d+)st", re.IGNORECASE)
+_base_dice_regex = re.compile(r"(?:\d*d\d.)|(?:\d+st)|(?:df)", re.IGNORECASE)
 _extract_dice_regex = re.compile(r"(?P<number_of_dice>\d*)d(?P<dice_size>\d+)", re.IGNORECASE)
 
 
@@ -35,25 +37,28 @@ class DefaultDiceStringParser(DiceStringParser):
         return builder.build()
 
 
-class FateDiceStringParser(DiceStringParser):
-    def parse(self) -> RollResult | None:
-        pass
+def _check_string_for_dice(dice_regex: Pattern, dice_string: str) -> Match:
+    match = re.match(dice_regex, dice_string)
+
+    return match
 
 
-class StorytellerDiceStringParser(DiceStringParser):
-    def parse(self) -> RollResult | None:
-        pass
+def _create_fate_dice():
+    return Dice(FateDie(), 4)
 
 
 def _create_storyteller_dice(storyteller_match: Match) -> (Dice, str):
     number_of_dice = storyteller_match.group("number_of_dice")
     dice = Dice(Die(10), number_of_dice)
-    return (dice, "=10>=7")
+    return dice, "=10>=7"
 
 
 def _check_specialty_dice(dice_string: str) -> (Dice, str):
-    storyteller_regex = re.compile(r"(?P<number_of_dice>\d+)st", re.IGNORECASE)
-    storyteller_match = re.match(storyteller_regex, dice_string)
+
+    if _check_string_for_dice(_fate_regex, dice_string):
+        return _create_fate_dice()
+
+    storyteller_match = _check_string_for_dice(_storyteller_regex, dice_string)
     if storyteller_match:
         return _create_storyteller_dice(storyteller_match)
 
