@@ -1,4 +1,5 @@
 import unittest
+from unittest import skip
 from unittest.mock import patch
 
 from pydice.die import Dice, Die, FateDie
@@ -16,6 +17,7 @@ default_story_teller_dice_results = [
 ]
 
 
+@skip("Needs to be entirely rethought")
 class StringInterpreterTests(unittest.TestCase):
     pass
 
@@ -72,6 +74,25 @@ class InterpretTests(StringInterpreterTests):
 
         # Act
         result = interpret("1d20+5")
+
+        # Assert
+        self.assertEqual(expected_result, result)
+
+    def test_interpret_adding_twice_adds_decorator_twice(self, _):
+        # Arrange
+        expected_result = AddToRollResultDecorator(
+            AddToRollResultDecorator(
+                DiceRollResult(
+                    self.d20,
+                    self._default_roll_result
+                ),
+                5
+            ),
+            6
+        )
+
+        # Act
+        result = interpret("1d20+5+6")
 
         # Assert
         self.assertEqual(expected_result, result)
