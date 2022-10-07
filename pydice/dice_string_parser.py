@@ -49,12 +49,11 @@ def _create_fate_dice():
 
 def _create_storyteller_dice(storyteller_match: Match) -> (Dice, str):
     number_of_dice = storyteller_match.group("number_of_dice")
-    dice = Dice(Die(10), number_of_dice)
+    dice = Dice(Die(10), int(number_of_dice))
     return dice, "=10>=7"
 
 
 def _check_specialty_dice(dice_string: str) -> (Dice, str):
-
     if _check_string_for_dice(_fate_regex, dice_string):
         return _create_fate_dice()
 
