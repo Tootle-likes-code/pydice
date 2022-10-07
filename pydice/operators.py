@@ -10,7 +10,9 @@ class Operator(ABC):
 
     accepted_operators = [
         "+",
-        "-"
+        "-",
+        "*",
+        "x"
     ]
 
     @abstractmethod
@@ -30,13 +32,21 @@ class SubtractOperator(Operator):
         return dice_result_builder.with_subtract_modifier(self.value)
 
 
+@dataclass
+class MultiplyOperator(Operator):
+    def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
+        return dice_result_builder.with_multiply_modifier(self.value)
+
+
 class OperatorFactory:
     @staticmethod
     def get_operator(operator: str, value: int) -> Operator | None:
-        if operator not in Operator.accepted_operators:
+        if operator.lower() not in Operator.accepted_operators:
             return
 
         if operator == "+":
             return AddOperator(value)
         if operator == "-":
             return SubtractOperator(value)
+        if operator == "*" or operator.lower() == "x":
+            return MultiplyOperator(value)

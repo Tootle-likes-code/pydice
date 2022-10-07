@@ -1,6 +1,6 @@
 import unittest
 
-from pydice.operators import OperatorFactory, AddOperator, SubtractOperator
+from pydice.operators import OperatorFactory, AddOperator, SubtractOperator, MultiplyOperator
 
 
 class OperatorFactoryTests(unittest.TestCase):
@@ -45,6 +45,50 @@ class GetOperatorTests(OperatorFactoryTests):
 
         # Act
         result = OperatorFactory.get_operator("-", 5)
+
+        # Assert
+        self.assertEqual(expected_result, result.value)
+
+    def test_get_operator_is_multiply_returns_MultiplyOperator(self):
+        # Act
+        result = OperatorFactory.get_operator("*", 5)
+
+        # Assert
+        self.assertIsInstance(result, MultiplyOperator)
+
+    def test_get_operator_is_multiply_provides_correct_value(self):
+        # Arrange
+        expected_result = 5
+
+        # Act
+        result = OperatorFactory.get_operator("*", 5)
+
+        # Assert
+        self.assertEqual(expected_result, result.value)
+        
+    def test_get_operator_is_multiply_x_returns_MultiplyOperator(self):
+        # Act
+        result = OperatorFactory.get_operator("x", 5)
+
+        # Assert
+        self.assertIsInstance(result, MultiplyOperator)
+
+    def test_get_operator_is_multiply_x_provides_correct_value(self):
+        # Arrange
+        expected_result = 5
+
+        # Act
+        result = OperatorFactory.get_operator("x", 5)
+
+        # Assert
+        self.assertEqual(expected_result, result.value)
+        
+    def test_get_operator_is_multiply_x_is_case_insensitive(self):
+        # Arrange
+        expected_result = 5
+
+        # Act
+        result = OperatorFactory.get_operator("X", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)

@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from pydice.dice_string_parser import DefaultDiceStringParser
 from pydice.die import Dice, Die
-from pydice.operators import AddOperator, SubtractOperator
+from pydice.operators import AddOperator, SubtractOperator, MultiplyOperator
 from pydice.roll_result import DiceRollResult, AddToRollResultDecorator, SubtractFromRollResultDecorator, \
     MultiplyRollResultDecorator, DivideByRollResultDecorator
 
@@ -84,31 +84,16 @@ class ParseTests(DefaultDiceStringParserTests):
         # Assert
         self.assertEqual(expected_result, result)
 
-    @skip("NotImplemented")
     def test_parse_string_multiply_adds_decorator(self, _):
         # Arrange
         expected_result = MultiplyRollResultDecorator(DiceRollResult(self.d20, self._default_roll_result), 5)
-        test_parser = DefaultDiceStringParser("1d20*5")
+        test_parser = DefaultDiceStringParser(self.d20, [MultiplyOperator(5)])
 
         # Act
         result = test_parser.parse()
 
         # Assert
         self.assertEqual(expected_result, result)
-        self.fail("Not Implemented")
-
-    @skip("NotImplemented")
-    def test_parse_string_multiply_as_x_adds_decorator(self, _):
-        # Arrange
-        expected_result = MultiplyRollResultDecorator(DiceRollResult(self.d20, self._default_roll_result), 5)
-        test_parser = DefaultDiceStringParser("1d20x5")
-
-        # Act
-        result = test_parser.parse()
-
-        # Assert
-        self.assertEqual(expected_result, result)
-        self.fail("Not Implemented")
 
     @skip("NotImplemented")
     def test_parse_string_divide_adds_decorator(self, _):
