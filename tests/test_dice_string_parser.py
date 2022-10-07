@@ -12,6 +12,20 @@ class DiceStringParserTests(unittest.TestCase):
 
 
 class CreateTests(DiceStringParserTests):
+    def test_create_invalid_normal_text_returns_none(self):
+        # Act
+        result = dice_parser.create("hello world")
+
+        # Assert
+        self.assertIsNone(result)
+
+    def test_create_dice_without_dice_size_returns_none(self):
+        # Act
+        result = dice_parser.create("12d")
+
+        # Assert
+        self.assertIsNone(result)
+
     def test_create_oned20_returns_correct_parser(self):
         # Act
         result = dice_parser.create("1d20")

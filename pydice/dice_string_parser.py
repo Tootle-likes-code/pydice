@@ -19,7 +19,7 @@ class DiceStringParser(ABC):
         self._operators: list[Operator] = operators if operators is not None else []
 
     @abstractmethod
-    def parse(self) -> RollResult | None:
+    def parse(self) -> RollResult:
         pass
 
 
@@ -27,11 +27,9 @@ class DefaultDiceStringParser(DiceStringParser):
     def __init__(self, dice: Dice, operators: list[Operator] = None):
         super().__init__(dice, operators)
 
-    def parse(self) -> RollResult | None:
+    def parse(self) -> RollResult:
         builder = DiceResultBuilder.create_dice_result_builder(self.dice)
         for operator in self._operators:
-            if operator is None:
-                return None
             builder = operator.add(builder)
 
         return builder.build()
@@ -80,10 +78,8 @@ def _get_dice(dice_string: str) -> (Dice, str):
     dice_match = re.match(_extract_dice_regex, dice_string)
     if not dice_match:
         return
-    try:
-        return _construct_dice_from_string(dice_match), ""
-    except IndexError:
-        return None
+
+    return _construct_dice_from_string(dice_match), ""
 
 
 def _get_operator_string(dice_string):
@@ -98,7 +94,7 @@ def _split_operators(operator_string) -> list[Operator]:
     for i in range(len(operator_string)):
         character = operator_string[i:i + 1][0]
         if character.isnumeric():
-            if i != len(operator_string) and operator_string[i+1:i+2].isnumeric():
+            if i != len(operator_string) and operator_string[i + 1:i + 2].isnumeric():
                 value = character
                 continue
             value += character
