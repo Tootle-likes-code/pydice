@@ -68,7 +68,54 @@ A decorator for exploding dice.
 Goes through the `RollResults.die_rolls` and any result that is the same as the `target_number`, it will roll another 
 die.  This will explode near infinitely.
 
-### CountValuesDecorator
+**NOTE:** This decorator uses the raw roll values, and ignores other prior `result()` calls.
+
+### CountValuesEqualToDecorator
 Counts the number of dice that roll a number.
 
 **NOTE:** This decorator uses the raw roll values, and ignores other prior `result()` calls.
+
+### CountValuesGreaterThanEqualToDecorator
+Counts the number of dice that roll the target number or greater.
+
+**NOTE:** This decorator uses the raw roll values, and ignores other prior `result()` calls.
+
+# String Parser
+
+The dice roller can be interacted with using a dice string to create a `RollResult`.  The best way to do that is through
+the `dice_string_interpreter.interpret(string)` method.  You can run `dice_string_interpreter.py` with one as an
+argument to return the `RollResult.result()`.
+
+## Supported Operators
+
+### `+`
+When followed by a number, adds the number to the result.
+
+### `-`
+When followed by a number, subtracts the number from the result.
+
+### `*` or `x`
+When followed by a number, multiplies the result by the number.
+
+### `/`
+When followed by a number, divides the result by the number.
+
+### `e`
+When followed by a number, looks through the die rolls, and if the die rolled the given number, rolls it again.
+
+### `=`
+When followed by a number, looks through the die rolls and returns the number of die that rolled the target number.
+
+### `>=`
+When followed by a number, looks through the die rolls and returns the number of die that rolled the target number 
+or greater.
+
+## Special Dice Rolls
+When the parser receives this, it triggers a pre-defined shortcut.  All of these can use the above `Operators`.
+
+### `df`
+Shortcut for FATE dice.
+
+### `st`
+Shortcut for Storyteller system dice.  Specifically, any roll of 7 or more is a success with a 10 counting for 2,
+successes.  No successes, results in a botch.
