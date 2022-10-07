@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import MagicMock
 
-from pydice.roll_result import RollResult, CountValuesGreaterThanEqualToDecorator
+from pydice.roll_result import RollResult, CountValuesGreaterThanEqualToDecorator, CountValuesEqualToDecorator
 
 
 class CountValueGreaterThanEqualToDecoratorTests(unittest.TestCase):
@@ -26,6 +26,18 @@ class ResultTests(CountValueGreaterThanEqualToDecoratorTests):
         # Arrange
         expected_result = 0
         test_roll_result = CountValuesGreaterThanEqualToDecorator(self.mock_roll_result, 6)
+
+        # Act
+        result = test_roll_result.result()
+
+        # Assert
+        self.assertEqual(expected_result, result)
+
+    def test_if_prior_result_is_a_counter_decorator_adds_count_to_total(self):
+        # Arrange
+        expected_result = 4
+        test_roll_result = CountValuesGreaterThanEqualToDecorator(
+            CountValuesEqualToDecorator(self.mock_roll_result, 3), 4)
 
         # Act
         result = test_roll_result.result()

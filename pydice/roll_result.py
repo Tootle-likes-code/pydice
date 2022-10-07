@@ -230,4 +230,5 @@ class CountValuesGreaterThanEqualToDecorator(CounterRollResultDecorator):
     target_number: int
 
     def result(self) -> int:
-        return sum(1 for roll in self.roll_result.die_rolls if roll >= self.target_number)
+        count = sum(1 for roll in self.roll_result.die_rolls if roll >= self.target_number)
+        return self.roll_result.result() + count if isinstance(self.roll_result, CounterRollResultDecorator) else count
