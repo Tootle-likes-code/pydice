@@ -1,12 +1,13 @@
 import re
 from abc import ABC, abstractmethod
+from re import Match
 
 from pydice.dice_result_builder import DiceResultBuilder
 from pydice.die import Dice, Die
 from pydice.operators import Operator, OperatorFactory
 from pydice.roll_result import RollResult
 
-_base_dice_regex = re.compile(r"\d*d\d.", re.IGNORECASE)
+_base_dice_regex = re.compile(r"(?:\d*d\d.)|(?:\d+st)", re.IGNORECASE)
 _extract_dice_regex = re.compile(r"(?P<number_of_dice>\d*)d(?P<dice_size>\d+)", re.IGNORECASE)
 
 
@@ -44,17 +45,41 @@ class StorytellerDiceStringParser(DiceStringParser):
         pass
 
 
-def _get_dice(dice_string: str) -> Dice | None:
+def _create_storyteller_dice(storyteller_match: Match) -> (Dice, str):
+    number_of_dice = storyteller_match.group("number_of_dice")
+    dice = Dice(Die(10), number_of_dice)
+    return (dice, "=10>=7")
+
+
+def _check_specialty_dice(dice_string: str) -> (Dice, str):
+    storyteller_regex = re.compile(r"(?P<number_of_dice>\d+)st", re.IGNORECASE)
+    storyteller_match = re.match(storyteller_regex, dice_string)
+    if storyteller_match:
+        return _create_storyteller_dice(storyteller_match)
+
+
+def _construct_dice_from_string(dice_match: Match) -> Dice | None:
+    number_of_dice = int(dice_match.group("number_of_dice")) if \
+        "number_of_dice" in dice_match.groupdict().keys() \
+        and dice_match.group("number_of_dice") != '' \
+        else 1
+    dice_size = int(dice_match.group("dice_size"))
+
+    return Dice(Die(dice_size), number_of_dice)
+
+
+def _get_dice(dice_string: str) -> (Dice, str):
+    specialty_dice = _check_specialty_dice(dice_string)
+    if specialty_dice:
+        return specialty_dice
+
     dice_match = re.match(_extract_dice_regex, dice_string)
-
-    if dice_match:
-        number_of_dice = int(dice_match.group("number_of_dice")) if \
-            "number_of_dice" in dice_match.groupdict().keys() \
-            and dice_match.group("number_of_dice") != '' \
-            else 1
-        dice_size = int(dice_match.group("dice_size"))
-
-        return Dice(Die(dice_size), number_of_dice)
+    if not dice_match:
+        return
+    try:
+        return _construct_dice_from_string(dice_match), ""
+    except IndexError:
+        return None
 
 
 def _get_operator_string(dice_string):
@@ -64,33 +89,40 @@ def _get_operator_string(dice_string):
 
 def _split_operators(operator_string) -> list[Operator]:
     operator = ""
+    value = ""
     operators: list[Operator] = []
     for i in range(len(operator_string)):
         character = operator_string[i:i + 1][0]
         if character.isnumeric():
-            built_operator = OperatorFactory.get_operator(operator, int(character))
+            if i != len(operator_string) and operator_string[i+1:i+2].isnumeric():
+                value = character
+                continue
+            value += character
+            built_operator = OperatorFactory.get_operator(operator, int(value))
             operators.append(built_operator)
             operator = ""
+            value = ""
         else:
             operator += character
 
     return operators
 
 
-def _get_operators(dice_string) -> list[Operator]:
+def _get_operators(dice_string: str, dice_based_operators: str = "") -> list[Operator]:
     operator_string = _get_operator_string(dice_string)
+    operator_string = dice_based_operators + operator_string
     return _split_operators(operator_string)
 
 
 def create(dice_string: str) -> DiceStringParser | None:
-    dice_match = re.match(_extract_dice_regex, dice_string)
-    if not dice_match:
+    dice = _get_dice(dice_string)
+    dice_based_operators = ""
+
+    if not dice:
         return
+    if isinstance(dice, tuple):
+        dice, dice_based_operators = dice
 
-    try:
-        dice = _get_dice(dice_string)
-        operators = _get_operators(dice_string)
+    operators = _get_operators(dice_string, dice_based_operators)
 
-        return DefaultDiceStringParser(dice, operators)
-    except IndexError:
-        return None
+    return DefaultDiceStringParser(dice, operators)

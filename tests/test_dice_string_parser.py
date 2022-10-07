@@ -4,7 +4,7 @@ from unittest import skip
 from pydice import dice_string_parser as dice_parser
 from pydice.dice_string_parser import DefaultDiceStringParser, FateDiceStringParser, StorytellerDiceStringParser
 from pydice.die import Dice, Die
-from pydice.operators import AddOperator, SubtractOperator, GreaterThanEqualToOperator
+from pydice.operators import AddOperator, SubtractOperator, GreaterThanEqualToOperator, EqualToOperator
 
 
 class DiceStringParserTests(unittest.TestCase):
@@ -35,7 +35,7 @@ class CreateTests(DiceStringParserTests):
 
         # Assert
         self.assertEqual(expected_result, result.dice)
-        
+
     def test_create_d20_initialises_operators_as_empty(self):
         # Arrange
         expected_result = []
@@ -94,13 +94,22 @@ class CreateTests(DiceStringParserTests):
         # Assert
         self.assertTrue(isinstance(result, FateDiceStringParser))
 
-    @skip("Not Implemented")
     def test_create_st_returns_correct_parser(self):
         # Act
         result = dice_parser.create("10ST10")
 
         # Assert
-        self.assertTrue(isinstance(result, StorytellerDiceStringParser))
+        self.assertTrue(isinstance(result, DefaultDiceStringParser))
+
+    def test_create_st_returns_correct_operators(self):
+        # Arrange
+        expected_result = [EqualToOperator(10), GreaterThanEqualToOperator(7), AddOperator(7)]
+
+        # Act
+        result = dice_parser.create("10st+7")
+
+        # Assert
+        self.assertEqual(expected_result, result._operators)
 
 
 if __name__ == '__main__':
