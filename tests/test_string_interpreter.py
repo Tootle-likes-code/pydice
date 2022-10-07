@@ -105,7 +105,6 @@ class InterpretTests(StringInterpreterTests):
 
         # Assert
         self.assertEqual(expected_result, result)
-        self.fail("Not Implemented")
 
     def test_interpret_multiply_adds_decorator(self, _):
         # Arrange
@@ -116,7 +115,6 @@ class InterpretTests(StringInterpreterTests):
 
         # Assert
         self.assertEqual(expected_result, result)
-        self.fail("Not Implemented")
 
     def test_interpret_divide_adds_decorator(self, _):
         # Arrange
@@ -127,7 +125,6 @@ class InterpretTests(StringInterpreterTests):
 
         # Assert
         self.assertEqual(expected_result, result)
-        self.fail("Not Implemented")
 
     def test_interpret_two_dice_is_handled_correctly(self, _):
         # Arrange
