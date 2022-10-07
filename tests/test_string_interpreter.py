@@ -17,7 +17,6 @@ default_story_teller_dice_results = [
 ]
 
 
-@skip("Needs to be entirely rethought")
 class StringInterpreterTests(unittest.TestCase):
     pass
 
