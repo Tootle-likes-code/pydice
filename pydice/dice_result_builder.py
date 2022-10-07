@@ -2,7 +2,8 @@ from abc import ABC, abstractmethod
 
 from pydice.die import Dice, FateDie
 from pydice.roll_result import RollResult, DiceRollResult, AddToRollResultDecorator, SubtractFromRollResultDecorator, \
-    CountValuesEqualToDecorator, CountValuesGreaterThanEqualToDecorator, MultiplyRollResultDecorator
+    CountValuesEqualToDecorator, CountValuesGreaterThanEqualToDecorator, MultiplyRollResultDecorator, \
+    DivideByRollResultDecorator
 
 
 class DiceResultBuilder:
@@ -24,6 +25,10 @@ class DiceResultBuilder:
 
     def with_multiply_modifier(self, modifier):
         self._dice_result = MultiplyRollResultDecorator(self._dice_result, int(modifier))
+        return self
+
+    def with_divide_modifier(self, modifier):
+        self._dice_result = DivideByRollResultDecorator(self._dice_result, int(modifier))
         return self
 
     def with_count_values_equal_to(self, target_number):

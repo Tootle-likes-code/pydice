@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from pydice.dice_string_parser import DefaultDiceStringParser
 from pydice.die import Dice, Die
-from pydice.operators import AddOperator, SubtractOperator, MultiplyOperator
+from pydice.operators import AddOperator, SubtractOperator, MultiplyOperator, DivideOperator
 from pydice.roll_result import DiceRollResult, AddToRollResultDecorator, SubtractFromRollResultDecorator, \
     MultiplyRollResultDecorator, DivideByRollResultDecorator
 
@@ -95,18 +95,16 @@ class ParseTests(DefaultDiceStringParserTests):
         # Assert
         self.assertEqual(expected_result, result)
 
-    @skip("NotImplemented")
     def test_parse_string_divide_adds_decorator(self, _):
         # Arrange
         expected_result = DivideByRollResultDecorator(DiceRollResult(self.d20, self._default_roll_result), 5)
-        test_parser = DefaultDiceStringParser("1d20/5")
+        test_parser = DefaultDiceStringParser(self.d20, [DivideOperator(5)])
 
         # Act
         result = test_parser.parse()
 
         # Assert
         self.assertEqual(expected_result, result)
-        self.fail("Not Implemented")
 
     @skip("NotImplemented")
     def test_parse_string_two_dice_is_handled_correctly(self, _):
