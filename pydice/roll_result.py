@@ -145,7 +145,6 @@ class SubtractFromRollResultDecorator(RollResultDecorator):
     """
     A decorator to subtract a modifier to the base result.
     """
-    roll_result: RollResult
     modifier: int
 
     def result(self) -> int:
@@ -158,7 +157,6 @@ class MultiplyRollResultDecorator(RollResultDecorator):
     """
     A decorator to multiply the base result by a multiplier.
     """
-    roll_result: RollResult
     multiplier: int
 
     def result(self) -> int:
@@ -171,7 +169,6 @@ class DivideByRollResultDecorator(RollResultDecorator):
     """
     A decorator to divide the base result by a multiplier.
     """
-    roll_result: RollResult
     divide_by: int
 
     def result(self) -> int:
@@ -184,7 +181,6 @@ class ExplodeDiceForTargetDecorator(RollResultDecorator):
     """
     A decorator to cause rolls of n to be rolled again and added to the result.
     """
-    roll_result: RollResult
     target_number: int
 
     def __post_init__(self):
@@ -231,7 +227,6 @@ class CountValuesGreaterThanEqualToDecorator(CounterRollResultDecorator):
     """
     A decorator that counts all roll results that are greater than or equal to n.
     """
-    roll_result: RollResult
     target_number: int
 
     def result(self) -> int:
