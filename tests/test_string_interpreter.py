@@ -3,7 +3,7 @@ from unittest import skip
 from unittest.mock import patch
 
 from pydice.die import Dice, Die, FateDie
-from pydice.roll_result import AddToRollResultDecorator, RollResultDecorator, DiceRollResult, \
+from pydice.roll_result import AddToRollResultDecorator, DiceRollResult, \
     SubtractFromRollResultDecorator, MultiplyRollResultDecorator, DivideByRollResultDecorator, \
     CountValuesEqualToDecorator, CountValuesGreaterThanEqualToDecorator
 from pydice.dice_string_interpreter import interpret
