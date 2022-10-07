@@ -133,7 +133,6 @@ class AddToRollResultDecorator(RollResultDecorator):
     """
     A decorator to add a modifier to the base result.
     """
-    roll_result: RollResult
     modifier: int
 
     def result(self) -> int:
@@ -223,7 +222,8 @@ class CountValuesEqualToDecorator(CounterRollResultDecorator):
         Counts the roll results that match the target number.
         :return: The number of rolls that equal the target number.
         """
-        return sum(1 for roll in self.roll_result.die_rolls if roll == self.target_number)
+        count = sum(1 for roll in self.roll_result.die_rolls if roll == self.target_number)
+        return self.roll_result.result() + count if isinstance(self.roll_result, CounterRollResultDecorator) else count
 
 
 @dataclass
