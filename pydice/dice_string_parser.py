@@ -101,7 +101,7 @@ def _split_operators(operator_string) -> list[Operator]:
                 continue
             value += character
             built_operator = OperatorFactory.get_operator(operator, int(value))
-            if operator is not None:
+            if built_operator is not None:
                 operators.append(built_operator)
             operator = ""
             value = ""
