@@ -52,6 +52,7 @@ class EqualToOperator(Operator):
     def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
         return dice_result_builder.with_count_values_equal_to(self.value)
 
+
 class GreaterThanEqualToOperator(Operator):
     def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
         return dice_result_builder.with_count_values_greater_than_equal_to(self.value)
