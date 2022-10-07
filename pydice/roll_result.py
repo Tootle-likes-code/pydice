@@ -124,12 +124,15 @@ class RollResultDecorator(RollResult, ABC):
         return self.roll_result.rolled_die
 
 
+class CounterRollResultDecorator(RollResultDecorator, ABC):
+    pass
+
+
 @dataclass
 class AddToRollResultDecorator(RollResultDecorator):
     """
     A decorator to add a modifier to the base result.
     """
-    roll_result: RollResult
     modifier: int
 
     def result(self) -> int:
@@ -142,7 +145,6 @@ class SubtractFromRollResultDecorator(RollResultDecorator):
     """
     A decorator to subtract a modifier to the base result.
     """
-    roll_result: RollResult
     modifier: int
 
     def result(self) -> int:
@@ -155,7 +157,6 @@ class MultiplyRollResultDecorator(RollResultDecorator):
     """
     A decorator to multiply the base result by a multiplier.
     """
-    roll_result: RollResult
     multiplier: int
 
     def result(self) -> int:
@@ -168,7 +169,6 @@ class DivideByRollResultDecorator(RollResultDecorator):
     """
     A decorator to divide the base result by a multiplier.
     """
-    roll_result: RollResult
     divide_by: int
 
     def result(self) -> int:
@@ -181,7 +181,6 @@ class ExplodeDiceForTargetDecorator(RollResultDecorator):
     """
     A decorator to cause rolls of n to be rolled again and added to the result.
     """
-    roll_result: RollResult
     target_number: int
 
     def __post_init__(self):
@@ -208,11 +207,10 @@ class ExplodeDiceForTargetDecorator(RollResultDecorator):
 
 
 @dataclass
-class CountValuesEqualToDecorator(RollResultDecorator):
+class CountValuesEqualToDecorator(CounterRollResultDecorator):
     """
     A decorator that counts all roll results of n.
     """
-    roll_result: RollResult
     target_number: int
 
     def result(self) -> int:
@@ -220,16 +218,17 @@ class CountValuesEqualToDecorator(RollResultDecorator):
         Counts the roll results that match the target number.
         :return: The number of rolls that equal the target number.
         """
-        return sum(1 for roll in self.roll_result.die_rolls if roll == self.target_number)
+        count = sum(1 for roll in self.roll_result.die_rolls if roll == self.target_number)
+        return self.roll_result.result() + count if isinstance(self.roll_result, CounterRollResultDecorator) else count
 
 
 @dataclass
-class CountValuesGreaterThanEqualToDecorator(RollResultDecorator):
+class CountValuesGreaterThanEqualToDecorator(CounterRollResultDecorator):
     """
     A decorator that counts all roll results that are greater than or equal to n.
     """
-    roll_result: RollResult
     target_number: int
 
     def result(self) -> int:
-        return sum(1 for roll in self.roll_result.die_rolls if roll >= self.target_number)
+        count = sum(1 for roll in self.roll_result.die_rolls if roll >= self.target_number)
+        return self.roll_result.result() + count if isinstance(self.roll_result, CounterRollResultDecorator) else count

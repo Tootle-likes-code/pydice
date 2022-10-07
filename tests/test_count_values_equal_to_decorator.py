@@ -32,6 +32,17 @@ class ResultTests(CountValuesEqualToDecoratorTests):
 
         # Assert
         self.assertEqual(expected_result, result)
+        
+    def test_result_if_prior_roll_result_is_an_CountRollResult_add_to_previous_result(self):
+        # Arrange
+        expected_result = 4
+        test_roll_result = CountValuesEqualToDecorator(CountValuesEqualToDecorator(self.mock_roll_result, 3), 1)
+        
+        # Act
+        result = test_roll_result.result()
+        
+        # Assert
+        self.assertEqual(expected_result, result)
 
 
 if __name__ == '__main__':
