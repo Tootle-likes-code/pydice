@@ -10,7 +10,7 @@ class DiceResultBuilder:
         self._dice_result = DiceRollResult(dice)
 
     @staticmethod
-    def create_dice_result_builder(dice):
+    def create_dice_result_builder(dice: Dice):
         dice_result_builder = DiceResultBuilder(dice)
         return dice_result_builder
 
