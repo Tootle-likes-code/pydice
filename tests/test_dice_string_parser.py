@@ -4,7 +4,7 @@ from unittest import skip
 from pydice import dice_string_parser as dice_parser
 from pydice.dice_string_parser import DefaultDiceStringParser, FateDiceStringParser, StorytellerDiceStringParser
 from pydice.die import Dice, Die
-from pydice.operators import AddOperator, SubtractOperator
+from pydice.operators import AddOperator, SubtractOperator, GreaterThanEqualToOperator
 
 
 class DiceStringParserTests(unittest.TestCase):
@@ -72,6 +72,16 @@ class CreateTests(DiceStringParserTests):
 
         # Act
         result = dice_parser.create("d20+5-6")
+
+        # Assert
+        self.assertEqual(expected_result, result._operators)
+
+    def test_create_d20_greater_than_equal_to_parses_correct_operator(self):
+        # Arrange
+        expected_result = [GreaterThanEqualToOperator(5)]
+
+        # Act
+        result = dice_parser.create("d20>=5")
 
         # Assert
         self.assertEqual(expected_result, result._operators)
