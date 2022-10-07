@@ -124,6 +124,10 @@ class RollResultDecorator(RollResult, ABC):
         return self.roll_result.rolled_die
 
 
+class CounterRollResultDecorator(RollResultDecorator, ABC):
+    pass
+
+
 @dataclass
 class AddToRollResultDecorator(RollResultDecorator):
     """
@@ -208,11 +212,10 @@ class ExplodeDiceForTargetDecorator(RollResultDecorator):
 
 
 @dataclass
-class CountValuesEqualToDecorator(RollResultDecorator):
+class CountValuesEqualToDecorator(CounterRollResultDecorator):
     """
     A decorator that counts all roll results of n.
     """
-    roll_result: RollResult
     target_number: int
 
     def result(self) -> int:
@@ -224,7 +227,7 @@ class CountValuesEqualToDecorator(RollResultDecorator):
 
 
 @dataclass
-class CountValuesGreaterThanEqualToDecorator(RollResultDecorator):
+class CountValuesGreaterThanEqualToDecorator(CounterRollResultDecorator):
     """
     A decorator that counts all roll results that are greater than or equal to n.
     """
