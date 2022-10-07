@@ -131,6 +131,16 @@ class CreateTests(DiceStringParserTests):
         # Assert
         self.assertEqual(expected_result, result._operators)
 
+    def test_create_invalid_operator_not_added_to_operators(self):
+        # Arrange
+        expected_results = []
+
+        # Act
+        results = dice_parser.create("1d20never10")
+
+        # Assert
+        self.assertEqual(expected_results, results._operators)
+
 
 if __name__ == '__main__':
     unittest.main()

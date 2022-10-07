@@ -27,9 +27,11 @@ class DefaultDiceStringParser(DiceStringParser):
     def __init__(self, dice: Dice, operators: list[Operator] = None):
         super().__init__(dice, operators)
 
-    def parse(self) -> RollResult:
+    def parse(self) -> RollResult | None:
         builder = DiceResultBuilder.create_dice_result_builder(self.dice)
         for operator in self._operators:
+            if operator is None:
+                return None
             builder = operator.add(builder)
 
         return builder.build()
@@ -99,7 +101,8 @@ def _split_operators(operator_string) -> list[Operator]:
                 continue
             value += character
             built_operator = OperatorFactory.get_operator(operator, int(value))
-            operators.append(built_operator)
+            if operator is not None:
+                operators.append(built_operator)
             operator = ""
             value = ""
         else:
