@@ -83,7 +83,7 @@ Counts the number of dice that roll the target number or greater.
 # String Parser
 
 The dice roller can be interacted with using a dice string to create a `RollResult`.  The best way to do that is through
-the `dice_string_interpreter.interpret(string)` method.  You can run `dice_string_interpreter.py` with one as an
+the `dice_string_interpreter.interpret(string)` method.  You can run `main.py` with a dice string as an
 argument to return the `RollResult.result()`.
 
 ## Supported Operators
