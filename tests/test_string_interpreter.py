@@ -126,6 +126,7 @@ class InterpretTests(StringInterpreterTests):
         # Assert
         self.assertEqual(expected_result, result)
 
+    @skip("NotImplemented")
     def test_interpret_two_dice_is_handled_correctly(self, _):
         # Arrange
         expected_result = None
