@@ -6,8 +6,11 @@ from pydice.dice_result_builder import DiceResultBuilder
 
 @dataclass
 class Operator(ABC):
+    value: int
+
     accepted_operators = [
-        "+"
+        "+",
+        "-"
     ]
 
     @abstractmethod
@@ -17,10 +20,14 @@ class Operator(ABC):
 
 @dataclass
 class AddOperator(Operator):
-    value: int
-
     def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
         return dice_result_builder.with_add_modifier(self.value)
+
+
+@dataclass
+class SubtractOperator(Operator):
+    def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
+        return dice_result_builder.with_subtract_modifier(self.value)
 
 
 class OperatorFactory:
@@ -31,3 +38,5 @@ class OperatorFactory:
 
         if operator == "+":
             return AddOperator(value)
+        if operator == "-":
+            return SubtractOperator(value)

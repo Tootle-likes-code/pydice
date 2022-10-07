@@ -1,6 +1,6 @@
 import unittest
 
-from pydice.operators import OperatorFactory, AddOperator
+from pydice.operators import OperatorFactory, AddOperator, SubtractOperator
 
 
 class OperatorFactoryTests(unittest.TestCase):
@@ -31,6 +31,24 @@ class GetOperatorTests(OperatorFactoryTests):
 
         # Assert
         self.assertEqual(expected_result, result.value)
+
+    def test_get_operator_is_subtract_returns_SubtractOperator(self):
+        # Act
+        result = OperatorFactory.get_operator("-", 5)
+
+        # Assert
+        self.assertIsInstance(result, SubtractOperator)
+
+    def test_get_operator_is_subtract_provides_correct_value(self):
+        # Arrange
+        expected_result = 5
+
+        # Act
+        result = OperatorFactory.get_operator("-", 5)
+
+        # Assert
+        self.assertEqual(expected_result, result.value)
+
 
 
 if __name__ == '__main__':
