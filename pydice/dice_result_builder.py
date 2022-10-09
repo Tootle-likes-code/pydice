@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from pydice.die import Dice, FateDie
 from pydice.roll_result import RollResult, DiceRollResult, AddToRollResultDecorator, SubtractFromRollResultDecorator, \
     CountValuesEqualToDecorator, CountValuesGreaterThanEqualToDecorator, MultiplyRollResultDecorator, \
-    DivideByRollResultDecorator, ExplodeDiceForTargetDecorator
+    DivideByRollResultDecorator, ExplodeDiceForTargetDecorator, CountValuesGreaterThanDecorator
 
 
 class DiceResultBuilder:
@@ -37,6 +37,10 @@ class DiceResultBuilder:
 
     def with_count_values_equal_to(self, target_number):
         self._dice_result = CountValuesEqualToDecorator(self._dice_result, target_number)
+        return self
+
+    def with_count_values_greater_than(self, target_number):
+        self._dice_result = CountValuesGreaterThanDecorator(self._dice_result, target_number)
         return self
 
     def with_count_values_greater_than_equal_to(self, target_number):
