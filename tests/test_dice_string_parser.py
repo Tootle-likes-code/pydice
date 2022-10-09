@@ -1,5 +1,4 @@
 import unittest
-from unittest import skip
 
 from pydice import dice_string_parser as dice_parser
 from pydice.dice_string_parser import DefaultDiceStringParser

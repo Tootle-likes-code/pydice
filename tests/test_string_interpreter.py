@@ -2,12 +2,12 @@ import unittest
 from unittest import skip
 from unittest.mock import patch
 
+from pydice.dice_string_interpreter import interpret
 from pydice.die import Dice, Die, FateDie
 from pydice.roll_result import AddToRollResultDecorator, DiceRollResult, \
     SubtractFromRollResultDecorator, MultiplyRollResultDecorator, DivideByRollResultDecorator, \
     CountValuesEqualToDecorator, ExplodeDiceForTargetDecorator, \
     CountValuesGreaterThanDecorator, CountValuesLessThanDecorator, CountValuesNotEqualToDecorator
-from pydice.dice_string_interpreter import interpret
 
 dice_results = [9, 10, 6, 7, 6, 1, 2, 4, 8, 3]
 default_fate_result = [-1, 1, 0, 0]
