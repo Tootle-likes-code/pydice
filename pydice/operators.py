@@ -13,40 +13,44 @@ class Operator(ABC):
         pass
 
 
-@dataclass
 class AddOperator(Operator):
     def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
         return dice_result_builder.with_add_modifier(self.value)
 
 
-@dataclass
 class SubtractOperator(Operator):
     def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
         return dice_result_builder.with_subtract_modifier(self.value)
 
 
-@dataclass
 class MultiplyOperator(Operator):
     def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
         return dice_result_builder.with_multiply_modifier(self.value)
 
 
-@dataclass
 class DivideOperator(Operator):
     def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
         return dice_result_builder.with_divide_modifier(self.value)
 
 
-@dataclass
 class ExplodingOperator(Operator):
     def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
         return dice_result_builder.with_exploding_modifier(self.value)
 
 
-@dataclass
 class EqualToOperator(Operator):
     def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
         return dice_result_builder.with_count_values_equal_to(self.value)
+
+
+class NotEqualToOperator(Operator):
+    def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
+        return dice_result_builder.with_not_equals_to(self.value)
+
+
+class GreaterThanOperator(Operator):
+    def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
+        return dice_result_builder.with_count_values_greater_than(self.value)
 
 
 class GreaterThanEqualToOperator(Operator):
@@ -54,16 +58,31 @@ class GreaterThanEqualToOperator(Operator):
         return dice_result_builder.with_count_values_greater_than_equal_to(self.value)
 
 
+class LessThanOperator(Operator):
+    def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
+        return dice_result_builder.with_count_values_less_than(self.value)
+
+
+class LessThanEqualToOperator(Operator):
+    def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
+        return dice_result_builder.with_count_values_less_than_equal_to(self.value)
+
+
 ACCEPTED_OPERATORS: dict[str, type] = {
-        "+": AddOperator,
-        "-": SubtractOperator,
-        "*": MultiplyOperator,
-        "x": MultiplyOperator,
-        "/": DivideOperator,
-        "=": EqualToOperator,
-        ">=": GreaterThanEqualToOperator,
-        "e": ExplodingOperator
-    }
+    "+": AddOperator,
+    "-": SubtractOperator,
+    "*": MultiplyOperator,
+    "x": MultiplyOperator,
+    "/": DivideOperator,
+    "=": EqualToOperator,
+    "!=": NotEqualToOperator,
+    "=/=": NotEqualToOperator,
+    ">": GreaterThanOperator,
+    ">=": GreaterThanEqualToOperator,
+    "<": LessThanOperator,
+    "<=": LessThanEqualToOperator,
+    "e": ExplodingOperator
+}
 
 
 class OperatorFactory:
