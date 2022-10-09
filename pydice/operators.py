@@ -54,15 +54,16 @@ class GreaterThanEqualToOperator(Operator):
 
 
 ACCEPTED_OPERATORS: dict[str, type] = {
-        "+": AddOperator,
-        "-": SubtractOperator,
-        "*": MultiplyOperator,
-        "x": MultiplyOperator,
-        "/": DivideOperator,
-        "=": EqualToOperator,
-        ">=": GreaterThanEqualToOperator,
-        "e": ExplodingOperator
-    }
+    "+": AddOperator,
+    "-": SubtractOperator,
+    "*": MultiplyOperator,
+    "x": MultiplyOperator,
+    "/": DivideOperator,
+    "=": EqualToOperator,
+    ">": GreaterThanOperator,
+    ">=": GreaterThanEqualToOperator,
+    "e": ExplodingOperator
+}
 
 
 class OperatorFactory:
