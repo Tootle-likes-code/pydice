@@ -5,7 +5,7 @@ from unittest.mock import patch
 from pydice.dice_string_parser import DefaultDiceStringParser
 from pydice.die import Dice, Die
 from pydice.operators import AddOperator, SubtractOperator, MultiplyOperator, DivideOperator, EqualToOperator, \
-    GreaterThanEqualToOperator, GreaterThanOperator, LessThanOperator
+    GreaterThanEqualToOperator, GreaterThanOperator, LessThanOperator, LessThanEqualToOperator
 from pydice.roll_result import DiceRollResult, AddToRollResultDecorator, SubtractFromRollResultDecorator, \
     MultiplyRollResultDecorator, DivideByRollResultDecorator, CountValuesEqualToDecorator, \
     CountValuesGreaterThanDecorator, CountValuesLessThanDecorator
@@ -107,7 +107,7 @@ class ParseTests(DefaultDiceStringParserTests):
 
         # Assert
         self.assertEqual(expected_result, result)
-        
+
     def test_parse_equals_adds_decorator(self, _):
         # Arrange
         expected_result = CountValuesEqualToDecorator(DiceRollResult(self.d20, self._default_roll_result), 5)
@@ -130,7 +130,7 @@ class ParseTests(DefaultDiceStringParserTests):
         # Assert
         self.assertEqual(expected_result, result)
 
-    def test_parse_greater_than_equal_adds_decorator(self, _):
+    def test_parse_greater_than_equal_adds_decorators(self, _):
         # Arrange
         expected_result = CountValuesGreaterThanDecorator(
             CountValuesEqualToDecorator(
@@ -155,8 +155,21 @@ class ParseTests(DefaultDiceStringParserTests):
 
         # Assert
         self.assertEqual(expected_result, result)
-        
 
+    def test_parse_less_than_equal_adds_decorators(self, _):
+        # Arrange
+        expected_result = CountValuesLessThanDecorator(
+            CountValuesEqualToDecorator(
+                DiceRollResult(self.d20, self._default_roll_result), 5
+            ), 5
+        )
+        test_parser = DefaultDiceStringParser(self.d20, [LessThanEqualToOperator(5)])
+
+        # Act
+        result = test_parser.parse()
+
+        # Assert
+        self.assertEqual(expected_result, result)
 
     @skip("NotImplemented")
     def test_parse_string_two_dice_is_handled_correctly(self, _):

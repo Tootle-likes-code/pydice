@@ -54,5 +54,8 @@ class DiceResultBuilder:
         self._dice_result = CountValuesLessThanDecorator(self._dice_result, target_number)
         return self
 
+    def with_count_values_less_than_equal_to(self, target_number):
+        return self.with_count_values_equal_to(target_number).with_count_values_less_than(target_number)
+
     def build(self) -> RollResult:
         return self._dice_result

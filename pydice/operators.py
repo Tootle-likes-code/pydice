@@ -58,6 +58,11 @@ class LessThanOperator(Operator):
         return dice_result_builder.with_count_values_less_than(self.value)
 
 
+class LessThanEqualToOperator(Operator):
+    def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
+        return dice_result_builder.with_count_values_less_than_equal_to(self.value)
+
+
 ACCEPTED_OPERATORS: dict[str, type] = {
     "+": AddOperator,
     "-": SubtractOperator,
@@ -68,6 +73,7 @@ ACCEPTED_OPERATORS: dict[str, type] = {
     ">": GreaterThanOperator,
     ">=": GreaterThanEqualToOperator,
     "<": LessThanOperator,
+    "<=": LessThanEqualToOperator,
     "e": ExplodingOperator
 }
 

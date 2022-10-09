@@ -171,6 +171,20 @@ class InterpretTests(StringInterpreterTests):
         # Assert
         self.assertEqual(expected_result, result)
 
+    def test_interpret_less_than_equal_to_adds_decorator(self, _):
+        # Arrange
+        expected_result = CountValuesLessThanDecorator(
+            CountValuesEqualToDecorator(
+                DiceRollResult(self.d20, self._default_roll_result), 9
+            ), 9
+        )
+
+        # Act
+        result = interpret("1d20<=9")
+
+        # Assert
+        self.assertEqual(expected_result, result)
+
     def test_interpret_explodes_adds_decorator(self, mock_die_rolls):
         # Arrange
         expected_result = ExplodeDiceForTargetDecorator(DiceRollResult(Dice(Die(10), 14),
