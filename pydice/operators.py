@@ -43,6 +43,11 @@ class EqualToOperator(Operator):
         return dice_result_builder.with_count_values_equal_to(self.value)
 
 
+class NotEqualToOperator(Operator):
+    def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
+        return dice_result_builder.with_not_equals_to(self.value)
+
+
 class GreaterThanOperator(Operator):
     def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
         return dice_result_builder.with_count_values_greater_than(self.value)
@@ -70,6 +75,7 @@ ACCEPTED_OPERATORS: dict[str, type] = {
     "x": MultiplyOperator,
     "/": DivideOperator,
     "=": EqualToOperator,
+    "!=": NotEqualToOperator,
     ">": GreaterThanOperator,
     ">=": GreaterThanEqualToOperator,
     "<": LessThanOperator,

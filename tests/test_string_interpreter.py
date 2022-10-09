@@ -6,7 +6,7 @@ from pydice.die import Dice, Die, FateDie
 from pydice.roll_result import AddToRollResultDecorator, DiceRollResult, \
     SubtractFromRollResultDecorator, MultiplyRollResultDecorator, DivideByRollResultDecorator, \
     CountValuesEqualToDecorator, ExplodeDiceForTargetDecorator, \
-    CountValuesGreaterThanDecorator, CountValuesLessThanDecorator
+    CountValuesGreaterThanDecorator, CountValuesLessThanDecorator, CountValuesNotEqualToDecorator
 from pydice.dice_string_interpreter import interpret
 
 dice_results = [9, 10, 6, 7, 6, 1, 2, 4, 8, 3]
@@ -181,6 +181,16 @@ class InterpretTests(StringInterpreterTests):
 
         # Act
         result = interpret("1d20<=9")
+
+        # Assert
+        self.assertEqual(expected_result, result)
+
+    def test_interpret_not_equal_to_adds_decorator(self, _):
+        # Arrange
+        expected_result = CountValuesNotEqualToDecorator(DiceRollResult(self.d20, self._default_roll_result), 9)
+
+        # Act
+        result = interpret("1d20!=9")
 
         # Assert
         self.assertEqual(expected_result, result)

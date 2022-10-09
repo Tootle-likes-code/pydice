@@ -2,7 +2,7 @@ from pydice.die import Dice
 from pydice.roll_result import RollResult, DiceRollResult, AddToRollResultDecorator, SubtractFromRollResultDecorator, \
     CountValuesEqualToDecorator, MultiplyRollResultDecorator, \
     DivideByRollResultDecorator, ExplodeDiceForTargetDecorator, CountValuesGreaterThanDecorator, \
-    CountValuesLessThanDecorator
+    CountValuesLessThanDecorator, CountValuesNotEqualToDecorator
 
 
 class DiceResultBuilder:
@@ -51,6 +51,10 @@ class DiceResultBuilder:
 
     def with_count_values_less_than_equal_to(self, target_number):
         return self.with_count_values_equal_to(target_number).with_count_values_less_than(target_number)
+
+    def with_not_equals_to(self, target_number):
+        self._dice_result = CountValuesNotEqualToDecorator(self._dice_result, target_number)
+        return self
 
     def build(self) -> RollResult:
         return self._dice_result

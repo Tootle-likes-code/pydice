@@ -2,7 +2,7 @@ import unittest
 
 from pydice.operators import OperatorFactory, AddOperator, SubtractOperator, MultiplyOperator, DivideOperator, \
     EqualToOperator, GreaterThanEqualToOperator, ExplodingOperator, GreaterThanOperator, LessThanOperator, \
-    LessThanEqualToOperator
+    LessThanEqualToOperator, NotEqualToOperator
 
 
 class OperatorFactoryTests(unittest.TestCase):
@@ -142,6 +142,23 @@ class GetOperatorTests(OperatorFactoryTests):
 
         # Act
         result = OperatorFactory.get_operator("=", 5)
+
+        # Assert
+        self.assertEqual(expected_result, result.value)
+
+    def test_get_operator_is_not_equal_to_returns_NotEqualToOperator(self):
+        # Act
+        result = OperatorFactory.get_operator("!=", 5)
+
+        # Assert
+        self.assertIsInstance(result, NotEqualToOperator)
+
+    def test_get_operator_is_not_equal_to_provides_correct_value(self):
+        # Arrange
+        expected_result = 5
+
+        # Act
+        result = OperatorFactory.get_operator("!=", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)

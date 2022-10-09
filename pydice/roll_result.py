@@ -257,3 +257,16 @@ class CountValuesLessThanDecorator(CounterRollResultDecorator):
         count = sum(1 for roll in self.roll_result.die_rolls if roll < self.target_number)
         return self.roll_result.result() + count \
             if isinstance(self.roll_result, CounterRollResultDecorator) else count
+
+
+@dataclass
+class CountValuesNotEqualToDecorator(CounterRollResultDecorator):
+    """
+    A decorator that counts all roll results that do not equal n.
+    """
+    target_number: int
+
+    def result(self) -> int:
+        count = sum(1 for roll in self.roll_result.die_rolls if roll != self.target_number)
+        return self.roll_result.result() + count \
+            if isinstance(self.roll_result, CounterRollResultDecorator) else count
