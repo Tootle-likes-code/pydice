@@ -8,17 +8,6 @@ from pydice.dice_result_builder import DiceResultBuilder
 class Operator(ABC):
     value: int
 
-    accepted_operators = [
-        "+",
-        "-",
-        "*",
-        "x",
-        "/",
-        "=",
-        ">=",
-        "e"
-    ]
-
     @abstractmethod
     def add(self, dice_result_builder: DiceResultBuilder) -> DiceResultBuilder:
         pass
@@ -65,23 +54,22 @@ class GreaterThanEqualToOperator(Operator):
         return dice_result_builder.with_count_values_greater_than_equal_to(self.value)
 
 
+ACCEPTED_OPERATORS: dict[str, type] = {
+        "+": AddOperator,
+        "-": SubtractOperator,
+        "*": MultiplyOperator,
+        "x": MultiplyOperator,
+        "/": DivideOperator,
+        "=": EqualToOperator,
+        ">=": GreaterThanEqualToOperator,
+        "e": ExplodingOperator
+    }
+
+
 class OperatorFactory:
     @staticmethod
     def get_operator(operator: str, value: int) -> Operator | None:
-        if operator.lower() not in Operator.accepted_operators:
+        if operator.lower() not in ACCEPTED_OPERATORS:
             return
 
-        if operator == "+":
-            return AddOperator(value)
-        if operator == "-":
-            return SubtractOperator(value)
-        if operator == "*" or operator.lower() == "x":
-            return MultiplyOperator(value)
-        if operator == "/":
-            return DivideOperator(value)
-        if operator == "=":
-            return EqualToOperator(value)
-        if operator == ">=":
-            return GreaterThanEqualToOperator(value)
-        if operator == "e":
-            return ExplodingOperator(value)
+        return ACCEPTED_OPERATORS[operator.lower()](value)
