@@ -126,10 +126,9 @@ class RollResultDecorator(RollResult, ABC):
 
 class CounterRollResultDecorator(RollResultDecorator, ABC):
     """
-    A dummy class for RollResultDecorator that identifies the class as one that should continue the count from the
-    previous count, to facilitate counting chains.
+    A dummy class for RollResultDecorator that identifies the class as one that should continue the
+    count from the previous count, to facilitate counting chains.
     """
-    pass
 
 
 @dataclass
@@ -224,7 +223,8 @@ class CountValuesEqualToDecorator(CounterRollResultDecorator):
         :return: The number of rolls that equal the target number.
         """
         count = sum(1 for roll in self.roll_result.die_rolls if roll == self.target_number)
-        return self.roll_result.result() + count if isinstance(self.roll_result, CounterRollResultDecorator) else count
+        return self.roll_result.result() + count \
+            if isinstance(self.roll_result, CounterRollResultDecorator) else count
 
 
 @dataclass
@@ -236,26 +236,11 @@ class CountValuesGreaterThanDecorator(CounterRollResultDecorator):
 
     def result(self) -> int:
         """
-        Counts the roll results that are greater than the target number.  If the prior roll_result was a
-        CounterRollResultDecorator, then it will add its count to that value.
+        Counts the roll results that are greater than the target number.
+        If the prior roll_result was a CounterRollResultDecorator,
+        then it will add its count to that value.
         :return: Then number of rolls that are greater than the target number.
         """
         count = sum(1 for roll in self.roll_result.die_rolls if roll > self.target_number)
-        return self.roll_result.result() + count if isinstance(self.roll_result, CounterRollResultDecorator) else count
-
-
-@dataclass
-class CountValuesGreaterThanEqualToDecorator(CounterRollResultDecorator):
-    """
-    A decorator that counts all roll results that are greater than or equal to n.
-    """
-    target_number: int
-
-    def result(self) -> int:
-        """
-        Counts the roll results that are greater than or equal the target number.  If the prior roll_result was a
-        CounterRollResultDecorator, then it will add its count to that value.
-        :return: Then number of rolls that are greater than the target number.
-        """
-        count = sum(1 for roll in self.roll_result.die_rolls if roll >= self.target_number)
-        return self.roll_result.result() + count if isinstance(self.roll_result, CounterRollResultDecorator) else count
+        return self.roll_result.result() + count \
+            if isinstance(self.roll_result, CounterRollResultDecorator) else count

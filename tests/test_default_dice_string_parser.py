@@ -8,7 +8,7 @@ from pydice.operators import AddOperator, SubtractOperator, MultiplyOperator, Di
     GreaterThanEqualToOperator, GreaterThanOperator
 from pydice.roll_result import DiceRollResult, AddToRollResultDecorator, SubtractFromRollResultDecorator, \
     MultiplyRollResultDecorator, DivideByRollResultDecorator, CountValuesEqualToDecorator, \
-    CountValuesGreaterThanEqualToDecorator, CountValuesGreaterThanDecorator
+    CountValuesGreaterThanDecorator
 
 dice_results = [9, 10, 6, 7, 6, 1, 2, 4, 8, 3]
 
@@ -132,7 +132,11 @@ class ParseTests(DefaultDiceStringParserTests):
 
     def test_parse_greater_than_equal_adds_decorator(self, _):
         # Arrange
-        expected_result = CountValuesGreaterThanEqualToDecorator(DiceRollResult(self.d20, self._default_roll_result), 5)
+        expected_result = CountValuesGreaterThanDecorator(
+            CountValuesEqualToDecorator(
+                DiceRollResult(self.d20, self._default_roll_result), 5
+            ), 5
+        )
         test_parser = DefaultDiceStringParser(self.d20, [GreaterThanEqualToOperator(5)])
 
         # Act

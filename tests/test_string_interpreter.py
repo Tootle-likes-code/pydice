@@ -5,7 +5,7 @@ from unittest.mock import patch
 from pydice.die import Dice, Die, FateDie
 from pydice.roll_result import AddToRollResultDecorator, DiceRollResult, \
     SubtractFromRollResultDecorator, MultiplyRollResultDecorator, DivideByRollResultDecorator, \
-    CountValuesEqualToDecorator, CountValuesGreaterThanEqualToDecorator, ExplodeDiceForTargetDecorator, \
+    CountValuesEqualToDecorator, ExplodeDiceForTargetDecorator, \
     CountValuesGreaterThanDecorator
 from pydice.dice_string_interpreter import interpret
 
@@ -147,10 +147,13 @@ class InterpretTests(StringInterpreterTests):
         # Assert
         self.assertEqual(expected_result, result)
 
-    def test_interpret_greater_than_equal_to_adds_decorator(self, _):
+    def test_interpret_greater_than_equal_to_adds_greater_than_and_equal_to_decorator(self, _):
         # Arrange
-        expected_result = CountValuesGreaterThanEqualToDecorator(DiceRollResult(self.d20, self._default_roll_result),
-                                                                 15)
+        expected_result = CountValuesGreaterThanDecorator(
+            CountValuesEqualToDecorator(
+                DiceRollResult(self.d20, self._default_roll_result), 15
+            ), 15
+        )
 
         # Act
         result = interpret("1d20>=15")
@@ -226,9 +229,11 @@ class StorytellerInterpretTest(StringInterpreterTests):
 
     def test_storyteller_dice_are_correctly_interpreted(self, _):
         # Arrange
-        expected_result = CountValuesGreaterThanEqualToDecorator(
+        expected_result = CountValuesGreaterThanDecorator(
             CountValuesEqualToDecorator(
-                DiceRollResult(self._test_dice, default_story_teller_dice_results), 10),
+                CountValuesEqualToDecorator(
+                    DiceRollResult(self._test_dice, default_story_teller_dice_results), 10),
+                7),
             7)
 
         # Act
@@ -240,9 +245,11 @@ class StorytellerInterpretTest(StringInterpreterTests):
     def test_storyteller_dice_adding_successes_correctly_interpreted(self, _):
         # Arrange
         expected_result = AddToRollResultDecorator(
-            CountValuesGreaterThanEqualToDecorator(
+            CountValuesGreaterThanDecorator(
                 CountValuesEqualToDecorator(
-                    DiceRollResult(self._test_dice, default_story_teller_dice_results), 10),
+                    CountValuesEqualToDecorator(
+                        DiceRollResult(self._test_dice, default_story_teller_dice_results), 10),
+                    7),
                 7),
             7)
 
@@ -254,9 +261,11 @@ class StorytellerInterpretTest(StringInterpreterTests):
 
     def test_storyteller_case_insensitive(self, _):
         # Arrange
-        expected_result = CountValuesGreaterThanEqualToDecorator(
+        expected_result = CountValuesGreaterThanDecorator(
             CountValuesEqualToDecorator(
-                DiceRollResult(self._test_dice, default_story_teller_dice_results), 10),
+                CountValuesEqualToDecorator(
+                    DiceRollResult(self._test_dice, default_story_teller_dice_results), 10),
+                7),
             7)
 
         # Act
