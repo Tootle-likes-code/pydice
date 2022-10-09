@@ -195,6 +195,16 @@ class InterpretTests(StringInterpreterTests):
         # Assert
         self.assertEqual(expected_result, result)
 
+    def test_interpret_not_equal_to_alt_adds_decorator(self, _):
+        # Arrange
+        expected_result = CountValuesNotEqualToDecorator(DiceRollResult(self.d20, self._default_roll_result), 9)
+
+        # Act
+        result = interpret("1d20=/=9")
+
+        # Assert
+        self.assertEqual(expected_result, result)
+
     def test_interpret_explodes_adds_decorator(self, mock_die_rolls):
         # Arrange
         expected_result = ExplodeDiceForTargetDecorator(DiceRollResult(Dice(Die(10), 14),

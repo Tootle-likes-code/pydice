@@ -76,6 +76,7 @@ ACCEPTED_OPERATORS: dict[str, type] = {
     "/": DivideOperator,
     "=": EqualToOperator,
     "!=": NotEqualToOperator,
+    "=/=": NotEqualToOperator,
     ">": GreaterThanOperator,
     ">=": GreaterThanEqualToOperator,
     "<": LessThanOperator,
