@@ -2,7 +2,8 @@ import unittest
 from unittest.mock import MagicMock
 
 from pydice.die import Die
-from pydice.roll_result import ExplodeDiceForTargetDecorator, RollResult
+from pydice.roll_result import RollResult
+from pydice.roll_result_decorators import ExplodeDiceForTargetDecorator
 
 
 class ExplodeDiceForTargetDecoratorTests(unittest.TestCase):

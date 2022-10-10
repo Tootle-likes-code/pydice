@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import Mock, PropertyMock
 
-from pydice.roll_result import AddToRollResultDecorator, SubtractFromRollResultDecorator, MultiplyRollResultDecorator, \
-    DivideByRollResultDecorator
+from pydice.roll_result_decorators import AddToRollResultDecorator, SubtractFromRollResultDecorator, \
+    MultiplyRollResultDecorator, DivideByRollResultDecorator
 
 
 class CombinedMathematicalRollResultDecoratorsTests(unittest.TestCase):

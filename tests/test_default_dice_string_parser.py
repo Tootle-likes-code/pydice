@@ -6,7 +6,8 @@ from pydice.dice_string.dice_string_parser import DefaultDiceStringParser
 from pydice.die import Dice, Die
 from pydice.dice_string.operators import AddOperator, SubtractOperator, MultiplyOperator, DivideOperator, EqualToOperator, \
     GreaterThanEqualToOperator, GreaterThanOperator, LessThanOperator, LessThanEqualToOperator, NotEqualToOperator
-from pydice.roll_result import DiceRollResult, AddToRollResultDecorator, SubtractFromRollResultDecorator, \
+from pydice.roll_result import DiceRollResult
+from pydice.roll_result_decorators import AddToRollResultDecorator, SubtractFromRollResultDecorator, \
     MultiplyRollResultDecorator, DivideByRollResultDecorator
 from pydice.counter_roll_result_decorator import CountValuesEqualToDecorator, CountValuesGreaterThanDecorator, \
     CountValuesLessThanDecorator, CountValuesNotEqualToDecorator

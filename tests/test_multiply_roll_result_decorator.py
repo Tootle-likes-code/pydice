@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock, PropertyMock
 
-from pydice.roll_result import MultiplyRollResultDecorator
+from pydice.roll_result_decorators import MultiplyRollResultDecorator
 
 
 class MultiplyRollResultDecoratorTests(unittest.TestCase):

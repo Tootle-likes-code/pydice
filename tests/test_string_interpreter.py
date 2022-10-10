@@ -4,9 +4,9 @@ from unittest.mock import patch
 
 from pydice.dice_string.dice_string_interpreter import interpret
 from pydice.die import Dice, Die, FateDie
-from pydice.roll_result import AddToRollResultDecorator, DiceRollResult, \
-    SubtractFromRollResultDecorator, MultiplyRollResultDecorator, DivideByRollResultDecorator, \
-    ExplodeDiceForTargetDecorator
+from pydice.roll_result import DiceRollResult
+from pydice.roll_result_decorators import AddToRollResultDecorator, SubtractFromRollResultDecorator, \
+    MultiplyRollResultDecorator, DivideByRollResultDecorator, ExplodeDiceForTargetDecorator
 from pydice.counter_roll_result_decorator import CountValuesEqualToDecorator, CountValuesGreaterThanDecorator, \
     CountValuesLessThanDecorator, CountValuesNotEqualToDecorator
 

@@ -1,7 +1,7 @@
 from pydice.die import Dice
-from pydice.roll_result import RollResult, DiceRollResult, AddToRollResultDecorator, SubtractFromRollResultDecorator, \
-    MultiplyRollResultDecorator, \
-    DivideByRollResultDecorator, ExplodeDiceForTargetDecorator
+from pydice.roll_result import RollResult, DiceRollResult
+from pydice.roll_result_decorators import AddToRollResultDecorator, SubtractFromRollResultDecorator, \
+    MultiplyRollResultDecorator, DivideByRollResultDecorator, ExplodeDiceForTargetDecorator
 from pydice.counter_roll_result_decorator import CountValuesEqualToDecorator, CountValuesGreaterThanDecorator, \
     CountValuesLessThanDecorator, CountValuesNotEqualToDecorator
 

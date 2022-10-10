@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock, PropertyMock
 
-from pydice.roll_result import SubtractFromRollResultDecorator
+from pydice.roll_result_decorators import SubtractFromRollResultDecorator
 
 
 class SubtractFromRollResultDecoratorTests(unittest.TestCase):
