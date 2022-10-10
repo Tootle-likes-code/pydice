@@ -2,7 +2,7 @@ import re
 from abc import ABC, abstractmethod
 from re import Match, Pattern
 
-from pydice.dice_string.roll_result_builder import RollResultBuilder
+from pydice.roll_result_builder import RollResultBuilder
 from pydice.die import Dice, Die, FateDie
 from pydice.dice_string.operators import Operator, OperatorFactory
 from pydice.roll_result import RollResult
