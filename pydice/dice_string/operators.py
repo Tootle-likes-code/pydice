@@ -1,7 +1,7 @@
 from abc import abstractmethod, ABC
 from dataclasses import dataclass
 
-from pydice.dice_string.dice_result_builder import DiceResultBuilder
+from pydice.dice_string.roll_result_builder import DiceResultBuilder
 
 
 @dataclass
