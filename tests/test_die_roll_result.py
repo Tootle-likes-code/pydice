@@ -10,8 +10,7 @@ class DieRollResultTests(unittest.TestCase):
         self.test_die = MagicMock(spec=Die)
         self.test_die.min = 1
         self.test_die.max = 6
-        self.test_die.roll = MagicMock()
-        self.test_die.roll.return_value = 5
+        self.test_die.roll = MagicMock(return_value=[5])
 
         self.test_die_roll_result = DieRollResult(self.test_die, 3)
 
