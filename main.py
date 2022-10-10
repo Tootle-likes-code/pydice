@@ -20,5 +20,5 @@ if __name__ == "__main__":
             result = interpret(a)
             print(f"Rolled {dice_string}")
             print(f"Roll values: {result.die_rolls}")
-            print(f"Result: {result.result()}")
+            print(f"Result: {result.result}")
             sys.exit()

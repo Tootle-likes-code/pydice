@@ -18,14 +18,9 @@ class CountValuesEqualToDecorator(CounterRollResultDecorator):
     """
     target_number: int
 
-    def result(self) -> int:
-        """
-        Counts the roll results that match the target number.  If the prior roll_result was a
-        CounterRollResultDecorator, then it will add its count to that value.
-        :return: The number of rolls that equal the target number.
-        """
+    def __post_init__(self):
         count = sum(1 for roll in self.roll_result.die_rolls if roll == self.target_number)
-        return self.roll_result.result() + count \
+        self._result = self.roll_result.result + count \
             if isinstance(self.roll_result, CounterRollResultDecorator) else count
 
 
@@ -36,15 +31,9 @@ class CountValuesGreaterThanDecorator(CounterRollResultDecorator):
     """
     target_number: int
 
-    def result(self) -> int:
-        """
-        Counts the roll results that are greater than the target number.
-        If the prior roll_result was a CounterRollResultDecorator,
-        then it will add its count to that value.
-        :return: Then number of rolls that are greater than the target number.
-        """
+    def __post_init__(self):
         count = sum(1 for roll in self.roll_result.die_rolls if roll > self.target_number)
-        return self.roll_result.result() + count \
+        self._result = self.roll_result.result + count \
             if isinstance(self.roll_result, CounterRollResultDecorator) else count
 
 
@@ -55,9 +44,9 @@ class CountValuesLessThanDecorator(CounterRollResultDecorator):
     """
     target_number: int
 
-    def result(self) -> int:
+    def __post_init__(self):
         count = sum(1 for roll in self.roll_result.die_rolls if roll < self.target_number)
-        return self.roll_result.result() + count \
+        self._result = self.roll_result.result + count \
             if isinstance(self.roll_result, CounterRollResultDecorator) else count
 
 
@@ -68,7 +57,8 @@ class CountValuesNotEqualToDecorator(CounterRollResultDecorator):
     """
     target_number: int
 
-    def result(self) -> int:
+    def __post_init__(self):
         count = sum(1 for roll in self.roll_result.die_rolls if roll != self.target_number)
-        return self.roll_result.result() + count \
+        self._result = self.roll_result.result + count \
             if isinstance(self.roll_result, CounterRollResultDecorator) else count
+
