@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import MagicMock
 
 from pydice.roll_result import RollResult
-from pydice.roll_result_modifiers.counter_roll_result_decorator import CountValuesEqualToDecorator, CountValuesLessThanDecorator
+from pydice.roll_result_operators.counter_roll_result_decorator import CountValuesEqualToDecorator, CountValuesLessThanDecorator
 
 
 class CountValuesLessThanDecoratorTests(unittest.TestCase):

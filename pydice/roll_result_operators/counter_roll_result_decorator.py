@@ -1,7 +1,7 @@
 from abc import ABC
 from dataclasses import dataclass
 
-from pydice.roll_result_modifiers.roll_result_decorators import RollResultDecorator
+from pydice.roll_result_operators.roll_result_decorators import RollResultDecorator
 
 
 class CounterRollResultDecorator(RollResultDecorator, ABC):
