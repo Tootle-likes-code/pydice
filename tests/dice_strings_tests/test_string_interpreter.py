@@ -208,9 +208,10 @@ class InterpretTests(StringInterpreterTests):
 
     def test_interpret_explodes_adds_decorator(self, mock_die_rolls):
         # Arrange
+        mock_die_rolls.side_effect = [4] + default_story_teller_dice_results
         expected_result = ExplodeDiceForTargetDecorator(DiceRollResult(Dice(Die(10), 14),
                                                                        default_story_teller_dice_results[:-1]), 10)
-        mock_die_rolls.side_effect = default_story_teller_dice_results
+
 
         # Act
         result = interpret("14d10e10")
