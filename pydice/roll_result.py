@@ -91,6 +91,7 @@ class DiceRollResult(RollResult):
     def die_rolls(self) -> list[int]:
         return self._rolls
 
+    @property
     def result(self) -> int:
         return sum(self._rolls)
 
