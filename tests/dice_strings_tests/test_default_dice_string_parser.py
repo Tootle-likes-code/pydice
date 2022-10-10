@@ -184,7 +184,7 @@ class ParseTests(DefaultDiceStringParserTests):
         # Assert
         self.assertEqual(expected_result, result)
 
-    @skip("NotImplemented")
+    @skip("NotImplemented and now the code in the test is erroneous")
     def test_parse_string_two_dice_is_handled_correctly(self, _):
         # Arrange
         expected_result = None

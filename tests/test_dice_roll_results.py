@@ -50,7 +50,7 @@ class ResultsTest(DiceRollResultTests):
         expected_result = 9
 
         # Act
-        result = self.test_dice_roll_results.result()
+        result = self.test_dice_roll_results.result
 
         # Assert
         self.assertEqual(expected_result, result)

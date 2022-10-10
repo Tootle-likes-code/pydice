@@ -23,6 +23,7 @@ class RollResult(ABC):
         :return:
         """
 
+    @property
     @abstractmethod
     def result(self) -> int:
         """
@@ -51,7 +52,7 @@ class DieRollResult(RollResult):
     def __post_init__(self):
         if self.roll is None:
             rolls = self.die.roll()
-            self.roll = rolls
+            self.roll = rolls[0]
         self._rolls = [self.roll]
 
     @property
@@ -59,6 +60,7 @@ class DieRollResult(RollResult):
         die_roll_as_list = self._rolls
         return die_roll_as_list
 
+    @property
     def result(self) -> int:
         return self.roll
 
@@ -90,6 +92,7 @@ class DiceRollResult(RollResult):
     def die_rolls(self) -> list[int]:
         return self._rolls
 
+    @property
     def result(self) -> int:
         return sum(self._rolls)
 
@@ -103,5 +106,3 @@ class DiceRollResult(RollResult):
     @property
     def rolled_die(self) -> Die:
         return self.dice.die
-
-

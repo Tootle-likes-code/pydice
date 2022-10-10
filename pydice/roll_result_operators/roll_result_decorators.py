@@ -1,5 +1,5 @@
 from abc import ABC
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from pydice.die import Die
 from pydice.roll_result import RollResult
@@ -11,6 +11,7 @@ class RollResultDecorator(RollResult, ABC):
     A dummy class intended to be the base for decorator pattern.
     """
     roll_result: RollResult
+    _result: int = field(init=False, repr=False)
 
     @property
     def die_rolls(self) -> list[int]:
@@ -18,6 +19,10 @@ class RollResultDecorator(RollResult, ABC):
 
     def add_die_roll(self, new_value: int) -> None:
         self.roll_result.add_die_roll(new_value)
+
+    @property
+    def result(self) -> int:
+        return self._result
 
     @property
     def rolled_die(self) -> Die:
@@ -31,9 +36,8 @@ class AddToRollResultDecorator(RollResultDecorator):
     """
     modifier: int
 
-    def result(self) -> int:
-        current_result = self.roll_result.result()
-        return current_result + self.modifier
+    def __post_init__(self):
+        self._result = self.roll_result.result + self.modifier
 
 
 @dataclass
@@ -43,9 +47,8 @@ class SubtractFromRollResultDecorator(RollResultDecorator):
     """
     modifier: int
 
-    def result(self) -> int:
-        current_result = self.roll_result.result()
-        return current_result - self.modifier
+    def __post_init__(self):
+        self._result = self.roll_result.result - self.modifier
 
 
 @dataclass
@@ -55,9 +58,8 @@ class MultiplyRollResultDecorator(RollResultDecorator):
     """
     multiplier: int
 
-    def result(self) -> int:
-        current_result = self.roll_result.result()
-        return round(current_result * self.multiplier)
+    def __post_init__(self):
+        self._result = round(self.roll_result.result * self.multiplier)
 
 
 @dataclass
@@ -67,9 +69,8 @@ class DivideByRollResultDecorator(RollResultDecorator):
     """
     divide_by: int
 
-    def result(self) -> int:
-        current_result = self.roll_result.result()
-        return round(current_result / self.divide_by)
+    def __post_init__(self):
+        self._result = round(self.roll_result.result / self.divide_by)
 
 
 @dataclass
@@ -80,23 +81,25 @@ class ExplodeDiceForTargetDecorator(RollResultDecorator):
     target_number: int
 
     def __post_init__(self):
-        self._rolled_results: list[int] = []
+        self._new_die_rolls: list[int] = []
+        self._initialise_new_die_rolls()
 
-    def result(self) -> int:
-        if len(self._rolled_results) > 0:
-            return sum(i for i in self._rolled_results)
+        self._result = sum(self._new_die_rolls)
 
-        for i in self.roll_result.die_rolls:
-            self._rolled_results.append(i)
-
-            if i == self.target_number:
+    def _initialise_new_die_rolls(self):
+        for roll in self.roll_result.die_rolls:
+            self._new_die_rolls.append(roll)
+            if roll == self.target_number:
                 self._explode()
 
-        return sum(i for i in self._rolled_results)
-
     def _explode(self):
-        new_value = self.roll_result.rolled_die.roll()
+        new_value = self.roll_result.rolled_die.roll()[0]
 
-        self._rolled_results.append(new_value)
+        self._new_die_rolls.append(new_value)
         if new_value == self.target_number:
             self._explode()
+
+    @property
+    def die_rolls(self) -> list[int]:
+        return self._new_die_rolls
+
