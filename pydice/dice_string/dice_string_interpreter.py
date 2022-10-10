@@ -1,4 +1,4 @@
-from pydice import dice_string_parser
+from pydice.dice_string import dice_string_parser
 from pydice.roll_result import RollResult
 
 

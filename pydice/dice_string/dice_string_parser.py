@@ -2,9 +2,9 @@ import re
 from abc import ABC, abstractmethod
 from re import Match, Pattern
 
-from pydice.dice_result_builder import DiceResultBuilder
+from pydice.dice_string.dice_result_builder import DiceResultBuilder
 from pydice.die import Dice, Die, FateDie
-from pydice.operators import Operator, OperatorFactory
+from pydice.dice_string.operators import Operator, OperatorFactory
 from pydice.roll_result import RollResult
 
 _fate_regex = re.compile(r"df", re.IGNORECASE)
