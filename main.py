@@ -1,7 +1,7 @@
 import getopt
 import sys
 
-from pydice.dice_string_interpreter import interpret
+from pydice.dice_string.dice_string_interpreter import interpret
 
 if __name__ == "__main__":
     options, arguments = getopt.getopt(sys.argv[1:], "d:h", ["dice_string=", "help"])

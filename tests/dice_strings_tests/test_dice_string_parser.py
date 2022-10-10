@@ -1,9 +1,9 @@
 import unittest
 
-from pydice import dice_string_parser as dice_parser
-from pydice.dice_string_parser import DefaultDiceStringParser
+from pydice.dice_string import dice_string_parser as dice_parser
+from pydice.dice_string.dice_string_parser import DefaultDiceStringParser
 from pydice.die import Dice, Die, FateDie
-from pydice.operators import AddOperator, SubtractOperator, GreaterThanEqualToOperator, EqualToOperator
+from pydice.dice_string.operators import AddOperator, SubtractOperator, GreaterThanEqualToOperator, EqualToOperator
 
 
 class DiceStringParserTests(unittest.TestCase):

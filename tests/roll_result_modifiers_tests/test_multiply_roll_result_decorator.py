@@ -1,19 +1,19 @@
 import unittest
 from unittest.mock import Mock, PropertyMock
 
-from pydice.roll_result import SubtractFromRollResultDecorator
+from pydice.roll_result_operators.roll_result_decorators import MultiplyRollResultDecorator
 
 
-class SubtractFromRollResultDecoratorTests(unittest.TestCase):
+class MultiplyRollResultDecoratorTests(unittest.TestCase):
     def setUp(self) -> None:
         self.test_die_result = Mock()
-        self.test_die_result.result = Mock(return_value=3)
+        self.test_die_result.result = Mock(return_value=5)
         self.test_die_result.die_rolls = PropertyMock(return_value=[4, 5])
 
-        self.test_roll_result = SubtractFromRollResultDecorator(self.test_die_result, 2)
+        self.test_roll_result = MultiplyRollResultDecorator(self.test_die_result, 2)
 
 
-class DieRollsTests(SubtractFromRollResultDecoratorTests):
+class DieRollsTests(MultiplyRollResultDecoratorTests):
     def test_rolled_values_are_returned(self):
         # Arrange
         expected_result = [4, 5]
@@ -25,10 +25,10 @@ class DieRollsTests(SubtractFromRollResultDecoratorTests):
         self.assertEqual(expected_result, result)
 
 
-class ResultTests(SubtractFromRollResultDecoratorTests):
-    def test_results_has_modifier_added_to_it(self):
+class ResultTests(MultiplyRollResultDecoratorTests):
+    def test_result_is_multiplied_correctly(self):
         # Arrange
-        expected_result = 1
+        expected_result = 10
 
         # Act
         result = self.test_roll_result.result()

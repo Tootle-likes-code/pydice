@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pydice"
-version = "0.1.1"
+version = "0.2.0"
 authors = [
     {name="Tootle", email="tootle_likes_code@hotmail.com"}
 ]

@@ -1,17 +1,18 @@
 from pydice.die import Dice
-from pydice.roll_result import RollResult, DiceRollResult, AddToRollResultDecorator, SubtractFromRollResultDecorator, \
-    CountValuesEqualToDecorator, MultiplyRollResultDecorator, \
-    DivideByRollResultDecorator, ExplodeDiceForTargetDecorator, CountValuesGreaterThanDecorator, \
+from pydice.roll_result import RollResult, DiceRollResult
+from pydice.roll_result_operators.roll_result_decorators import AddToRollResultDecorator, SubtractFromRollResultDecorator, \
+    MultiplyRollResultDecorator, DivideByRollResultDecorator, ExplodeDiceForTargetDecorator
+from pydice.roll_result_operators.counter_roll_result_decorator import CountValuesEqualToDecorator, CountValuesGreaterThanDecorator, \
     CountValuesLessThanDecorator, CountValuesNotEqualToDecorator
 
 
-class DiceResultBuilder:
+class RollResultBuilder:
     def __init__(self, dice: Dice):
         self._dice_result = DiceRollResult(dice)
 
     @staticmethod
-    def create_dice_result_builder(dice: Dice):
-        dice_result_builder = DiceResultBuilder(dice)
+    def create_roll_result_builder(dice: Dice):
+        dice_result_builder = RollResultBuilder(dice)
         return dice_result_builder
 
     def with_add_modifier(self, modifier):

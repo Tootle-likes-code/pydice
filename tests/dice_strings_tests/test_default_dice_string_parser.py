@@ -2,13 +2,15 @@ import unittest
 from unittest import skip
 from unittest.mock import patch
 
-from pydice.dice_string_parser import DefaultDiceStringParser
+from pydice.dice_string.dice_string_parser import DefaultDiceStringParser
 from pydice.die import Dice, Die
-from pydice.operators import AddOperator, SubtractOperator, MultiplyOperator, DivideOperator, EqualToOperator, \
+from pydice.dice_string.operators import AddOperator, SubtractOperator, MultiplyOperator, DivideOperator, EqualToOperator, \
     GreaterThanEqualToOperator, GreaterThanOperator, LessThanOperator, LessThanEqualToOperator, NotEqualToOperator
-from pydice.roll_result import DiceRollResult, AddToRollResultDecorator, SubtractFromRollResultDecorator, \
-    MultiplyRollResultDecorator, DivideByRollResultDecorator, CountValuesEqualToDecorator, \
-    CountValuesGreaterThanDecorator, CountValuesLessThanDecorator, CountValuesNotEqualToDecorator
+from pydice.roll_result import DiceRollResult
+from pydice.roll_result_operators.roll_result_decorators import AddToRollResultDecorator, SubtractFromRollResultDecorator, \
+    MultiplyRollResultDecorator, DivideByRollResultDecorator
+from pydice.roll_result_operators.counter_roll_result_decorator import CountValuesEqualToDecorator, CountValuesGreaterThanDecorator, \
+    CountValuesLessThanDecorator, CountValuesNotEqualToDecorator
 
 dice_results = [9, 10, 6, 7, 6, 1, 2, 4, 8, 3]
 

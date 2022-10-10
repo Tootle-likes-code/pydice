@@ -2,9 +2,9 @@ import re
 from abc import ABC, abstractmethod
 from re import Match, Pattern
 
-from pydice.dice_result_builder import DiceResultBuilder
+from pydice.roll_result_operators.roll_result_builder import RollResultBuilder
 from pydice.die import Dice, Die, FateDie
-from pydice.operators import Operator, OperatorFactory
+from pydice.dice_string.operators import Operator, OperatorFactory
 from pydice.roll_result import RollResult
 
 _fate_regex = re.compile(r"df", re.IGNORECASE)
@@ -28,7 +28,7 @@ class DefaultDiceStringParser(DiceStringParser):
         super().__init__(dice, operators)
 
     def parse(self) -> RollResult | None:
-        builder = DiceResultBuilder.create_dice_result_builder(self.dice)
+        builder = RollResultBuilder.create_roll_result_builder(self.dice)
         for operator in self._operators:
             if operator is None:
                 return None
