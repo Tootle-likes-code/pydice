@@ -1,6 +1,6 @@
 import unittest
 
-from pydice.operators import OperatorFactory, AddOperator, SubtractOperator, MultiplyOperator, DivideOperator, \
+from pydice.dice_string.operators import OperatorFactory, AddOperator, SubtractOperator, MultiplyOperator, DivideOperator, \
     EqualToOperator, GreaterThanEqualToOperator, ExplodingOperator, GreaterThanOperator, LessThanOperator, \
     LessThanEqualToOperator, NotEqualToOperator
 

@@ -2,9 +2,9 @@ import unittest
 from unittest import skip
 from unittest.mock import patch
 
-from pydice.dice_string_parser import DefaultDiceStringParser
+from pydice.dice_string.dice_string_parser import DefaultDiceStringParser
 from pydice.die import Dice, Die
-from pydice.operators import AddOperator, SubtractOperator, MultiplyOperator, DivideOperator, EqualToOperator, \
+from pydice.dice_string.operators import AddOperator, SubtractOperator, MultiplyOperator, DivideOperator, EqualToOperator, \
     GreaterThanEqualToOperator, GreaterThanOperator, LessThanOperator, LessThanEqualToOperator, NotEqualToOperator
 from pydice.roll_result import DiceRollResult, AddToRollResultDecorator, SubtractFromRollResultDecorator, \
     MultiplyRollResultDecorator, DivideByRollResultDecorator, CountValuesEqualToDecorator, \
