@@ -68,7 +68,7 @@ class ResultTests(DieRollResultTests):
         expected_result = 3
 
         # Act
-        result = self.test_die_roll_result.result()
+        result = self.test_die_roll_result.result
 
         # Assert
         self.assertEqual(expected_result, result)

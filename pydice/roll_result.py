@@ -59,6 +59,7 @@ class DieRollResult(RollResult):
         die_roll_as_list = self._rolls
         return die_roll_as_list
 
+    @property
     def result(self) -> int:
         return self.roll
 
@@ -103,5 +104,3 @@ class DiceRollResult(RollResult):
     @property
     def rolled_die(self) -> Die:
         return self.dice.die
-
-
