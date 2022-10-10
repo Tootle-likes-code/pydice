@@ -5,13 +5,13 @@ from pydice.roll_result import RollResult, DiceRollResult, AddToRollResultDecora
     CountValuesLessThanDecorator, CountValuesNotEqualToDecorator
 
 
-class DiceResultBuilder:
+class RollResultBuilder:
     def __init__(self, dice: Dice):
         self._dice_result = DiceRollResult(dice)
 
     @staticmethod
-    def create_dice_result_builder(dice: Dice):
-        dice_result_builder = DiceResultBuilder(dice)
+    def create_roll_result_builder(dice: Dice):
+        dice_result_builder = RollResultBuilder(dice)
         return dice_result_builder
 
     def with_add_modifier(self, modifier):
