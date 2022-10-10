@@ -6,8 +6,9 @@ from pydice.dice_string.dice_string_interpreter import interpret
 from pydice.die import Dice, Die, FateDie
 from pydice.roll_result import AddToRollResultDecorator, DiceRollResult, \
     SubtractFromRollResultDecorator, MultiplyRollResultDecorator, DivideByRollResultDecorator, \
-    CountValuesEqualToDecorator, ExplodeDiceForTargetDecorator, \
-    CountValuesGreaterThanDecorator, CountValuesLessThanDecorator, CountValuesNotEqualToDecorator
+    ExplodeDiceForTargetDecorator
+from pydice.counter_roll_result_decorator import CountValuesEqualToDecorator, CountValuesGreaterThanDecorator, \
+    CountValuesLessThanDecorator, CountValuesNotEqualToDecorator
 
 dice_results = [9, 10, 6, 7, 6, 1, 2, 4, 8, 3]
 default_fate_result = [-1, 1, 0, 0]
