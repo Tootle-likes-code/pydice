@@ -140,6 +140,16 @@ class CreateTests(DiceStringParserTests):
         # Assert
         self.assertEqual(expected_results, results._operators)
 
+    def test_create_no_operator_at_end_does_not_hider_operator_creation(self):
+        # Arrange
+        expected_results = [AddOperator(5)]
+
+        # Act
+        results = dice_parser.create("1d20+5ne")
+
+        # Assert
+        self.assertEqual(expected_results, results._operators)
+
 
 if __name__ == '__main__':
     unittest.main()
