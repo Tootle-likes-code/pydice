@@ -89,32 +89,10 @@ def _get_operator_string(dice_string):
     return modifiers[1]
 
 
-def _split_operators(operator_string) -> list[Operator]:
-    operator = ""
-    value = ""
-    operators: list[Operator] = []
-    for i in range(len(operator_string)):
-        character = operator_string[i:i + 1][0]
-        if character.isnumeric():
-            if i != len(operator_string) and operator_string[i + 1:i + 2].isnumeric():
-                value = character
-                continue
-            value += character
-            built_operator = OperatorFactory.get_operator(operator, int(value))
-            if built_operator is not None:
-                operators.append(built_operator)
-            operator = ""
-            value = ""
-        else:
-            operator += character
-
-    return operators
-
-
 def _get_operators(dice_string: str, dice_based_operators: str = "") -> list[Operator]:
     operator_string = _get_operator_string(dice_string)
     operator_string = dice_based_operators + operator_string
-    return _split_operators(operator_string)
+    return OperatorFactory.get_operators(operator_string)
 
 
 def create(dice_string: str) -> DiceStringParser | None:

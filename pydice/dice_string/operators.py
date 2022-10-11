@@ -92,3 +92,32 @@ class OperatorFactory:
             return
 
         return ACCEPTED_OPERATORS[operator.lower()](value)
+
+    @staticmethod
+    def get_operators(operator_string: str) -> list[Operator]:
+        operator = ""
+        value = ""
+        operators: list[Operator] = []
+
+        for i in range(len(operator_string)):
+            character = operator_string[i:i + 1][0]
+
+            if not character.isnumeric():
+                operator += character
+                continue
+
+            if i == len(operator_string):
+                break
+
+            next_character = operator_string[i + 1:i + 2]
+            if i != len(operator_string) and next_character.isnumeric():
+                value = character
+                continue
+            value += character
+            built_operator = OperatorFactory.get_operator(operator, int(value))
+            if built_operator is not None:
+                operators.append(built_operator)
+            operator = ""
+            value = ""
+
+        return operators
