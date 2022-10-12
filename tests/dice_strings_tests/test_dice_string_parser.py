@@ -19,7 +19,7 @@ from pydice.roll_result_operators.roll_result_decorators import AddToRollResultD
 dice_results = [9, 10, 6, 7, 6, 1, 2, 4, 8, 3]
 
 
-class DefaultDiceStringParserTests(unittest.TestCase):
+class DiceStringParserTests(unittest.TestCase):
     def setUp(self) -> None:
         self._default_roll_result = dice_results[:1]
         self.d20 = Dice(Die(20), 1)
@@ -27,7 +27,7 @@ class DefaultDiceStringParserTests(unittest.TestCase):
 
 
 @patch("pydice.die.random.randint", side_effect=dice_results)
-class ParseTests(DefaultDiceStringParserTests):
+class ParseTests(DiceStringParserTests):
     def test_parse_string_with_simple_roll_returns_correct_value(self, _):
         # Arrange
         expected_result = DiceRollResult(self.d20, self._default_roll_result)
@@ -202,7 +202,7 @@ class ParseTests(DefaultDiceStringParserTests):
         self.fail("Not Implemented")
 
 
-class CreateTests(DefaultDiceStringParserTests):
+class CreateTests(DiceStringParserTests):
     def test_create_invalid_normal_text_raises_DiceParseError(self):
         # Assert
         with self.assertRaises(DiceParseError):
