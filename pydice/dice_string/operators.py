@@ -121,3 +121,7 @@ class OperatorFactory:
             value = ""
 
         return operators
+
+    @staticmethod
+    def get_storyteller_operators() -> list[Operator]:
+        return [EqualToOperator(10), GreaterThanEqualToOperator(7)]
