@@ -279,3 +279,5 @@ Counts the number of dice that roll greater than the target number.
 
 #### CountValuesLessThanDecorator
 Counts the number of dice that roll less than~~~~ the target number.
+
+[![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/PyCQA/pylint)
