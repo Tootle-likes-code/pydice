@@ -20,6 +20,7 @@ class ParsedDiceString:
         self._operators: list[Operator] = []
         self.dice_string = dice_string
         self._parse_dice_string()
+        self.failures: list[DiceParserFailure] = []
 
     def _parse_dice_string(self) -> None:
         self._extract_dice()
@@ -77,6 +78,10 @@ class ParsedDiceString:
     def _get_operators(self) -> None:
         operator_string = self._get_operator_string()
         self._operators = self._operators + OperatorFactory.get_operators(operator_string)
+
+    @property
+    def is_valid(self) -> bool:
+        return Severity.ERROR not in [failure.severity for failure in self.failures]
 
     def parse(self) -> RollResult | None:
         builder = RollResultBuilder.create_roll_result_builder(self._dice)

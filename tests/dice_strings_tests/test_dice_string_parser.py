@@ -27,6 +27,51 @@ class ParsedDiceStringTests(unittest.TestCase):
         self.ten_d10 = Dice(Die(10), 10)
 
 
+class IsValidTests(ParsedDiceStringTests):
+    def test_having_error_failure_returns_false(self):
+        # Arrange
+        test_parsed_dice_string = ParsedDiceString("1d20")
+        test_parsed_dice_string.failures = [InvalidDice("1d20")]
+        
+        # Act
+        result = test_parsed_dice_string.is_valid
+        
+        # Assert
+        self.assertFalse(result)
+        
+    def test_having_warning_failure_returns_true(self):
+        # Arrange
+        test_parsed_dice_string = ParsedDiceString("1d20")
+        test_parsed_dice_string.failures = [UnfinishedOperator("+6")]
+
+        # Act
+        result = test_parsed_dice_string.is_valid
+
+        # Assert
+        self.assertTrue(result)
+        
+    def test_having_no_failures_returns_true(self):
+        # Arrange
+        test_parsed_dice_string = ParsedDiceString("1d20")
+
+        # Act
+        result = test_parsed_dice_string.is_valid
+
+        # Assert
+        self.assertTrue(result)
+        
+    def test_having_warning_and_error_failures_returns_false(self):
+        # Arrange
+        test_parsed_dice_string = ParsedDiceString("1d20")
+        test_parsed_dice_string.failures = [InvalidDice("1d20"), UnfinishedOperator("+5")]
+
+        # Act
+        result = test_parsed_dice_string.is_valid
+
+        # Assert
+        self.assertFalse(result)
+
+
 @patch("pydice.die.random.randint", side_effect=dice_results)
 class ConstructorTests(ParsedDiceStringTests):
     def test_parse_string_with_simple_roll_returns_correct_value(self, _):
