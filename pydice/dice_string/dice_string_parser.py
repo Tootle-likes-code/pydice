@@ -1,7 +1,7 @@
 import re
 from re import Match, Pattern
 
-from pydice.dice_string.dice_parse_errors import DiceParseError
+from pydice.dice_string.dice_parse_exceptions import DiceParseError
 from pydice.dice_string.operators import Operator, OperatorFactory
 from pydice.die import Dice, Die, FateDie
 from pydice.roll_result import RollResult

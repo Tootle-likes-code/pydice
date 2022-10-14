@@ -3,7 +3,7 @@ from unittest import skip
 from unittest.mock import patch
 
 import pydice.dice_string.dice_string_parser as dice_parser
-from pydice.dice_string.dice_parse_errors import DiceParseError
+from pydice.dice_string.dice_parse_exceptions import DiceParseError
 from pydice.dice_string.dice_string_parser import DiceStringParser
 from pydice.dice_string.operators import AddOperator, SubtractOperator, EqualToOperator, \
     GreaterThanEqualToOperator
