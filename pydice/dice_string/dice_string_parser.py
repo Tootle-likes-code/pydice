@@ -2,6 +2,7 @@ import re
 from re import Match, Pattern
 
 from pydice.dice_string.dice_parse_exceptions import DiceParseError
+from pydice.dice_string.dice_parser_failures import DiceParserFailure, Severity
 from pydice.dice_string.operators import Operator, OperatorFactory
 from pydice.die import Dice, Die, FateDie
 from pydice.roll_result import RollResult
@@ -13,7 +14,7 @@ _base_dice_regex = re.compile(r"(?:\d*d\d.)|(?:\d+st)|(?:df)", re.IGNORECASE)
 _extract_dice_regex = re.compile(r"(?P<number_of_dice>\d*)d(?P<dice_size>\d+)", re.IGNORECASE)
 
 
-class DiceStringParser:
+class ParsedDiceString:
     def __init__(self, dice_string: str):
         self._dice: Dice
         self._operators: list[Operator] = []
@@ -87,5 +88,5 @@ class DiceStringParser:
         return builder.build()
 
 
-def create(dice_string: str) -> DiceStringParser | None:
-    return DiceStringParser(dice_string)
+def parse(dice_string: str) -> ParsedDiceString:
+    return ParsedDiceString(dice_string)
