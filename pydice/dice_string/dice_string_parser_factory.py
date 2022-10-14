@@ -3,8 +3,8 @@ from re import Match
 from typing import Optional, Pattern
 
 from pydice.dice_string.dice_parser_failures import DiceParserFailure, InvalidDice
-from pydice.dice_string.dice_string_parser import ParsedDiceString
 from pydice.dice_string.operators import Operator, OperatorFactory
+from pydice.dice_string.parsed_dice_string import ParsedDiceString
 from pydice.die import Dice, Die, FateDie
 from pydice.roll_result import RollResult
 from pydice.roll_result_operators.roll_result_builder import RollResultBuilder
@@ -75,10 +75,11 @@ class ParsedDiceStringBuilder:
 
 class DiceStringParserFactory:
     @staticmethod
-    def create_parsed_dice_string(dice_string):
+    def create_parsed_dice_string(dice_string) -> ParsedDiceString:
         factory = DiceStringParserFactory(dice_string)
 
         factory._extract()
+        return factory._builder.build()
 
     def __init__(self, dice_string):
         self._dice_string = dice_string

@@ -10,7 +10,7 @@ from tests import helpers
 class DiceStringParserFactoryTests(unittest.TestCase):
     def setUp(self) -> None:
         self.mock_builder = MagicMock(spec=ParsedDiceStringBuilder)
-        self.mock_builder.build = MagicMock()
+        self.mock_builder.build.return_value = "ParsedDiceString"
 
 
 @patch("pydice.dice_string.dice_string_parser_factory.ParsedDiceStringBuilder.create_parsed_dice_string")
@@ -103,6 +103,17 @@ class CreateParsedDiceStringTests(DiceStringParserFactoryTests):
 
         # Assert
         helpers.assert_is_calls(self.mock_builder.with_operators, expected_calls)
+
+    def test_returns_ParsedDiceString(self, mock_create_builder):
+        # Arrange
+        expected_result = "ParsedDiceString"
+        mock_create_builder.return_value = self.mock_builder
+
+        # Act
+        result = DiceStringParserFactory.create_parsed_dice_string("1d20+4")
+
+        # Assert
+        self.assertEqual(expected_result, result)
 
 
 if __name__ == '__main__':
