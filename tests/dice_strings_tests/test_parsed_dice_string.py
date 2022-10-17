@@ -1,7 +1,5 @@
 import unittest
-from unittest.mock import patch, call
 
-from pydice.dice_string import dice_string_parser
 from pydice.dice_string.dice_parser_failures import InvalidDice, UnfinishedOperator
 from pydice.dice_string.parsed_dice_string import ParsedDiceString
 from pydice.die import Dice, Die
