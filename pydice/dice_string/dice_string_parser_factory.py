@@ -43,7 +43,7 @@ class ParsedDiceStringBuilder:
         self._dice = Dice(d10, number_of_dice)
 
     def with_operators(self, operators: list[Operator]):
-        self._operators = operators
+        self._operators.extend(operators)
         return self
 
     def with_failure(self, failure: DiceParserFailure):
@@ -56,7 +56,7 @@ class ParsedDiceStringBuilder:
 
     def build(self) -> ParsedDiceString:
         self._build_roll_result()
-        return ParsedDiceString(self._dice_string, self._dice, self._operators, self._failures, self._roll_result)
+        return ParsedDiceString(self._dice_string, self._failures, self._roll_result)
 
     def _build_roll_result(self):
         if not self._can_build_result():
