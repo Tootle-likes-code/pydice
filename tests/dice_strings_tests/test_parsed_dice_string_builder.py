@@ -12,6 +12,22 @@ class ParsedDiceStringBuilderTests(unittest.TestCase):
         self.mock_builder.build.return_value = "Roll Result"
 
 
+class WithOperatorsTests(ParsedDiceStringBuilderTests):
+    def test_adding_second_operators_adds_operators_again(self):
+        # Arrange
+        mock_1 = MagicMock(return_value=1)
+        mock_2 = MagicMock(return_value=2)
+        mock_3 = MagicMock(return_value=3)
+        expected_result = [mock_1, mock_2, mock_3]
+        builder = ParsedDiceStringBuilder("1d20").with_operators([mock_1, mock_2])
+
+        # Act
+        builder.with_operators([mock_3])
+
+        # Assert
+        self.assertEqual(expected_result, builder._operators)
+
+
 @patch("pydice.dice_string.dice_string_parser_factory.RollResultBuilder.create_roll_result_builder")
 class BuildTests(ParsedDiceStringBuilderTests):
     def test_dice_is_present_no_failures_adds_roll_result(self, created_builder):
