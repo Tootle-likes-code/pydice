@@ -53,6 +53,10 @@ class ParsedDiceStringBuilder:
         failure = InvalidDice(self._dice_string)
         return self.with_failure(failure)
 
+    def with_unfinished_operator(self, unfinished_operator):
+        failure = UnfinishedOperator(unfinished_operator)
+        return self.with_failure(failure)
+
     def build(self) -> ParsedDiceString:
         self._build_roll_result()
         return ParsedDiceString(self._dice_string, self._failures, self._roll_result)
