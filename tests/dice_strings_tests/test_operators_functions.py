@@ -1,26 +1,26 @@
 import unittest
 
-from pydice.dice_string.operators import OperatorFactory, AddOperator, SubtractOperator, MultiplyOperator, \
+from pydice.dice_string.operators import AddOperator, SubtractOperator, MultiplyOperator, \
     DivideOperator, \
     EqualToOperator, GreaterThanEqualToOperator, ExplodingOperator, GreaterThanOperator, LessThanOperator, \
-    LessThanEqualToOperator, NotEqualToOperator
+    LessThanEqualToOperator, NotEqualToOperator, get_operator
 
 
-class OperatorFactoryTests(unittest.TestCase):
+class OperatorFunctionsTests(unittest.TestCase):
     pass
 
 
-class GetOperatorTests(OperatorFactoryTests):
+class GetOperatorTests(OperatorFunctionsTests):
     def test_get_operator_is_invalid_returns_none(self):
         # Act
-        result = OperatorFactory.get_operator("kajhdfklah", 100)
+        result = get_operator("kajhdfklah", 100)
 
         # Assert
         self.assertIsNone(result)
 
     def test_get_operator_is_add_returns_AddOperator(self):
         # Act
-        result = OperatorFactory.get_operator("+", 5)
+        result = get_operator("+", 5)
 
         # Assert
         self.assertIsInstance(result, AddOperator)
@@ -30,14 +30,14 @@ class GetOperatorTests(OperatorFactoryTests):
         expected_result = 5
 
         # Act
-        result = OperatorFactory.get_operator("+", 5)
+        result = get_operator("+", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)
 
     def test_get_operator_is_subtract_returns_SubtractOperator(self):
         # Act
-        result = OperatorFactory.get_operator("-", 5)
+        result = get_operator("-", 5)
 
         # Assert
         self.assertIsInstance(result, SubtractOperator)
@@ -47,14 +47,14 @@ class GetOperatorTests(OperatorFactoryTests):
         expected_result = 5
 
         # Act
-        result = OperatorFactory.get_operator("-", 5)
+        result = get_operator("-", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)
 
     def test_get_operator_is_multiply_returns_MultiplyOperator(self):
         # Act
-        result = OperatorFactory.get_operator("*", 5)
+        result = get_operator("*", 5)
 
         # Assert
         self.assertIsInstance(result, MultiplyOperator)
@@ -64,14 +64,14 @@ class GetOperatorTests(OperatorFactoryTests):
         expected_result = 5
 
         # Act
-        result = OperatorFactory.get_operator("*", 5)
+        result = get_operator("*", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)
 
     def test_get_operator_is_multiply_x_returns_MultiplyOperator(self):
         # Act
-        result = OperatorFactory.get_operator("x", 5)
+        result = get_operator("x", 5)
 
         # Assert
         self.assertIsInstance(result, MultiplyOperator)
@@ -81,7 +81,7 @@ class GetOperatorTests(OperatorFactoryTests):
         expected_result = 5
 
         # Act
-        result = OperatorFactory.get_operator("x", 5)
+        result = get_operator("x", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)
@@ -91,14 +91,14 @@ class GetOperatorTests(OperatorFactoryTests):
         expected_result = 5
 
         # Act
-        result = OperatorFactory.get_operator("X", 5)
+        result = get_operator("X", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)
 
     def test_get_operator_is_divide_returns_DivideOperator(self):
         # Act
-        result = OperatorFactory.get_operator("/", 5)
+        result = get_operator("/", 5)
 
         # Assert
         self.assertIsInstance(result, DivideOperator)
@@ -108,14 +108,14 @@ class GetOperatorTests(OperatorFactoryTests):
         expected_result = 5
 
         # Act
-        result = OperatorFactory.get_operator("/", 5)
+        result = get_operator("/", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)
 
     def test_get_operator_is_exploding_returns_ExplodingOperator(self):
         # Act
-        result = OperatorFactory.get_operator("e", 5)
+        result = get_operator("e", 5)
 
         # Assert
         self.assertIsInstance(result, ExplodingOperator)
@@ -125,14 +125,14 @@ class GetOperatorTests(OperatorFactoryTests):
         expected_result = 5
 
         # Act
-        result = OperatorFactory.get_operator("e", 5)
+        result = get_operator("e", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)
 
     def test_get_operator_is_equal_to_returns_EqualToOperator(self):
         # Act
-        result = OperatorFactory.get_operator("=", 5)
+        result = get_operator("=", 5)
 
         # Assert
         self.assertIsInstance(result, EqualToOperator)
@@ -142,14 +142,14 @@ class GetOperatorTests(OperatorFactoryTests):
         expected_result = 5
 
         # Act
-        result = OperatorFactory.get_operator("=", 5)
+        result = get_operator("=", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)
 
     def test_get_operator_is_not_equal_to_returns_NotEqualToOperator(self):
         # Act
-        result = OperatorFactory.get_operator("!=", 5)
+        result = get_operator("!=", 5)
 
         # Assert
         self.assertIsInstance(result, NotEqualToOperator)
@@ -159,14 +159,14 @@ class GetOperatorTests(OperatorFactoryTests):
         expected_result = 5
 
         # Act
-        result = OperatorFactory.get_operator("!=", 5)
+        result = get_operator("!=", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)
 
     def test_get_operator_is_not_equal_to_alt_returns_NotEqualToOperator(self):
         # Act
-        result = OperatorFactory.get_operator("=/=", 5)
+        result = get_operator("=/=", 5)
 
         # Assert
         self.assertIsInstance(result, NotEqualToOperator)
@@ -176,14 +176,14 @@ class GetOperatorTests(OperatorFactoryTests):
         expected_result = 5
 
         # Act
-        result = OperatorFactory.get_operator("=/=", 5)
+        result = get_operator("=/=", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)
 
     def test_get_operator_is_greater_than_returns_GreaterThanOperator(self):
         # Act
-        result = OperatorFactory.get_operator(">", 5)
+        result = get_operator(">", 5)
 
         # Assert
         self.assertIsInstance(result, GreaterThanOperator)
@@ -193,14 +193,14 @@ class GetOperatorTests(OperatorFactoryTests):
         expected_result = 5
 
         # Act
-        result = OperatorFactory.get_operator(">", 5)
+        result = get_operator(">", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)
 
     def test_get_operator_is_greater_than_equal_to_returns_GreaterThanEqualToOperator(self):
         # Act
-        result = OperatorFactory.get_operator(">=", 5)
+        result = get_operator(">=", 5)
 
         # Assert
         self.assertIsInstance(result, GreaterThanEqualToOperator)
@@ -210,14 +210,14 @@ class GetOperatorTests(OperatorFactoryTests):
         expected_result = 5
 
         # Act
-        result = OperatorFactory.get_operator(">=", 5)
+        result = get_operator(">=", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)
 
     def test_get_operator_is_less_than_returns_LessThanOperator(self):
         # Act
-        result = OperatorFactory.get_operator("<", 5)
+        result = get_operator("<", 5)
 
         # Assert
         self.assertIsInstance(result, LessThanOperator)
@@ -227,14 +227,14 @@ class GetOperatorTests(OperatorFactoryTests):
         expected_result = 5
 
         # Act
-        result = OperatorFactory.get_operator("<", 5)
+        result = get_operator("<", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)
 
     def test_get_operator_is_less_than_equal_to_returns_LessThanEqualToOperator(self):
         # Act
-        result = OperatorFactory.get_operator("<=", 5)
+        result = get_operator("<=", 5)
 
         # Assert
         self.assertIsInstance(result, LessThanEqualToOperator)
@@ -244,7 +244,7 @@ class GetOperatorTests(OperatorFactoryTests):
         expected_result = 5
 
         # Act
-        result = OperatorFactory.get_operator("<=", 5)
+        result = get_operator("<=", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)

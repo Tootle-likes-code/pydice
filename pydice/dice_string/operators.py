@@ -85,41 +85,12 @@ ACCEPTED_OPERATORS: dict[str, type] = {
 }
 
 
-class OperatorFactory:
-    @staticmethod
-    def get_operator(operator: str, value: int) -> Operator | None:
-        if operator.lower() not in ACCEPTED_OPERATORS:
-            return
+def get_operator(operator: str, value: int) -> Operator | None:
+    if operator.lower() not in ACCEPTED_OPERATORS:
+        return
 
-        return ACCEPTED_OPERATORS[operator.lower()](value)
+    return ACCEPTED_OPERATORS[operator.lower()](value)
 
-    @staticmethod
-    def get_operators(operator_string: str) -> list[Operator]:
-        operator = ""
-        value = ""
-        operators: list[Operator] = []
 
-        for index, character in enumerate(operator_string):
-            if not character.isnumeric():
-                operator += character
-                continue
-
-            if index == len(operator_string):
-                break
-
-            next_character = operator_string[index + 1:index + 2]
-            if index != len(operator_string) and next_character.isnumeric():
-                value = character
-                continue
-            value += character
-            built_operator = OperatorFactory.get_operator(operator, int(value))
-            if built_operator is not None:
-                operators.append(built_operator)
-            operator = ""
-            value = ""
-
-        return operators
-
-    @staticmethod
-    def get_storyteller_operators() -> list[Operator]:
-        return [EqualToOperator(10), GreaterThanEqualToOperator(7)]
+def get_storyteller_operators() -> list[Operator]:
+    return [EqualToOperator(10), GreaterThanEqualToOperator(7)]
