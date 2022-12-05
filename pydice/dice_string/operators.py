@@ -99,18 +99,16 @@ class OperatorFactory:
         value = ""
         operators: list[Operator] = []
 
-        for i in range(len(operator_string)):
-            character = operator_string[i:i + 1][0]
-
+        for index, character in enumerate(operator_string):
             if not character.isnumeric():
                 operator += character
                 continue
 
-            if i == len(operator_string):
+            if index == len(operator_string):
                 break
 
-            next_character = operator_string[i + 1:i + 2]
-            if i != len(operator_string) and next_character.isnumeric():
+            next_character = operator_string[index + 1:index + 2]
+            if index != len(operator_string) and next_character.isnumeric():
                 value = character
                 continue
             value += character
