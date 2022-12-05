@@ -1,9 +1,10 @@
 import unittest
 from unittest.mock import MagicMock, patch, call
 
+from pydice.dice_string import operators
 from pydice.dice_string.dice_string_parser import DiceStringParser
 from pydice.dice_string.parsed_dice_string_builder import ParsedDiceStringBuilder
-from pydice.dice_string.operators import AddOperator, OperatorFactory
+from pydice.dice_string.operators import AddOperator
 from pydice.die import Dice, Die
 from tests import helpers
 
@@ -84,7 +85,7 @@ class ParseTests(DiceStringParserTests):
 
     def test_storyteller_dice_calls_builder_add_storyteller_operators(self, mock_create_builder):
         # Arrange
-        expected_calls = [call(OperatorFactory.get_storyteller_operators())]
+        expected_calls = [call(operators.get_storyteller_operators())]
         mock_create_builder.return_value = self.mock_builder
 
         # Act
@@ -96,7 +97,7 @@ class ParseTests(DiceStringParserTests):
 
     def test_storyteller_dice_with_modifier_builder_adds_correct_operators(self, mock_create_builder):
         # Arrange
-        expected_calls = [call(OperatorFactory.get_storyteller_operators()), call([AddOperator(4)])]
+        expected_calls = [call(operators.get_storyteller_operators()), call([AddOperator(4)])]
         mock_create_builder.return_value = self.mock_builder
 
         # Act

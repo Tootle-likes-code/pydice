@@ -1,7 +1,8 @@
 import re
 from re import Pattern, Match
 
-from pydice.dice_string.operators import OperatorFactory
+from pydice.dice_string import operators as operator_functions
+from pydice.dice_string.operator_string import OperatorString
 from pydice.dice_string.parsed_dice_string import ParsedDiceString
 from pydice.dice_string.parsed_dice_string_builder import ParsedDiceStringBuilder
 from pydice.die import Dice, Die
@@ -58,7 +59,7 @@ class DiceStringParser:
     def _create_storyteller_dice(self, storyteller_match: Match) -> None:
         number_of_dice = int(storyteller_match.group("number_of_dice"))
         self._builder.with_storyteller_dice(number_of_dice)
-        self._builder.with_operators(OperatorFactory.get_storyteller_operators())
+        self._builder.with_operators(operator_functions.get_storyteller_operators())
 
     def _extract_generic_dice(self):
         dice_match = re.match(_extract_dice_regex, self._dice_string)
@@ -75,10 +76,13 @@ class DiceStringParser:
         self._builder.with_dice(Dice(Die(dice_size), number_of_dice))
 
     def _extract_operators(self) -> None:
-        operator_string = self._get_operator_string()
-        if not operator_string:
+        operator_string = OperatorString(self._get_operator_string())
+        if not operator_string.operators:
             return
-        self._builder.with_operators(OperatorFactory.get_operators(operator_string))
+        self._builder.with_operators(operator_string.operators)
+
+        if operator_string.unfinished_operators:
+            self._builder.with_unfinished_operator(operator_string.unfinished_operators)
 
     def _get_operator_string(self):
         modifiers = re.split(_base_dice_regex, self._dice_string)

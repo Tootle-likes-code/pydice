@@ -1,9 +1,8 @@
 import re
-from re import Match
-from typing import Optional, Pattern
+from typing import Optional
 
-from pydice.dice_string.dice_parser_failures import DiceParserFailure, InvalidDice
-from pydice.dice_string.operators import Operator, OperatorFactory
+from pydice.dice_string.dice_parser_failures import DiceParserFailure, InvalidDice, UnfinishedOperator
+from pydice.dice_string.operators import Operator
 from pydice.dice_string.parsed_dice_string import ParsedDiceString
 from pydice.die import Dice, Die, FateDie
 from pydice.roll_result import RollResult
