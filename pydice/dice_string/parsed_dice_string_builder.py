@@ -1,4 +1,3 @@
-import re
 from typing import Optional
 
 from pydice.dice_string.dice_parser_failures import DiceParserFailure, InvalidDice, UnfinishedOperator
@@ -7,11 +6,6 @@ from pydice.dice_string.parsed_dice_string import ParsedDiceString
 from pydice.die import Dice, Die, FateDie
 from pydice.roll_result import RollResult
 from pydice.roll_result_operators.roll_result_builder import RollResultBuilder
-
-_fate_regex = re.compile(r"df", re.IGNORECASE)
-_storyteller_regex = re.compile(r"(?P<number_of_dice>\d+)st", re.IGNORECASE)
-_base_dice_regex = re.compile(r"(?:\d*d\d.)|(?:\d+st)|(?:df)", re.IGNORECASE)
-_extract_dice_regex = re.compile(r"(?P<number_of_dice>\d*)d(?P<dice_size>\d+)", re.IGNORECASE)
 
 fate_dice = Dice(FateDie(), 4)
 d10 = Die(10)
