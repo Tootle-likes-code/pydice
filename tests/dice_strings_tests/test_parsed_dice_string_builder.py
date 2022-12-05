@@ -1,7 +1,7 @@
 import unittest
-from unittest.mock import MagicMock, patch, Mock
+from unittest.mock import MagicMock, patch
 
-from pydice.dice_string.dice_string_parser_factory import ParsedDiceStringBuilder
+from pydice.dice_string.parsed_dice_string_builder import ParsedDiceStringBuilder
 from pydice.die import Dice, Die
 
 
@@ -28,7 +28,7 @@ class WithOperatorsTests(ParsedDiceStringBuilderTests):
         self.assertEqual(expected_result, builder._operators)
 
 
-@patch("pydice.dice_string.dice_string_parser_factory.RollResultBuilder.create_roll_result_builder")
+@patch("pydice.dice_string.parsed_dice_string_builder.RollResultBuilder.create_roll_result_builder")
 class BuildTests(ParsedDiceStringBuilderTests):
     def test_dice_is_present_no_failures_adds_roll_result(self, created_builder):
         # Arrange
