@@ -2,6 +2,7 @@ import unittest
 from unittest import skip
 from unittest.mock import patch
 
+from pydice.dice_string.dice_parser_failures import UnfinishedOperator
 from pydice.dice_string.dice_string_interpreter import interpret
 from pydice.dice_string.parsed_dice_string import ParsedDiceString
 from pydice.die import Dice, Die, FateDie
@@ -279,6 +280,20 @@ class InterpretTests(StringInterpreterTests):
         # Assert
         self.assertEqual(expected_result, result)
         self.fail("Not Implemented")
+
+    def test_interpret_unfinished_operators_returns_operator_failure(self, _):
+        # Arrange
+        expected_result = ParsedDiceString(
+            "1d20+5e",
+            [UnfinishedOperator("e")],
+            AddToRollResultDecorator(DiceRollResult(self.d20, [9]), 5)
+        )
+
+        # Act
+        result = interpret("1d20+5e")
+
+        # Assert
+        self.assertEqual(expected_result, result)
 
 
 @patch("pydice.die.random.randint", side_effect=default_fate_result)
