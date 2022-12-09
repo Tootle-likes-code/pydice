@@ -1,144 +1,136 @@
 import unittest
+from unittest.mock import MagicMock, patch, call
 
-from pydice.dice_string import dice_string_parser as dice_parser
-from pydice.dice_string.dice_string_parser import DefaultDiceStringParser
-from pydice.die import Dice, Die, FateDie
-from pydice.dice_string.operators import AddOperator, SubtractOperator, GreaterThanEqualToOperator, EqualToOperator
+from pydice.dice_string import operators
+from pydice.dice_string.dice_string_parser import DiceStringParser
+from pydice.dice_string.parsed_dice_string_builder import ParsedDiceStringBuilder
+from pydice.dice_string.operators import AddOperator
+from pydice.die import Dice, Die
+from tests import helpers
 
 
 class DiceStringParserTests(unittest.TestCase):
-    pass
+    def setUp(self) -> None:
+        self.mock_builder = MagicMock(spec=ParsedDiceStringBuilder)
+        self.mock_builder.build.return_value = "ParsedDiceString"
 
 
-class CreateTests(DiceStringParserTests):
-    def test_create_invalid_normal_text_returns_none(self):
+@patch("pydice.dice_string.dice_string_parser.ParsedDiceStringBuilder.create_parsed_dice_string")
+class ParseTests(DiceStringParserTests):
+    def test_given_valid_dice_string_calls_builder_with_dice(self, mock_create_builder):
+        # Arrange
+        expected_calls = [call(Dice(Die(20), 1))]
+        mock_create_builder.return_value = self.mock_builder
+
         # Act
-        result = dice_parser.create("hello world")
+        DiceStringParser("1d20").parse()
+
+        # Assert
+        self.mock_builder.with_dice.assert_called_once()
+        self.mock_builder.with_dice.assert_has_calls(expected_calls)
+
+    def test_invalid_dice_adds_calls_builder_failure(self, mock_create_builder):
+        # Arrange
+        mock_create_builder.return_value = self.mock_builder
+
+        # Act
+        DiceStringParser("1d").parse()
+
+        # Assert
+        self.mock_builder.with_dice_failure.assert_called_once()
+
+    def test_fate_dice_calls_builder_add_fate_dice(self, mock_create_builder):
+        # Arrange
+        mock_create_builder.return_value = self.mock_builder
+
+        # Act
+        DiceStringParser("df").parse()
+
+        # Assert
+        self.mock_builder.with_fate_dice.assert_called_once()
+
+    def test_storyteller_dice_calls_builder_add_storyteller_dice(self, mock_create_builder):
+        # Arrange
+        expected_calls = [call(5)]
+        mock_create_builder.return_value = self.mock_builder
+
+        # Act
+        DiceStringParser("5st").parse()
+
+        # Assert
+        self.mock_builder.with_storyteller_dice.assert_called_once()
+        self.mock_builder.with_storyteller_dice.assert_has_calls(expected_calls)
+
+    def test_valid_dice_with_operators_calls_builder_add_operator(self, mock_create_builder):
+        # Arrange
+        expected_calls = [call([AddOperator(4)])]
+        mock_create_builder.return_value = self.mock_builder
+
+        # Act
+        DiceStringParser("1d20+4").parse()
+
+        # Assert
+        self.mock_builder.with_operators.assert_called_once()
+        self.mock_builder.with_operators.assert_has_calls(expected_calls)
+
+    def test_no_modifiers_adds_no_modifiers(self, mock_create_builder):
+        # Arrange
+        mock_create_builder.return_value = self.mock_builder
+
+        # Act
+        DiceStringParser("1d20").parse()
+
+        # Assert
+        self.mock_builder.with_operators.assert_not_called()
+
+    def test_storyteller_dice_calls_builder_add_storyteller_operators(self, mock_create_builder):
+        # Arrange
+        expected_calls = [call(operators.get_storyteller_operators())]
+        mock_create_builder.return_value = self.mock_builder
+
+        # Act
+        DiceStringParser("5st").parse()
+
+        # Assert
+        self.mock_builder.with_operators.assert_called_once()
+        self.mock_builder.with_operators.assert_has_calls(expected_calls)
+
+    def test_storyteller_dice_with_modifier_builder_adds_correct_operators(self, mock_create_builder):
+        # Arrange
+        expected_calls = [call(operators.get_storyteller_operators()), call([AddOperator(4)])]
+        mock_create_builder.return_value = self.mock_builder
+
+        # Act
+        DiceStringParser("5st+4").parse()
+
+        # Assert
+        helpers.assert_is_calls(self.mock_builder.with_operators, expected_calls)
+
+
+@patch("pydice.dice_string.dice_string_parser.ParsedDiceStringBuilder.create_parsed_dice_string")
+class ParsedDiceStringTests(DiceStringParserTests):
+    def test_no_parse_called_returns_None(self, _):
+        # Arrange
+        dice_string_parser = DiceStringParser("1d20+4")
+
+        # Act
+        result = dice_string_parser.parsed_dice_string
 
         # Assert
         self.assertIsNone(result)
 
-    def test_create_dice_without_dice_size_returns_none(self):
-        # Act
-        result = dice_parser.create("12d")
-
-        # Assert
-        self.assertIsNone(result)
-
-    def test_create_oned20_returns_correct_parser(self):
-        # Act
-        result = dice_parser.create("1d20")
-
-        # Assert
-        self.assertTrue(isinstance(result, DefaultDiceStringParser))
-
-    def test_create_d20_returns_correct_parser(self):
-        # Act
-        result = dice_parser.create("d20")
-
-        # Assert
-        self.assertTrue(isinstance(result, DefaultDiceStringParser))
-
-    def test_create_d20_parses_correct_dice(self):
+    def test_valid_parse_sets_expected_ParsedDiceString(self, mock_create_builder):
         # Arrange
-        expected_result = Dice(Die(20), 1)
+        expected_result = "ParsedDiceString"
+        mock_create_builder.return_value = self.mock_builder
+        dice_string_parser = DiceStringParser("1d20+4")
 
         # Act
-        result = dice_parser.create("d20")
+        dice_string_parser.parse()
+        result = dice_string_parser.parsed_dice_string
 
         # Assert
-        self.assertEqual(expected_result, result.dice)
-
-    def test_create_d20_initialises_operators_as_empty(self):
-        # Arrange
-        expected_result = []
-
-        # Act
-        result = dice_parser.create("d20")
-
-        # Assert
-        self.assertEqual(expected_result, result._operators)
-
-    def test_create_d20_plus_5_parses_correct_operators(self):
-        # Arrange
-        expected_result = [AddOperator(5)]
-
-        # Act
-        result = dice_parser.create("d20+5")
-
-        # Assert
-        self.assertEqual(expected_result, result._operators)
-
-    def test_create_d20_plus_5_plus_5_parses_correct_operators(self):
-        # Arrange
-        expected_result = [AddOperator(5), AddOperator(5)]
-
-        # Act
-        result = dice_parser.create("d20+5+5")
-
-        # Assert
-        self.assertEqual(expected_result, result._operators)
-
-    def test_create_d20_plus_5_minus_6_parses_correct_operators(self):
-        # Arrange
-        expected_result = [AddOperator(5), SubtractOperator(6)]
-
-        # Act
-        result = dice_parser.create("d20+5-6")
-
-        # Assert
-        self.assertEqual(expected_result, result._operators)
-
-    def test_create_d20_greater_than_equal_to_parses_correct_operator(self):
-        # Arrange
-        expected_result = [GreaterThanEqualToOperator(5)]
-
-        # Act
-        result = dice_parser.create("d20>=5")
-
-        # Assert
-        self.assertEqual(expected_result, result._operators)
-
-    def test_create_fate_dice_returns_correct_parser(self):
-        # Act
-        result = dice_parser.create("dF")
-
-        # Assert
-        self.assertTrue(isinstance(result, DefaultDiceStringParser))
-
-    def test_create_fate_dice_returns_fate_dice(self):
-        # Act
-        result = dice_parser.create("dF")
-
-        # Assert
-        self.assertIs(FateDie, type(result.dice.die))
-
-    def test_create_st_returns_correct_parser(self):
-        # Act
-        result = dice_parser.create("10ST10")
-
-        # Assert
-        self.assertTrue(isinstance(result, DefaultDiceStringParser))
-
-    def test_create_st_returns_correct_operators(self):
-        # Arrange
-        expected_result = [EqualToOperator(10), GreaterThanEqualToOperator(7), AddOperator(7)]
-
-        # Act
-        result = dice_parser.create("10st+7")
-
-        # Assert
-        self.assertEqual(expected_result, result._operators)
-
-    def test_create_invalid_operator_not_added_to_operators(self):
-        # Arrange
-        expected_results = []
-
-        # Act
-        results = dice_parser.create("1d20never10")
-
-        # Assert
-        self.assertEqual(expected_results, results._operators)
+        self.assertEqual(expected_result, result)
 
 
 if __name__ == '__main__':

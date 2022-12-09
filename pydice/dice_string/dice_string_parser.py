@@ -1,11 +1,19 @@
 import re
-from abc import ABC, abstractmethod
-from re import Match, Pattern
+from re import Pattern, Match
 
-from pydice.roll_result_operators.roll_result_builder import RollResultBuilder
-from pydice.die import Dice, Die, FateDie
-from pydice.dice_string.operators import Operator, OperatorFactory
-from pydice.roll_result import RollResult
+from pydice.dice_string import operators as operator_functions
+from pydice.dice_string.operator_string import OperatorString
+from pydice.dice_string.parsed_dice_string import ParsedDiceString
+from pydice.dice_string.parsed_dice_string_builder import ParsedDiceStringBuilder
+from pydice.die import Dice, Die
+
+
+def parse(dice_string: str) -> ParsedDiceString:
+    dice_string_parser = DiceStringParser(dice_string)
+    dice_string_parser.parse()
+
+    return dice_string_parser.parsed_dice_string
+
 
 _fate_regex = re.compile(r"df", re.IGNORECASE)
 _storyteller_regex = re.compile(r"(?P<number_of_dice>\d+)st", re.IGNORECASE)
@@ -13,119 +21,73 @@ _base_dice_regex = re.compile(r"(?:\d*d\d.)|(?:\d+st)|(?:df)", re.IGNORECASE)
 _extract_dice_regex = re.compile(r"(?P<number_of_dice>\d*)d(?P<dice_size>\d+)", re.IGNORECASE)
 
 
-class DiceStringParser(ABC):
-    def __init__(self, dice: Dice, operators: list[Operator] = None):
-        self.dice = dice
-        self._operators: list[Operator] = operators if operators is not None else []
+class DiceStringParser:
+    def __init__(self, dice_string):
+        self._parsed_dice_string = None
+        self._dice_string = dice_string
+        self._builder = ParsedDiceStringBuilder.create_parsed_dice_string(dice_string)
 
-    @abstractmethod
-    def parse(self) -> RollResult:
-        pass
+    def parse(self) -> None:
+        self._extract_dice()
+        self._extract_operators()
+        self._parsed_dice_string = self._builder.build()
 
+    def _extract_dice(self):
+        extracted_special_dice = self._extract_reserved_dice()
+        if extracted_special_dice:
+            return
 
-class DefaultDiceStringParser(DiceStringParser):
-    def __init__(self, dice: Dice, operators: list[Operator] = None):
-        super().__init__(dice, operators)
+        self._extract_generic_dice()
 
-    def parse(self) -> RollResult | None:
-        builder = RollResultBuilder.create_roll_result_builder(self.dice)
-        for operator in self._operators:
-            if operator is None:
-                return None
-            builder = operator.add(builder)
+    def _extract_reserved_dice(self) -> bool:
+        if self._check_string_for_dice(_fate_regex):
+            self._builder.with_fate_dice()
+            return True
 
-        return builder.build()
+        storyteller_match = self._check_string_for_dice(_storyteller_regex)
+        if storyteller_match:
+            self._create_storyteller_dice(storyteller_match)
+            return True
 
+        return False
 
-def _check_string_for_dice(dice_regex: Pattern, dice_string: str) -> Match:
-    match = re.match(dice_regex, dice_string)
+    def _check_string_for_dice(self, dice_regex: Pattern) -> Match:
+        match = re.match(dice_regex, self._dice_string)
 
-    return match
+        return match
 
+    def _create_storyteller_dice(self, storyteller_match: Match) -> None:
+        number_of_dice = int(storyteller_match.group("number_of_dice"))
+        self._builder.with_storyteller_dice(number_of_dice)
+        self._builder.with_operators(operator_functions.get_storyteller_operators())
 
-def _create_fate_dice():
-    return Dice(FateDie(), 4)
+    def _extract_generic_dice(self):
+        dice_match = re.match(_extract_dice_regex, self._dice_string)
+        if not dice_match:
+            self._builder.with_dice_failure()
+            return
 
+        number_of_dice = int(dice_match.group("number_of_dice")) if \
+            "number_of_dice" in dice_match.groupdict().keys() \
+            and dice_match.group("number_of_dice") != '' \
+            else 1
+        dice_size = int(dice_match.group("dice_size"))
 
-def _create_storyteller_dice(storyteller_match: Match) -> (Dice, str):
-    number_of_dice = storyteller_match.group("number_of_dice")
-    dice = Dice(Die(10), int(number_of_dice))
-    return dice, "=10>=7"
+        self._builder.with_dice(Dice(Die(dice_size), number_of_dice))
 
+    def _extract_operators(self) -> None:
+        operator_string = OperatorString(self._get_operator_string())
+        if not operator_string.operators:
+            return
+        self._builder.with_operators(operator_string.operators)
 
-def _check_specialty_dice(dice_string: str) -> (Dice, str):
-    if _check_string_for_dice(_fate_regex, dice_string):
-        return _create_fate_dice()
+        if operator_string.unfinished_operators:
+            self._builder.with_unfinished_operator(operator_string.unfinished_operators)
 
-    storyteller_match = _check_string_for_dice(_storyteller_regex, dice_string)
-    if storyteller_match:
-        return _create_storyteller_dice(storyteller_match)
+    def _get_operator_string(self):
+        modifiers = re.split(_base_dice_regex, self._dice_string)
+        return modifiers[1] if len(modifiers) > 1 else None
 
-
-def _construct_dice_from_string(dice_match: Match) -> Dice | None:
-    number_of_dice = int(dice_match.group("number_of_dice")) if \
-        "number_of_dice" in dice_match.groupdict().keys() \
-        and dice_match.group("number_of_dice") != '' \
-        else 1
-    dice_size = int(dice_match.group("dice_size"))
-
-    return Dice(Die(dice_size), number_of_dice)
-
-
-def _get_dice(dice_string: str) -> (Dice, str):
-    specialty_dice = _check_specialty_dice(dice_string)
-    if specialty_dice:
-        return specialty_dice
-
-    dice_match = re.match(_extract_dice_regex, dice_string)
-    if not dice_match:
-        return
-
-    return _construct_dice_from_string(dice_match), ""
-
-
-def _get_operator_string(dice_string):
-    modifiers = re.split(_base_dice_regex, dice_string)
-    return modifiers[1]
-
-
-def _split_operators(operator_string) -> list[Operator]:
-    operator = ""
-    value = ""
-    operators: list[Operator] = []
-    for i in range(len(operator_string)):
-        character = operator_string[i:i + 1][0]
-        if character.isnumeric():
-            if i != len(operator_string) and operator_string[i + 1:i + 2].isnumeric():
-                value = character
-                continue
-            value += character
-            built_operator = OperatorFactory.get_operator(operator, int(value))
-            if built_operator is not None:
-                operators.append(built_operator)
-            operator = ""
-            value = ""
-        else:
-            operator += character
-
-    return operators
-
-
-def _get_operators(dice_string: str, dice_based_operators: str = "") -> list[Operator]:
-    operator_string = _get_operator_string(dice_string)
-    operator_string = dice_based_operators + operator_string
-    return _split_operators(operator_string)
-
-
-def create(dice_string: str) -> DiceStringParser | None:
-    dice = _get_dice(dice_string)
-    dice_based_operators = ""
-
-    if not dice:
-        return
-    if isinstance(dice, tuple):
-        dice, dice_based_operators = dice
-
-    operators = _get_operators(dice_string, dice_based_operators)
-
-    return DefaultDiceStringParser(dice, operators)
+    @property
+    def parsed_dice_string(self) -> ParsedDiceString | None:
+        return self._parsed_dice_string

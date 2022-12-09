@@ -85,10 +85,12 @@ ACCEPTED_OPERATORS: dict[str, type] = {
 }
 
 
-class OperatorFactory:
-    @staticmethod
-    def get_operator(operator: str, value: int) -> Operator | None:
-        if operator.lower() not in ACCEPTED_OPERATORS:
-            return
+def get_operator(operator: str, value: int) -> Operator | None:
+    if operator.lower() not in ACCEPTED_OPERATORS:
+        return
 
-        return ACCEPTED_OPERATORS[operator.lower()](value)
+    return ACCEPTED_OPERATORS[operator.lower()](value)
+
+
+def get_storyteller_operators() -> list[Operator]:
+    return [EqualToOperator(10), GreaterThanEqualToOperator(7)]
