@@ -1,8 +1,29 @@
+"""
+A module for containing strings of pydice.dice_string.operators.
+
+=======
+Classes
+=======
+OperatorString - A class to represent an Operator String.
+"""
+
 from pydice.dice_string import operators as operator_functions
 from pydice.dice_string.operators import Operator
 
 
 class OperatorString:
+    """
+    Represents a string of pydice.dice_string.operators and contains basic
+    processing to extract operators.
+
+    =======
+    Methods
+    =======
+    :operators: Returns the operators contained in the given Operator String.
+    :unfinished_operators:
+        Returns the end of the string that was unable to converted to an Operator.
+    :is_valid: Returns if this operator was valid.
+    """
     def __init__(self, operator_string: str | None):
         self.operator_string = operator_string
         self._operators: list[Operator] = []
@@ -37,8 +58,21 @@ class OperatorString:
 
     @property
     def operators(self) -> list[Operator]:
+        """
+        Returns the parsed operators.
+        """
         return self._operators
 
     @property
-    def unfinished_operators(self) -> str:
+    def unfinished_operators(self) -> str | None:
+        """
+        Returns the unparsed operators.
+        """
         return self._unfinished_operators
+
+    @property
+    def is_valid(self) -> bool:
+        """
+        Returns if this Operator String was valid.
+        """
+        return self._unfinished_operators is None
