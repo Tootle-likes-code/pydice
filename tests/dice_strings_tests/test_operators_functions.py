@@ -3,7 +3,7 @@ import unittest
 from pydice.dice_string.operators import AddOperator, SubtractOperator, MultiplyOperator, \
     DivideOperator, \
     EqualToOperator, GreaterThanEqualToOperator, ExplodingOperator, GreaterThanOperator, LessThanOperator, \
-    LessThanEqualToOperator, NotEqualToOperator, get_operator
+    LessThanEqualToOperator, NotEqualToOperator, get_operator, DropHighestOperator
 
 
 class OperatorFunctionsTests(unittest.TestCase):
@@ -245,6 +245,23 @@ class GetOperatorTests(OperatorFunctionsTests):
 
         # Act
         result = get_operator("<=", 5)
+
+        # Assert
+        self.assertEqual(expected_result, result.value)
+
+    def test_get_operator_drop_highest_returns_DropHighestOperator(self):
+        # Act
+        result = get_operator("dh", 5)
+
+        # Assert
+        self.assertIsInstance(result, DropHighestOperator)
+
+    def test_get_operator_drop_highest_returns_correct_value(self):
+        # Arrange
+        expected_result = 5
+
+        # Act
+        result = get_operator("dh", 5)
 
         # Assert
         self.assertEqual(expected_result, result.value)
