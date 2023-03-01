@@ -133,3 +133,20 @@ class DropLowestDecorator(DropDiceDecorator):
     @property
     def die_rolls(self) -> list[int]:
         return sorted(self.roll_result.die_rolls)[self.number_to_drop:]
+
+@dataclass
+class DropHighestDecorator(DropDiceDecorator):
+    """
+    A decorator that reduces the number of die rolled by a specified number, keeping only the lowest values.
+    """
+    number_to_drop: int = 1
+    minimum_drop: ClassVar[int] = 1
+
+    def __post_init__(self):
+        if self.number_to_drop < self.minimum_drop:
+            raise ValueError(f"Cannot drop less than {self.minimum_drop}.  Attempted to drop {self.number_to_drop}")
+
+    @property
+    def die_rolls(self) -> list[int]:
+        dice_to_drop = self.number_to_drop * -1
+        return sorted(self.roll_result.die_rolls)[:dice_to_drop]
