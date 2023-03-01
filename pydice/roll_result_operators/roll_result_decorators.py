@@ -1,5 +1,6 @@
 from abc import ABC
 from dataclasses import dataclass, field
+from typing import ClassVar
 
 from pydice.die import Die
 from pydice.roll_result import RollResult
@@ -15,7 +16,7 @@ class RollResultDecorator(RollResult, ABC):
 
     @property
     def die_rolls(self) -> list[int]:
-        return self.roll_result.die_rolls
+        return sorted(self.roll_result.die_rolls)
 
     def add_die_roll(self, new_value: int) -> None:
         self.roll_result.add_die_roll(new_value)
@@ -77,6 +78,7 @@ class DivideByRollResultDecorator(RollResultDecorator):
 class ExplodeDiceForTargetDecorator(RollResultDecorator):
     """
     A decorator to cause rolls of n to be rolled again and added to the result.
+    Values that have exploded are added where the exploded value appears.
     """
     target_number: int
 
@@ -103,3 +105,20 @@ class ExplodeDiceForTargetDecorator(RollResultDecorator):
     def die_rolls(self) -> list[int]:
         return self._new_die_rolls
 
+
+@dataclass
+class DropLowestDecorator(RollResultDecorator):
+    """
+    A decorator that reduces the number of dice results to a specified number, keeping only
+    the lowest values.
+    """
+    number_to_drop: int = 1
+    minimum_roll: ClassVar[int] = 1
+
+    def __post_init__(self):
+        if self.number_to_drop < self.minimum_roll:
+            raise ValueError(f"Cannot drop less than {self.minimum_roll}.  Attempted to drop {self.number_to_drop}")
+
+    @property
+    def die_rolls(self) -> list[int]:
+        return sorted(self.roll_result.die_rolls)[self.number_to_drop:]
