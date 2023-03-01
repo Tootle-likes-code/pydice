@@ -72,6 +72,10 @@ class DropHighestOperator(Operator):
     def add(self, builder: RollResultBuilder) -> RollResultBuilder:
         return builder.with_drop_highest(self.value)
 
+class DropLowestOperator(Operator):
+    def add(self, builder: RollResultBuilder) -> RollResultBuilder:
+        return builder.with_drop_lowest(self.value)
+
 
 ACCEPTED_OPERATORS: dict[str, type] = {
     "+": AddOperator,
@@ -87,7 +91,8 @@ ACCEPTED_OPERATORS: dict[str, type] = {
     "<": LessThanOperator,
     "<=": LessThanEqualToOperator,
     "e": ExplodingOperator,
-    "dh": DropHighestOperator
+    "dh": DropHighestOperator,
+    "dl": DropLowestOperator
 }
 
 
