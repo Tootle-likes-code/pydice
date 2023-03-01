@@ -12,7 +12,7 @@ from pydice.roll_result_operators.counter_roll_result_decorator import CountValu
     CountValuesLessThanDecorator, CountValuesNotEqualToDecorator
 from pydice.roll_result_operators.roll_result_decorators import AddToRollResultDecorator, \
     SubtractFromRollResultDecorator, \
-    MultiplyRollResultDecorator, DivideByRollResultDecorator, ExplodeDiceForTargetDecorator
+    MultiplyRollResultDecorator, DivideByRollResultDecorator, ExplodeDiceForTargetDecorator, DropHighestDecorator
 
 dice_results = [9, 10, 6, 7, 6, 1, 2, 4, 8, 3]
 default_fate_result = [-1, 1, 0, 0]
@@ -32,6 +32,7 @@ class InterpretTests(StringInterpreterTests):
     def setUp(self) -> None:
         self._default_roll_result = dice_results[:1]
         self.d20 = Dice(Die(20), 1)
+        self.five_d20 = Dice(Die(20), 5)
         self.ten_d10 = Dice(Die(10), 10)
 
     def test_interpret_with_simple_roll_returns_correct_value(self, _):
@@ -291,6 +292,20 @@ class InterpretTests(StringInterpreterTests):
 
         # Act
         result = interpret("1d20+5e")
+
+        # Assert
+        self.assertEqual(expected_result, result)
+
+    def test_interpret_drop_highest_operator_adds_decorator(self, _):
+        # Arrange
+        expected_result = ParsedDiceString(
+            "5d20dh3",
+            [],
+            DropHighestDecorator(DiceRollResult(self.five_d20, dice_results[:5]), 3)
+        )
+
+        # Act
+        result = interpret("5d20dh3")
 
         # Assert
         self.assertEqual(expected_result, result)
