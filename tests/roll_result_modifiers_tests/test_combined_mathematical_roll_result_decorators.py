@@ -18,10 +18,10 @@ class CombinedMathematicalRollResultDecoratorsTests(unittest.TestCase):
         self.final_roller = DivideByRollResultDecorator(self.multiply_decorator, 2)
 
 
-class DieRollTests(CombinedMathematicalRollResultDecoratorsTests):
-    def test_die_rolls_represent_base_rolls(self):
+class DieRollsTests(CombinedMathematicalRollResultDecoratorsTests):
+    def test_die_rolls_orders_base_rolls(self):
         # Arrange
-        expected_result = [4, 3, 5, 6, 1]
+        expected_result = [1, 3, 4, 5, 6]
 
         # Act
         result = self.final_roller.die_rolls
