@@ -12,7 +12,7 @@ class RollResultDecorator(RollResult, ABC):
     A dummy class intended to be the base for decorator pattern.
     """
     roll_result: RollResult
-    _result: int = field(init=False, repr=False)
+    _result: int = field(init=False, repr=False, compare=False)
 
     @property
     def die_rolls(self) -> list[int]:
