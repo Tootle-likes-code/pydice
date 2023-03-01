@@ -107,17 +107,28 @@ class ExplodeDiceForTargetDecorator(RollResultDecorator):
 
 
 @dataclass
-class DropLowestDecorator(RollResultDecorator):
+class DropDiceDecorator(RollResultDecorator, ABC):
     """
-    A decorator that reduces the number of dice results to a specified number, keeping only
-    the lowest values.
+    Root Class for all attempts to drop dice.
+    """
+    minimum_drop: ClassVar[int] = 1
+
+    @property
+    def result(self) -> int:
+        return sum(self.die_rolls)
+
+
+@dataclass
+class DropLowestDecorator(DropDiceDecorator):
+    """
+    A decorator that reduces the number of dice results by a specified number, keeping only
+    the highest values.
     """
     number_to_drop: int = 1
-    minimum_roll: ClassVar[int] = 1
 
     def __post_init__(self):
-        if self.number_to_drop < self.minimum_roll:
-            raise ValueError(f"Cannot drop less than {self.minimum_roll}.  Attempted to drop {self.number_to_drop}")
+        if self.number_to_drop < self.minimum_drop:
+            raise ValueError(f"Cannot drop less than {self.minimum_drop}.  Attempted to drop {self.number_to_drop}")
 
     @property
     def die_rolls(self) -> list[int]:
