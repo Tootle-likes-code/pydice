@@ -78,6 +78,7 @@ class DivideByRollResultDecorator(RollResultDecorator):
 class ExplodeDiceForTargetDecorator(RollResultDecorator):
     """
     A decorator to cause rolls of n to be rolled again and added to the result.
+    Values that have exploded are added where the exploded value appears.
     """
     target_number: int
 
