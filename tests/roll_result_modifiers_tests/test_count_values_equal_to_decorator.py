@@ -1,15 +1,17 @@
 import unittest
 from unittest.mock import MagicMock, PropertyMock
 
-from pydice.roll_result import RollResult
+from pydice.die import Dice, Die
+from pydice.roll_result import RollResult, DiceRollResult
 from pydice.roll_result_operators.counter_roll_result_decorator import CountValuesEqualToDecorator, \
     CounterRollResultDecorator
 
 
 class CountValuesEqualToDecoratorTests(unittest.TestCase):
     def setUp(self) -> None:
+        self.die_results = [1, 3, 3, 3, 5]
         self.mock_roll_result = MagicMock(spec=RollResult)
-        self.mock_roll_result.die_rolls = [1, 3, 3, 3, 5]
+        self.mock_roll_result.die_rolls = self.die_results
 
 
 class ConstructorTests(CountValuesEqualToDecoratorTests):
@@ -40,7 +42,8 @@ class ResultTests(CountValuesEqualToDecoratorTests):
     def test_counts_target_number_as_expected(self):
         # Arrange
         expected_result = 3
-        test_roll_result = CountValuesEqualToDecorator(self.mock_roll_result, 3)
+        roll_result = DiceRollResult(Dice(Die(6), 5), self.die_results)
+        test_roll_result = CountValuesEqualToDecorator(roll_result, 3)
 
         # Act
         result = test_roll_result.result
