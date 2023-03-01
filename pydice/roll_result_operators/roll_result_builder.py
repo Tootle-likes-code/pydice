@@ -64,5 +64,9 @@ class RollResultBuilder:
         self._dice_result = DropHighestDecorator(self._dice_result, number_to_drop)
         return self
 
+    def with_drop_lowest(self, number_to_drop: int) -> 'RollResultBuilder':
+        self._dice_result = DropLowestDecorator(self._dice_result, number_to_drop)
+        return self
+
     def build(self) -> RollResult:
         return self._dice_result
