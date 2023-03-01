@@ -5,7 +5,7 @@ from pydice.roll_result_operators.counter_roll_result_decorator import CountValu
     CountValuesLessThanDecorator, CountValuesNotEqualToDecorator
 from pydice.roll_result_operators.roll_result_decorators import AddToRollResultDecorator, \
     SubtractFromRollResultDecorator, \
-    MultiplyRollResultDecorator, DivideByRollResultDecorator, ExplodeDiceForTargetDecorator
+    MultiplyRollResultDecorator, DivideByRollResultDecorator, ExplodeDiceForTargetDecorator, DropHighestDecorator
 
 
 class RollResultBuilder:
@@ -57,6 +57,10 @@ class RollResultBuilder:
 
     def with_not_equals_to(self, target_number):
         self._dice_result = CountValuesNotEqualToDecorator(self._dice_result, target_number)
+        return self
+
+    def with_drop_highest(self, number_to_drop: int):
+        self._dice_result = DropHighestDecorator(self._dice_result, number_to_drop)
         return self
 
     def build(self) -> RollResult:
