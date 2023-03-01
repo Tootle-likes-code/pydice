@@ -68,6 +68,15 @@ class LessThanEqualToOperator(Operator):
         return builder.with_count_values_less_than_equal_to(self.value)
 
 
+class DropHighestOperator(Operator):
+    def add(self, builder: RollResultBuilder) -> RollResultBuilder:
+        return builder.with_drop_highest(self.value)
+
+class DropLowestOperator(Operator):
+    def add(self, builder: RollResultBuilder) -> RollResultBuilder:
+        return builder.with_drop_lowest(self.value)
+
+
 ACCEPTED_OPERATORS: dict[str, type] = {
     "+": AddOperator,
     "-": SubtractOperator,
@@ -81,7 +90,9 @@ ACCEPTED_OPERATORS: dict[str, type] = {
     ">=": GreaterThanEqualToOperator,
     "<": LessThanOperator,
     "<=": LessThanEqualToOperator,
-    "e": ExplodingOperator
+    "e": ExplodingOperator,
+    "dh": DropHighestOperator,
+    "dl": DropLowestOperator
 }
 
 

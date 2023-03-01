@@ -3,7 +3,8 @@ from unittest.mock import MagicMock
 
 from parameterized import parameterized
 
-from pydice.roll_result import RollResult
+from pydice.die import Dice, Die
+from pydice.roll_result import RollResult, DiceRollResult
 from pydice.roll_result_operators.roll_result_decorators import DropLowestDecorator
 
 
@@ -44,6 +45,35 @@ class DieRollsTests(DropLowestDecoratorTests):
 
         # Assert
         self.assertListEqual(expected_results, results)
+
+    def test_more_than_length_to_drop_returns_empty_list(self):
+        # Arrange
+        expected_results = []
+        test_roll = DropLowestDecorator(self.mocked_roll_result, 5)
+
+        # Act
+        results = test_roll.die_rolls
+
+        # Assert
+        self.assertListEqual(expected_results, results)
+
+
+class ResultsTests(DropLowestDecoratorTests):
+    def setUp(self) -> None:
+        super().setUp()
+        self.mock_dice = MagicMock(Dice)
+
+    def test_result_value_is_updated_correctly(self):
+        # Arrange
+        expected_result = 34
+        roll_result = DiceRollResult(self.mock_dice, self.die_rolls)
+        test_decorator = DropLowestDecorator(roll_result)
+
+        # Act
+        result = test_decorator.result
+
+        # Assert
+        self.assertEqual(expected_result, result)
 
 
 class GivenExampleTests(DropLowestDecoratorTests):

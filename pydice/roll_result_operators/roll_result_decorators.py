@@ -12,7 +12,7 @@ class RollResultDecorator(RollResult, ABC):
     A dummy class intended to be the base for decorator pattern.
     """
     roll_result: RollResult
-    _result: int = field(init=False, repr=False)
+    _result: int = field(init=False, repr=False, compare=False)
 
     @property
     def die_rolls(self) -> list[int]:
@@ -107,18 +107,46 @@ class ExplodeDiceForTargetDecorator(RollResultDecorator):
 
 
 @dataclass
-class DropLowestDecorator(RollResultDecorator):
+class DropDiceDecorator(RollResultDecorator, ABC):
     """
-    A decorator that reduces the number of dice results to a specified number, keeping only
-    the lowest values.
+    Root Class for all attempts to drop dice.
+    """
+    minimum_drop: ClassVar[int] = 1
+
+    @property
+    def result(self) -> int:
+        return sum(self.die_rolls)
+
+
+@dataclass
+class DropLowestDecorator(DropDiceDecorator):
+    """
+    A decorator that reduces the number of dice results by a specified number, keeping only
+    the highest values.
     """
     number_to_drop: int = 1
-    minimum_roll: ClassVar[int] = 1
 
     def __post_init__(self):
-        if self.number_to_drop < self.minimum_roll:
-            raise ValueError(f"Cannot drop less than {self.minimum_roll}.  Attempted to drop {self.number_to_drop}")
+        if self.number_to_drop < self.minimum_drop:
+            raise ValueError(f"Cannot drop less than {self.minimum_drop}.  Attempted to drop {self.number_to_drop}")
 
     @property
     def die_rolls(self) -> list[int]:
         return sorted(self.roll_result.die_rolls)[self.number_to_drop:]
+
+@dataclass
+class DropHighestDecorator(DropDiceDecorator):
+    """
+    A decorator that reduces the number of die rolled by a specified number, keeping only the lowest values.
+    """
+    number_to_drop: int = 1
+    minimum_drop: ClassVar[int] = 1
+
+    def __post_init__(self):
+        if self.number_to_drop < self.minimum_drop:
+            raise ValueError(f"Cannot drop less than {self.minimum_drop}.  Attempted to drop {self.number_to_drop}")
+
+    @property
+    def die_rolls(self) -> list[int]:
+        dice_to_drop = self.number_to_drop * -1
+        return sorted(self.roll_result.die_rolls)[:dice_to_drop]
