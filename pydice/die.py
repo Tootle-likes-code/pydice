@@ -44,7 +44,8 @@ class Die(Rollable):
     linearly increments for the number of sides.
     """
     sides: int
-    minimum_roll: int = 1
+    _minimum_roll: int = 1
+
     def roll(self) -> list[int]:
         """
         Returns a random roll of the die, between the min and max, placed into a list.
@@ -56,7 +57,11 @@ class Die(Rollable):
 
     @property
     def min(self) -> int:
-        return self.minimum_roll
+        """
+        Returns the minimum_roll of the die.
+        :return:
+        """
+        return self._minimum_roll
 
     @property
     def max(self) -> int:
@@ -69,10 +74,10 @@ class Die(Rollable):
 
     def __str__(self) -> str:
         base_string = f"D{self.sides}"
-        if self.minimum_roll == 1:
+        if self._minimum_roll == 1:
             return base_string
 
-        return base_string + f"[{self.minimum_roll}-{self.max}]"
+        return base_string + f"[{self._minimum_roll}-{self.max}]"
 
 
 @dataclass(init=False)
