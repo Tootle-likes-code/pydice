@@ -64,7 +64,7 @@ class MinTests(DieTests):
         test_die = Die(6)
 
         # Act
-        test_die.minimum_roll = -1
+        test_die._minimum_roll = -1
 
         # Assert
         self.assertEqual(expected_result, test_die.min)
@@ -110,7 +110,7 @@ class MaxTests(DieTests):
         test_die = Die(6)
 
         # Act
-        test_die.minimum_roll = 0
+        test_die._minimum_roll = 0
         result = test_die.max
 
         # Assert
