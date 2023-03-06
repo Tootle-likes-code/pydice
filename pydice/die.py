@@ -111,33 +111,6 @@ class Dice(Rollable):
         return f"{self.number_of_dice}{str(self.die)}"
 
 
-@dataclass
-class DicePool(Rollable):
-    def __init__(self, *rollables):
-        self._rollables: list[Rollable] = []
-        self._initialise_dice_pool(*rollables)
-
-    def _initialise_dice_pool(self, *rollables):
-        for rollable in rollables:
-            if isinstance(rollable, Rollable):
-                self._rollables.append(rollable)
-
-    def roll(self) -> list[int]:
-        results = []
-        for rollable in self._rollables:
-            results = results + rollable.roll()
-
-        return results
-
-    @property
-    def min(self) -> int:
-        return sum([rollable.min for rollable in self._rollables])
-
-    @property
-    def max(self) -> int:
-        return sum([rollable.max for rollable in self._rollables])
-
-
 if __name__ == "__main__":
     print("Welcome to Tootle's Dice app.")
 
