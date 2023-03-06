@@ -45,11 +45,6 @@ class Die(Rollable):
     """
     sides: int
     minimum_roll: int = 1
-
-    def __post_init__(self):
-        offset = 1
-        self._maximum_roll = self.sides + (self.min - offset)
-
     def roll(self) -> list[int]:
         """
         Returns a random roll of the die, between the min and max, placed into a list.
