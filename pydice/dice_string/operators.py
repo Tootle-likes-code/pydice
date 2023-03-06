@@ -37,6 +37,8 @@ get_storyteller_operators() -> list[Operator]
     Returns the Operators required for the Storyteller systems.
 """
 
+# pylint: disable=too-few-public-methods
+
 from abc import abstractmethod, ABC
 from dataclasses import dataclass
 
