@@ -58,6 +58,17 @@ class MinTests(DieTests):
         # Assert
         self.assertEqual(expected_result, result)
 
+    def test_updated_minimum_roll_reflects_in_min(self):
+        # Arrange
+        expected_result = -1
+        test_die = Die(6)
+
+        # Act
+        test_die.minimum_roll = -1
+
+        # Assert
+        self.assertEqual(expected_result, test_die.min)
+
 
 class MaxTests(DieTests):
     def test_max_returns_expected_value(self):
@@ -88,6 +99,18 @@ class MaxTests(DieTests):
         test_die = Die(6, 2)
 
         # Act
+        result = test_die.max
+
+        # Assert
+        self.assertEqual(expected_result, result)
+
+    def test_max_is_called_after_minimum_roll_is_changed_correctly_represents_new_max(self):
+        # Arrange
+        expected_result = 5
+        test_die = Die(6)
+
+        # Act
+        test_die.minimum_roll = 0
         result = test_die.max
 
         # Assert

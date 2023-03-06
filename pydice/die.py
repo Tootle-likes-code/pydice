@@ -51,7 +51,12 @@ class Die(Rollable):
         self._maximum_roll = self.sides + (self.min - offset)
 
     def roll(self) -> list[int]:
-        die_roll_result = [random.randint(self.min, self._maximum_roll)]
+        """
+        Returns a random roll of the die, between the min and max, placed into a list.
+        The list will always have a len of 1.
+        :return:
+        """
+        die_roll_result = [random.randint(self.min, self.max)]
         return die_roll_result
 
     @property
@@ -60,14 +65,19 @@ class Die(Rollable):
 
     @property
     def max(self) -> int:
-        return self._maximum_roll
+        """
+        Returns the maximum value of the die, which is min + sides - 1.
+        :return:
+        """
+        offset = 1
+        return self.sides + (self.min - offset)
 
     def __str__(self) -> str:
         base_string = f"D{self.sides}"
         if self.minimum_roll == 1:
             return base_string
-        else:
-            return base_string + f"[{self.minimum_roll}-{self._maximum_roll}]"
+
+        return base_string + f"[{self.minimum_roll}-{self.max}]"
 
 
 @dataclass(init=False)
@@ -75,6 +85,7 @@ class FateDie(Die):
     """
     A representation of a die use in FATE and it's variations.
     """
+
     def __init__(self):
         super().__init__(3, -1)
 
