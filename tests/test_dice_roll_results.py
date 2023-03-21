@@ -24,7 +24,7 @@ class DiceTests(DiceRollResultTests):
         # Assert
         with self.assertRaises(AttributeError) as ex:
             # Act
-            self.test_dice_roll_results._dice = 123
+            self.test_dice_roll_results.dice = 123
 
 
 class DieRollTests(DiceRollResultTests):
