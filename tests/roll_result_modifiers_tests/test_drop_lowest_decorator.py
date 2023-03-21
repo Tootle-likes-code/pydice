@@ -5,7 +5,7 @@ from parameterized import parameterized
 
 from pydice.die import Dice, Die
 from pydice.roll_result import RollResult, DiceRollResult
-from pydice.roll_result_operators.roll_result_decorators import DropLowestDecorator
+from pydice.roll_result_operators.drop_dice_roll_result_decorators import DropLowestDecorator
 
 
 class DropLowestDecoratorTests(unittest.TestCase):

@@ -1,10 +1,15 @@
 """
-A module for collecting and handling the results of Rollable objects.
+This module handles a snapshot of a Rollable.roll in the various forms.
 
-Mutations can be added by sub-classing RollResultDecorator.
+Classes:
+========
+
+RollResult - The Base class for all RollResult objects.
+DieRollResult - A class for handling a single Die class as a RollResult.
+DiceRollResult - A class for handling a Dice class as a RollResult.
 """
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from pydice.die import Die, Dice
 
@@ -12,7 +17,14 @@ from pydice.die import Die, Dice
 @dataclass
 class RollResult(ABC):
     """
-    Abstracted class for containing the results of a roll.
+    Abstract base class for containing the results of a roll, intended to be overriden
+    by subclasses.
+
+    Properties:
+    ===========
+    die_rolls -> list[int]  - A read-only property. Returns a list of the rolled values.
+    result -> int           - A read-only property. The result of the Rollable.
+    rolled_die -> Die       - A read-only property. Returns the Die used in the RollResult.
     """
 
     @property
@@ -31,10 +43,6 @@ class RollResult(ABC):
         :return:
         """
 
-    @abstractmethod
-    def add_die_roll(self, new_value: int) -> None:
-        """ Adds a new result to the roll result."""
-
     @property
     @abstractmethod
     def rolled_die(self) -> Die:
@@ -44,65 +52,102 @@ class RollResult(ABC):
 @dataclass
 class DieRollResult(RollResult):
     """
-    The roll result for a single Die object.
-    """
-    die: Die
-    roll: int | None = None
+    A representation of an individual Die roll.  As such all attributes are hidden and only
+    exposed by read-only properties.
 
-    def __post_init__(self):
-        if self.roll is None:
-            rolls = self.die.roll()
-            self.roll = rolls[0]
-        self._rolls = [self.roll]
+    This object can be used to create the initial roll it represents as well by not providing
+    the roll result.
+
+    Properties:
+    ===========
+    die -> Die              - A read-only property. Returns the Die that this object is used for.
+    die_rolls -> list[int]  - A read-only property. Returns a list of the rolled values.
+    result -> int           - A read-only property. The result of the Rollable.
+    rolled_die -> Die       - A read-only property. Returns the Die used in the RollResult.
+    """
+
+    def __init__(self, die: Die, roll: int | None = None):
+        """
+        Creates a DieRollResult.  If no roll value is provided, then the Die.roll() is called
+        to initialise this class.
+
+        :param die: The Die rolled.
+        :param roll: The result of that die.
+        """
+        self._die: Die = die
+        if roll is None:
+            self._roll = self.die.roll()[0]
+        else:
+            self._roll = roll
+
+    @property
+    def die(self) -> Die:
+        """ Returns the Die used to create the object. """
+        return self._die
 
     @property
     def die_rolls(self) -> list[int]:
-        die_roll_as_list = self._rolls
+        """ Returns the roll value in a list. """
+        die_roll_as_list = [self._roll]
         return die_roll_as_list
 
     @property
     def result(self) -> int:
-        return self.roll
-
-    def add_die_roll(self, new_value: int) -> None:
-        if not self.die.min <= new_value <= self.die.max:
-            raise ValueError(f"Roll must be less than min and greater than max. "
-                             f"Die Min: {self.die.min}, Die Max: {self.die.max}, "
-                             f"value to add: {new_value}")
-        self._rolls.append(new_value)
+        """ Returns the roll of the die this time. """
+        return self._roll
 
     @property
     def rolled_die(self) -> Die:
+        """ Returns the Die being rolled. """
         return self.die
 
 
 @dataclass
 class DiceRollResult(RollResult):
     """
-    The roll result for a Dice object.
-    """
-    dice: Dice
-    _rolls: list[int] = field(default_factory=list)
+    A representation of an individual Dice roll.  As such all attributes are hidden and only
+    exposed by read-only properties.
 
-    def __post_init__(self):
-        if not self._rolls:
-            self._rolls = self.dice.roll()
+    This object can be used to create the initial roll it represents as well by not providing
+    the roll result.
+
+    Properties:
+    ===========
+    dice -> Dice            - A read-only property. Returns the DiCe that this object is used for.
+    die_rolls -> list[int]  - A read-only property. Returns a list of the rolled values.
+    result -> int           - A read-only property. The result of the Rollable.
+    rolled_die -> Die       - A read-only property. Returns the Die used in the given Dice.
+    """
+
+    def __init__(self, dice: Dice, rolls: list[int] | None = None):
+        """
+        Creates a DiceRollResult.  If no rolls are provided, then the dice provided will be rolled
+        to trigger them.
+        :param dice: The Dice that were rolled for this RollResult.
+        :param rolls: The results of those dice.
+        """
+        self._dice = dice
+        if rolls:
+            self._rolls = rolls
+        else:
+            self._rolls = self._dice.roll()
+
+    @property
+    def dice(self) -> Dice:
+        """ Returns the Dice used in this RollResult. """
+        return self._dice
 
     @property
     def die_rolls(self) -> list[int]:
+        """ Returns the roll value in a list. """
         return self._rolls
 
     @property
     def result(self) -> int:
+        """ Returns the sum of the die rolls. """
         return sum(self._rolls)
-
-    def add_die_roll(self, new_value: int):
-        if not self.dice.min <= new_value <= self.dice.max:
-            raise ValueError('Roll must be less than min and greater than max. '
-                             f'Dice Min: {self.dice.min}, Dice Max: {self.dice.max}, '
-                             f'value to add: {new_value}')
-        self._rolls.append(new_value)
 
     @property
     def rolled_die(self) -> Die:
-        return self.dice.die
+        """ Returns the Die being rolled. """
+        return self._dice.die

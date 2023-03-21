@@ -1,3 +1,17 @@
+"""
+The dice_string_parser handles the parsing of dice strings into roll results.
+
+Functions:
+==========
+parse(dice_string: str) -> ParsedDiceString - A factory method that creates the DiceStringParser
+    and calls parse.
+
+Classes:
+========
+DiceStringParser - A class that takes a dice string and outputs a
+    parsed dice string.
+"""
+
 import re
 from re import Pattern, Match
 
@@ -9,6 +23,11 @@ from pydice.die import Dice, Die
 
 
 def parse(dice_string: str) -> ParsedDiceString:
+    """
+    A factory method to create DiceStringParser and call the parse method.
+    :param dice_string: The dice string to parse.
+    :return: A ParsedDiceString built from that dice string.
+    """
     dice_string_parser = DiceStringParser(dice_string)
     dice_string_parser.parse()
 
@@ -22,12 +41,32 @@ _extract_dice_regex = re.compile(r"(?P<number_of_dice>\d*)d(?P<dice_size>\d+)", 
 
 
 class DiceStringParser:
+    """
+    Has methods based on converting a dice string into a ParsedDiceString.
+
+    Properties:
+    ===========
+    parsed_dice_string -> ParsedDiceString | None - Returns the ParsedDiceString if parse() has been
+        called, otherwise None.
+
+    Functions:
+    ==========
+
+    parse() -> None - Parses the dice string so that the parsed_dice_string is populated.
+    """
     def __init__(self, dice_string):
+        """
+        Initialises the object.
+        :param dice_string: The dice string that needs to be parsed.
+        """
         self._parsed_dice_string = None
         self._dice_string = dice_string
         self._builder = ParsedDiceStringBuilder.create_parsed_dice_string(dice_string)
 
     def parse(self) -> None:
+        """
+        Processes the dice string to build a ParsedDiceString.
+        """
         self._extract_dice()
         self._extract_operators()
         self._parsed_dice_string = self._builder.build()
@@ -90,4 +129,8 @@ class DiceStringParser:
 
     @property
     def parsed_dice_string(self) -> ParsedDiceString | None:
+        """
+        Returns the ParsedDiceString determined by parse().
+        :return: If parse() was called, the ParsedDiceString from that, otherwise None.
+        """
         return self._parsed_dice_string
