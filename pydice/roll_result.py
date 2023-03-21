@@ -144,7 +144,7 @@ class DiceRollResult(RollResult):
 
     @property
     def result(self) -> int:
-        """ Returns the roll of the die this time. """
+        """ Returns the sum of the die rolls. """
         return sum(self._rolls)
 
     @property
