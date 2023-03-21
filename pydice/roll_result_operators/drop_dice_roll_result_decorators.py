@@ -1,3 +1,13 @@
+"""
+This module contains further RollResultDecorators, focusing upon dropping
+dice from the RollResult.
+
+Classes:
+========
+DropDiceDecorator       - The Base Class that expands upon the RollResultDecorator.
+DropLowestDecorator     - Drops a number of the lowest rolled from the RollResult.
+DropHighestDecorator    - Drops a number of the highest rolled from the RollResult.
+"""
 from abc import ABC
 from dataclasses import dataclass
 from typing import ClassVar
