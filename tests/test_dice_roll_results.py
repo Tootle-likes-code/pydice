@@ -15,6 +15,18 @@ class DiceRollResultTests(unittest.TestCase):
         self.test_dice_roll_results = DiceRollResult(self.mock_dice, [4, 5])
 
 
+class DiceTests(DiceRollResultTests):
+    def test_can_get(self):
+        # Assert
+        self.assertEqual(self.test_dice_roll_results._dice, self.mock_dice)
+
+    def test_cannot_be_set(self):
+        # Assert
+        with self.assertRaises(AttributeError) as ex:
+            # Act
+            self.test_dice_roll_results._dice = 123
+
+
 class DieRollTests(DiceRollResultTests):
     def test_returns_dice_results(self):
         # Arrange
