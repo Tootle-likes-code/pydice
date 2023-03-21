@@ -31,10 +31,6 @@ class RollResult(ABC):
         :return:
         """
 
-    @abstractmethod
-    def add_die_roll(self, new_value: int) -> None:
-        """ Adds a new result to the roll result."""
-
     @property
     @abstractmethod
     def rolled_die(self) -> Die:
@@ -64,13 +60,6 @@ class DieRollResult(RollResult):
     def result(self) -> int:
         return self.roll
 
-    def add_die_roll(self, new_value: int) -> None:
-        if not self.die.min <= new_value <= self.die.max:
-            raise ValueError(f"Roll must be less than min and greater than max. "
-                             f"Die Min: {self.die.min}, Die Max: {self.die.max}, "
-                             f"value to add: {new_value}")
-        self._rolls.append(new_value)
-
     @property
     def rolled_die(self) -> Die:
         return self.die
@@ -95,13 +84,6 @@ class DiceRollResult(RollResult):
     @property
     def result(self) -> int:
         return sum(self._rolls)
-
-    def add_die_roll(self, new_value: int):
-        if not self.dice.min <= new_value <= self.dice.max:
-            raise ValueError('Roll must be less than min and greater than max. '
-                             f'Dice Min: {self.dice.min}, Dice Max: {self.dice.max}, '
-                             f'value to add: {new_value}')
-        self._rolls.append(new_value)
 
     @property
     def rolled_die(self) -> Die:

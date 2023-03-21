@@ -18,9 +18,6 @@ class RollResultDecorator(RollResult, ABC):
     def die_rolls(self) -> list[int]:
         return sorted(self.roll_result.die_rolls)
 
-    def add_die_roll(self, new_value: int) -> None:
-        self.roll_result.add_die_roll(new_value)
-
     @property
     def result(self) -> int:
         return self._result
