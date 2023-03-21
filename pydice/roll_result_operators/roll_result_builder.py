@@ -3,10 +3,10 @@ from pydice.roll_result import RollResult, DiceRollResult
 from pydice.roll_result_operators.counter_roll_result_decorator import CountValuesEqualToDecorator, \
     CountValuesGreaterThanDecorator, \
     CountValuesLessThanDecorator, CountValuesNotEqualToDecorator
+from pydice.roll_result_operators.drop_dice_roll_result_decorators import DropHighestDecorator, DropLowestDecorator
 from pydice.roll_result_operators.roll_result_decorators import AddToRollResultDecorator, \
     SubtractFromRollResultDecorator, \
-    MultiplyRollResultDecorator, DivideByRollResultDecorator, ExplodeDiceForTargetDecorator, DropHighestDecorator, \
-    DropLowestDecorator
+    MultiplyRollResultDecorator, DivideByRollResultDecorator, ExplodeDiceForTargetDecorator
 
 
 class RollResultBuilder:
