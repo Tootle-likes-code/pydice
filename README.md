@@ -1,7 +1,14 @@
 # pydice
 
-Code Repository for dice rollers of all kinds.  The sections are:
+WIP -> will be delving into this to tidy some things back up and streamline the parser, and introduce other important aspects, such as:
 
+* Dice Pools - Rolling differnt combinations of dice in the same roll.
+* Brackets - For ordering operations
+* Streamlining the String Parsing.
+
+A python based digital dice roller capable of parsing dice strings to generate a rollable result.
+
+## Sections
 * How to use the String Parser - Which details how to get pydice to parse dice strings.  This is a how-to section to use the 
 String Parser.
 * Rollables - Explains pydice's abstractions of dice to work in a digital form.
